@@ -9,3 +9,13 @@ function laCajaDePandora(numero){
 
 laCajaDePandora(10);
 laCajaDePandora(11);
+
+function Frank(){
+    console.log({
+        nombre: "Frank",
+        edad: 24,
+        nacionalidad: "Argentino"
+    });
+}
+
+Frank();
