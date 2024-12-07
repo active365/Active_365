@@ -7,7 +7,7 @@
 }*/
 
 
-const persona = () =>{
+const Cande = () =>{
     return {
         Nombre: "Candela Villaverde",
         Edad: 25,
