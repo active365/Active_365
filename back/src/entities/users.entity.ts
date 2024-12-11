@@ -24,20 +24,20 @@ export class Users {
     @Column({ length: 50 })
     city: string;
     
-    @Column({type: 'varchar', length: 100, nullable: false, default: userRoles.registered})
+    @Column({type: 'varchar', length: 15, nullable: false, default: userRoles.registered})
     rol: string;
     
     @Column({ type: 'float' })
-    height: number;
+    height?: number;
 
     @Column({ type: 'float' })
-    weight: number;
+    weight?: number;
 
     @Column({ length: 100, nullable: false })
     password: string;
 
-    @CreateDateColumn()
-    createdAt?: Date;
+    @CreateDateColumn({ type: "date", nullable: false})
+    createdAt: Date;
     
     @ManyToOne(() => Gyms, gym => gym.users)
     @JoinColumn()

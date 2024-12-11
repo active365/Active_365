@@ -16,8 +16,8 @@ export class Appointments {
     @Column({ type: "varchar", length: 5, nullable: false })
     time: string;
 
-    @CreateDateColumn()
-    createdAt?: Date;
+    @CreateDateColumn({ type: "date", nullable: false})
+    createdAt: Date;
 
     @ManyToOne(() => Classes, classes => classes.appointments)
     @JoinColumn()
