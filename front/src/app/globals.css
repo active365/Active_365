@@ -19,3 +19,40 @@ body {
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+.btn {
+  @apply px-6 py-3 font-semibold rounded-lg bg-yellow hover:bg-yellow-light active:bg-yellow-orange text-black;
+}
+
+/* Navbar Hover Effect */
+.button {
+  @apply bg-transparent font-sans text-white text-[15px] font-bold px-[30px] py-[10px] relative text-center transition-all z-[1];
+}
+
+.p {
+  z-index: 2;
+  position: relative;
+}
+
+.button:hover {
+  @apply text-black;
+}
+
+.button:hover::before {
+  @apply bg-yellow-light w-full h-[40px] rounded-[3px] absolute top-[2px];
+  transform: rotate(0deg);
+}
+
+.button::before {
+  content: "";
+  @apply bg-yellow w-[6px] h-[6px] rounded-[1px] absolute top-[19px] left-[-10px] z-[-1];
+  transform: rotate(225deg);
+  transition: 0.3s;
+}
+
+.button:active::before {
+  @apply bg-yellow-orange;
+}
+
+
+
