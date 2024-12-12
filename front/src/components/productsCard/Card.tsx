@@ -4,7 +4,7 @@ import { IProducts } from "@/interfaces/IProducts";
 
 const Card: React.FC = () => {
   return (
-    <div className="bg-gradient-to-b from-gray-900 via-gray-800 to-black py-10">
+    <div className="bg-black">
       <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 px-6">
         {arrayProducts.map((product: IProducts) => {
           return (
