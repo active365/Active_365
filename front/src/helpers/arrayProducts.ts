@@ -1,4 +1,6 @@
-export const arrayProducts = [
+import { IProducts } from "@/interfaces/IProducts";
+
+export const arrayProducts: IProducts[] = [
     {
       id: 1,
       name: "Yoga Mat",
