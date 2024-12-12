@@ -1,7 +1,7 @@
 import DetailCard from "@/components/detailCard/DetailCard";
 import { arrayProducts } from "@/helpers/arrayProducts";
 
-const Detail = async ({ params }: { params: { id: string } }) => {
+const Detail =  ({ params }: { params: { id: string } }) => {
     const product = arrayProducts.find((product) => product.id.toString() === params.id);
 
     if (!product) {

@@ -12,7 +12,6 @@ const DetailCard: React.FC<IProducts> = ({
     imgUrl,
     category_id,
 }) => {
-    // Obtener el nombre de la categoría basado en el category_id
     const category = categories.find((cat) => cat.id === category_id)?.name || "Unknown";
 
     return (
