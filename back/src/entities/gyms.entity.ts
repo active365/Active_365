@@ -1,7 +1,8 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { v4 as uuid } from 'uuid';
 import { Users } from "./users.entity";
 import { userRoles } from "src/enums/userRoles.enum";
+import { Classes } from "./class.entity";
 @Entity({name: 'Gyms'})
 export class Gyms {
     @PrimaryGeneratedColumn('uuid')
@@ -16,13 +17,12 @@ export class Gyms {
     @Column({ length: 100, nullable: false })
     password: string;
 
-
     @Column({ type: 'bigint' })
     phone: number;
 
     @Column({ type: 'text' })
     address: string;
-  
+
     @Column({ length: 50 })
     city: string;
     
@@ -31,6 +31,10 @@ export class Gyms {
 
     @CreateDateColumn({ type: "date", nullable: false})
     createdAt: Date;
+
+    @ManyToMany(() => Classes, classes => classes.gym)
+    @JoinColumn()
+    classes: Classes[];
 
     @OneToMany(() => Users, user => user.gym)
     @JoinColumn()

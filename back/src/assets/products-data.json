@@ -1,0 +1,207 @@
+[
+    {
+        "name": "Gold Standard Whey Protein",
+        "description": "The most popular whey protein, ideal for muscle recovery and mass gain.",
+        "imgUrl": "www.picture.jpg",
+        "price": 29.99,
+        "stock": 100,
+        "category": "Nutritional Supplements"
+      },
+      {
+        "name": "BPI Sports Best BCAA",
+        "description": "Branched-chain amino acids to improve performance and muscle recovery.",
+        "imgUrl": "www.picture.jpg",
+        "price": 24.99,
+        "stock": 150,
+        "category": "Nutritional Supplements"
+      },
+      {
+        "name": "Optimum Nutrition Creatine",
+        "description": "Creatine monohydrate to increase strength and improve performance in high-intensity workouts.",
+        "imgUrl": "www.picture.jpg",
+        "price": 19.99,
+        "stock": 200,
+        "category": "Nutritional Supplements"
+      },
+      {
+        "name": "Clif Bar Protein",
+        "description": "Protein bar ideal for before or after workouts.",
+        "imgUrl": "www.picture.jpg",
+        "price": 2.50,
+        "stock": 300,
+        "category": "Nutritional Supplements"
+      },
+      {
+        "name": "Muscle Milk Protein Shake",
+        "description": "Protein shake with a blend of high-quality proteins and delicious taste.",
+        "imgUrl": "www.picture.jpg",
+        "price": 19.99,
+        "stock": 120,
+        "category": "Nutritional Supplements"
+      },
+    
+      {
+        "name": "Rogue Fitness Lifting Straps",
+        "description": "Lifting straps to improve grip during heavy lifts.",
+        "imgUrl": "www.picture.jpg",
+        "price": 15.99,
+        "stock": 100,
+        "category": "Training Accessories"
+      },
+      {
+        "name": "Fit Viva Resistance Bands",
+        "description": "Resistance bands for strength and flexibility exercises.",
+        "imgUrl": "www.picture.jpg",
+        "price": 12.99,
+        "stock": 200,
+        "category": "Training Accessories"
+      },
+      {
+        "name": "ProFitness Weight Lifting Belt",
+        "description": "Weightlifting belt designed to protect the back during intense workouts.",
+        "imgUrl": "www.picture.jpg",
+        "price": 29.99,
+        "stock": 150,
+        "category": "Training Accessories"
+      },
+      {
+        "name": "Gaiam Yoga Mat",
+        "description": "Non-slip mat perfect for yoga and Pilates.",
+        "imgUrl": "www.picture.jpg",
+        "price": 25.99,
+        "stock": 250,
+        "category": "Training Accessories"
+      },
+      {
+        "name": "Harbinger Ab Straps",
+        "description": "Ab straps ideal for strengthening the core.",
+        "imgUrl": "www.picture.jpg",
+        "price": 19.99,
+        "stock": 180,
+        "category": "Training Accessories"
+      },
+    
+      {
+        "name": "Nike Pro Compression Shirt",
+        "description": "Compression shirt for increased muscle support during workouts.",
+        "imgUrl": "www.picture.jpg",
+        "price": 34.99,
+        "stock": 100,
+        "category": "Sports Apparel"
+      },
+      {
+        "name": "Under Armour Men’s Compression Shorts",
+        "description": "Compression shorts for a comfortable fit and enhanced performance.",
+        "imgUrl": "www.picture.jpg",
+        "price": 24.99,
+        "stock": 150,
+        "category": "Sports Apparel"
+      },
+      {
+        "name": "Adidas UltraBoost Running Shoes",
+        "description": "Running shoes with cushioning and support for runners.",
+        "imgUrl": "www.picture.jpg",
+        "price": 120.00,
+        "stock": 50,
+        "category": "Sports Apparel"
+      },
+      {
+        "name": "Gymshark Flex Leggings",
+        "description": "Comfortable, form-fitting leggings, perfect for strength training or yoga.",
+        "imgUrl": "www.picture.jpg",
+        "price": 35.00,
+        "stock": 200,
+        "category": "Sports Apparel"
+      },
+      {
+        "name": "Puma Performance Socks",
+        "description": "Anti-slip sports socks ideal for intense workouts.",
+        "imgUrl": "www.picture.jpg",
+        "price": 12.99,
+        "stock": 300,
+        "category": "Sports Apparel"
+      },
+    
+      {
+        "name": "Bowflex SelectTech 552 Dumbbells",
+        "description": "Adjustable dumbbells for home workouts, perfect for any skill level.",
+        "imgUrl": "www.picture.jpg",
+        "price": 329.99,
+        "stock": 80,
+        "category": "Home Equipment"
+      },
+      {
+        "name": "TRX Suspension Trainer",
+        "description": "Suspension training system to work out the whole body at home or outdoors.",
+        "imgUrl": "www.picture.jpg",
+        "price": 169.99,
+        "stock": 120,
+        "category": "Home Equipment"
+      },
+      {
+        "name": "Adjustable Kettlebells Set",
+        "description": "Adjustable kettlebell set for strength training at home.",
+        "imgUrl": "www.picture.jpg",
+        "price": 199.99,
+        "stock": 70,
+        "category": "Home Equipment"
+      },
+      {
+        "name": "Bowflex Bodyweight Resistance System",
+        "description": "Bodyweight resistance system for exercise without weights.",
+        "imgUrl": "www.picture.jpg",
+        "price": 159.99,
+        "stock": 90,
+        "category": "Home Equipment"
+      },
+      {
+        "name": "NordicTrack Treadmill",
+        "description": "Treadmill with multiple speed and incline settings.",
+        "imgUrl": "www.picture.jpg",
+        "price": 799.00,
+        "stock": 50,
+        "category": "Home Equipment"
+      },
+    
+      {
+        "name": "Tiger Balm Muscle Rub",
+        "description": "Soothing balm for sore muscles and joints.",
+        "imgUrl": "www.picture.jpg",
+        "price": 8.99,
+        "stock": 250,
+        "category": "Health & Wellness"
+      },
+      {
+        "name": "Biofreeze Pain Relief Gel",
+        "description": "Gel for relieving muscle and joint pain with menthol and other natural ingredients.",
+        "imgUrl": "www.picture.jpg",
+        "price": 12.99,
+        "stock": 200,
+        "category": "Health & Wellness"
+      },
+      {
+        "name": "Epsom Salt Bath Soak",
+        "description": "Bath salts for relaxing muscles after a workout.",
+        "imgUrl": "www.picture.jpg",
+        "price": 5.99,
+        "stock": 300,
+        "category": "Health & Wellness"
+      },
+      {
+        "name": "Sombra Muscle Relaxation Oil",
+        "description": "Essential oil for relaxing tight muscles after intense exercise.",
+        "imgUrl": "www.picture.jpg",
+        "price": 14.99,
+        "stock": 150,
+        "category": "Health & Wellness"
+      },
+      {
+        "name": "ThermaCare HeatWraps",
+        "description": "Heat therapy wraps to relieve muscle pain and tension.",
+        "imgUrl": "www.picture.jpg",
+        "price": 10.99,
+        "stock": 200,
+        "category": "Health & Wellness"
+      }
+  ]
+  
