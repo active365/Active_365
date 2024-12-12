@@ -5,7 +5,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './users/user.module';
 
 @Module({
-  imports: [ConfigModule.forRoot({
+  imports: [UserModule,
+    ConfigModule.forRoot({
     isGlobal: true,
     load: [typeorm],
   }),
@@ -13,6 +14,6 @@ import { UserModule } from './users/user.module';
     inject: [ConfigService],
     useFactory: (config: ConfigService) => config.get('typeorm'),
   }),
-  UserModule]
+  ]
 })
 export class AppModule {}
