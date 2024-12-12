@@ -15,6 +15,7 @@ export class UserController {
       
     @Get(':id')
     getUserById(@Param('id', ParseUUIDPipe) id: string) {
+        console.log(id);
         return this.userService.getUserById(id);
       }
 
