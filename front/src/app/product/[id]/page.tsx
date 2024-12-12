@@ -1,7 +1,7 @@
 import DetailCard from "@/components/detailCard/DetailCard";
 import { arrayProducts } from "@/helpers/arrayProducts";
 
-const Detail =  ({ params }: { params: { id: string } }) => {
+const Detail = ({ params }: { params: { id: string } }) => {
     const product = arrayProducts.find((product) => product.id.toString() === params.id);
 
     if (!product) {
@@ -15,9 +15,9 @@ const Detail =  ({ params }: { params: { id: string } }) => {
     }
 
     return (
-        <div className="flex items-center justify-center min-h-screen">
-            <div className="flex w-full max-w-7xl space-x-8">
-                <div className="flex-1">
+        <div className="flex items-center justify-center min-h-screen px-4 sm:px-6 lg:px-8">
+            <div className="flex w-full max-w-screen-xl flex-col lg:flex-row space-x-0 lg:space-x-8">
+                <div className="flex-1 mb-6 lg:mb-0">
                     <DetailCard
                         key={product.id}
                         id={product.id}
@@ -30,12 +30,11 @@ const Detail =  ({ params }: { params: { id: string } }) => {
                     />
                 </div>
 
-                
-                <div className="w-1/4 pl-4">
+                <div className="w-full lg:w-1/4">
                     <div className="p-4 bg-gradient-to-r from-yellow-500 to-yellow-600 text-white rounded-lg shadow-md">
                         <h2 className="text-xl font-semibold mb-3">Transform your body with our training plans!</h2>
                         <p className="text-base mb-4">Join our personalized training plans to reach your goals. Whether you are looking to increase strength, flexibility, or overall wellness, we have the perfect plan for you.</p>
-                        <button className="px-3 py-1 bg-white text-yellow-600 font-semibold rounded-md"> 
+                        <button className="px-3 py-1 bg-white text-yellow-600 font-semibold rounded-md">
                             Explore the plans!
                         </button>
                     </div>
@@ -46,4 +45,3 @@ const Detail =  ({ params }: { params: { id: string } }) => {
 };
 
 export default Detail;
-

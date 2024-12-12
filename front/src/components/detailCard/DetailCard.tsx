@@ -15,7 +15,7 @@ const DetailCard: React.FC<IProducts> = ({
     const category = categories.find((cat) => cat.id === category_id)?.name || "Unknown";
 
     return (
-        <div key={id} className={styles["card-container"]}>
+        <div key={id} className={`${styles["card-container"]} p-4 sm:p-6 lg:p-8`}>
             <div className={styles["image-container"]}>
                 <img src={imgUrl} alt={`${name} image`} className={styles["product-image"]} />
             </div>
