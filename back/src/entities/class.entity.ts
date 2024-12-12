@@ -1,7 +1,8 @@
-import { Column, Entity, OneToMany } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany } from "typeorm";
 import { PrimaryGeneratedColumn } from "typeorm";
 import { v4 as uuid } from 'uuid';
 import { Appointments } from "./appointments.entity";
+import { Gyms } from "./gyms.entity";
 
 @Entity({name: 'Classes'})
 export class Classes{
@@ -25,6 +26,10 @@ export class Classes{
 
     @Column({ type: "varchar", length: 5, nullable: false })
     time: string;
+
+    @ManyToMany(() => Gyms, gym => gym.classes)
+    gym: Gyms[];
+
 
     @OneToMany(() => Appointments, appointments => appointments.classes)
     appointments: Appointments[]
