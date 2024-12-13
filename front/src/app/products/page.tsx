@@ -2,6 +2,7 @@ import React from "react";
 import Card from "@/components/productsCard/Card";
 import Category from "@/components/categories/Category";
 
+
 const Products: React.FC = () => {
     const currentDate = new Date();
     const deadline = new Date("2025-01-01");
@@ -32,10 +33,10 @@ const Products: React.FC = () => {
 
             <div className="w-full px-4 sm:px-6 lg:px-8">
                 <Card />
+
             </div>
         </div>
     );
 };
 
 export default Products;
-

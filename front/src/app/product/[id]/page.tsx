@@ -11,11 +11,13 @@ const Detail = async ({ params }: { params: { id: string } }) => {
         return (
             <div className="flex items-center justify-center min-h-screen">
                 <h1 className="text-2xl font-bold text-red-500">Invalid product ID.</h1>
+
             </div>
         );
     }
 
     const product = arrayProducts.find((product) => product.id.toString() === productId);
+
 
     if (!product) {
         return (
@@ -61,6 +63,7 @@ const Detail = async ({ params }: { params: { id: string } }) => {
                     <button className="w-full px-4 py-2 bg-white text-yellow-600 font-semibold rounded-md hover:bg-gray-100">
                         Explore the plans!
                     </button>
+
                 </div>
             </div>
         </div>
