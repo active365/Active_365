@@ -42,7 +42,8 @@ export class GymsService {
   
   async getGyms() {
     const gyms = await this.gymsRepository.find({
-      select: ['id', 'name', 'email', 'phone' ,'address', 'city', 'rol', 'createdAt'],
+      relations: ['users'],
+      select: ['id', 'name', 'email', 'phone' ,'address', 'city', 'rol', 'createdAt', 'users'],
     });
     if(gyms.length === 0) {
       throw new NotFoundException('No gyms registered in the database were found');
@@ -53,7 +54,7 @@ export class GymsService {
   async getById(id: string) {
     const gymFound = await this.gymsRepository.findOne({
       where: { id: id },
-      // relations: ['classes'],
+      relations: ['users'],
       select: ['id', 'name', 'email', 'phone' ,'address', 'city', 'rol', 'createdAt'],
   });
   if (!gymFound) {

@@ -1,5 +1,5 @@
 
-const Landing: React.FC = () => {
+const Home: React.FC = () => {
   return (
     <div className="bg-gray-dark h-screen flex flex-col justify-center items-center relative">
       {/* Imagen Principal */}
@@ -35,4 +35,4 @@ const Landing: React.FC = () => {
   );
 };
 
-export default Landing;
+export default Home;

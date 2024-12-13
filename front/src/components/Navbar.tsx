@@ -1,5 +1,7 @@
 "use client"
 
+import Link from "next/link";
+
 import React, { useState } from "react";
 
 
@@ -21,69 +23,32 @@ const Navbar: React.FC = () => {
 
       <ul className="flex space-x-4 ml-4">
         <li>
-          <label className="relative">
-            <input
-              id="home"
-              name="path"
-              type="radio"
-              className="hidden peer"
-            />
-            <button className="button">
-              <span className="p">Home</span>
-            </button>
-          </label>
+          <Link href="/" className="button">
+            <span className="p">Home</span>
+          </Link>
         </li>
         <li>
-          <label className="relative">
-            <input
-              id="about"
-              name="path"
-              type="radio"
-              className="hidden peer"
-            />
-            <button className="button">
-              <span className="p">About</span>
-            </button>
-          </label>
+        <Link href="/about" className="button">
+            <span className="p">About</span>
+          </Link>
         </li>
         <li>
-          <label className="relative">
-            <input
-              id="products"
-              name="path"
-              type="radio"
-              className="hidden peer"
-            />
-            <button className="button">
-              <span className="p">Products</span>
-            </button>
-          </label>
+
+            
+         <Link href="/products" className="button">
+         <span className="p">Products</span>
+         </Link>
+              
         </li>
         <li>
-          <label className="relative">
-            <input
-              id="classes"
-              name="path"
-              type="radio"
-              className="hidden peer"
-            />
-            <button className="button">
-              <span className="p">Classes</span>
-            </button>
-          </label>
+          <Link href="/classes" className="button">
+          <span className="p">Classes</span>
+          </Link>
         </li>
         <li>
-          <label className="relative">
-            <input
-              id="membership"
-              name="path"
-              type="radio"
-              className="hidden peer"
-            />
-            <button className="button">
-              <span className="p">Membership</span>
-            </button>
-          </label>
+          <Link href="/membership" className="button">
+          <span className="p">Membership</span>
+          </Link>
         </li>
       </ul>
 
@@ -93,9 +58,9 @@ const Navbar: React.FC = () => {
         
   
    {/* Botón Login */}
-   <button className="btn">
-          Login
-    </button>
+    <Link href="/login" className="btn">
+      Login
+    </Link>
 
   <div className="relative inline-block text-left">
     <div>
@@ -134,7 +99,7 @@ const Navbar: React.FC = () => {
       >
         <div className="py-1" role="none">
           <a
-            href="#"
+            href="/registerGym"
             className="block px-4 py-2 text-sm text-gray-700 hover:bg-yellow-light"
             role="menuitem"
             tabIndex={-1}
@@ -143,7 +108,7 @@ const Navbar: React.FC = () => {
             Gym
           </a>
           <a
-            href="#"
+            href="/registerPerson"
             className="block px-4 py-2 text-sm text-gray-700 hover:bg-yellow-light"
             role="menuitem"
             tabIndex={-1}
