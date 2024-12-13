@@ -51,9 +51,7 @@ export class UserService {
         await this.waitForGyms();
         const usersMock = await Promise.all(usersSeed.map(async (user) => {
           const gyms = await this.gymsRepository.find();
-          console.log(gyms);
           const gymForUser = await this.gymsRepository.findOne({ where: { city: user.city } });
-          console.log(gymForUser);
             const newUser = new Users();
             newUser.name = user.name;
             newUser.email = user.email;
@@ -65,7 +63,6 @@ export class UserService {
             newUser.weight = user.weight;
             newUser.password = await bcrypt.hash(user.password, 10);
             newUser.gym = gymForUser ? gymForUser : null;
-            //console.log(newUser);
             return newUser;
           }));
           for (const user of usersMock) {
