@@ -9,7 +9,7 @@ export class Categories {
     @Column({length: 50, nullable: false})
     name: string;
 
-    @OneToMany(() => Products, (product) => product.categories)
+    @OneToMany(() => Products, (product) => product.category)
     @JoinColumn()
     product: Products[];
 }

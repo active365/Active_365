@@ -3,6 +3,7 @@ import typeorm from './config/db.config';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { GymsModule } from './gyms/gyms.module';
+import { ProductsModule } from './products/products.module';
 
 @Module({
   imports: [ConfigModule.forRoot({
@@ -13,6 +14,10 @@ import { GymsModule } from './gyms/gyms.module';
     inject: [ConfigService],
     useFactory: (config: ConfigService) => config.get('typeorm'),
   }),
-  GymsModule]
+  GymsModule,
+
+  ProductsModule
+
+]
 })
 export class AppModule {}
