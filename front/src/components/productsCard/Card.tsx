@@ -19,7 +19,7 @@ const Card: React.FC<{ products: IProducts[] }> = ({ products }) => {
               />
               <div className="p-6">
                 <h3 className="text-lg font-bold text-gray-800">{product.name}</h3>
-                <p className="text-sm text-gray-600 my-2">
+                <p className="text-sm text-black my-2">
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                 </p>
                 <p className="text-lg font-semibold text-gray-900">
