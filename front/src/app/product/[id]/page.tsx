@@ -2,7 +2,6 @@ import DetailCard from "@/components/detailCard/DetailCard";
 import { arrayProducts } from "@/helpers/arrayProducts";
 
 const Detail = async ({ params }: { params: { id: string } }) => {
-    // Asegúrate de esperar params antes de usarlo
     const resolvedParams = await Promise.resolve(params);
     const id = resolvedParams?.id;
 
