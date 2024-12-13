@@ -30,12 +30,6 @@ export class CreateUserDto  {
 
     @IsNotEmpty()
     @IsString()
-    @MaxLength(15)
-    @IsIn(['registered', 'partner', 'member', 'admin'])
-    rol: string;
-
-    @IsNotEmpty()
-    @IsString()
     @MinLength(8)
     @MaxLength(15)
     @IsString()
