@@ -23,9 +23,9 @@ export class Products {
     @Column({ type: 'text', nullable: false, default: 'https://example.com/default-image.jpg'})
     imgUrl: string;
 
-    @ManyToOne(() => Categories, (categories) => categories.product)
+    @ManyToOne(() => Categories, (category) => category.product)
     @JoinColumn()
-    categories: Categories;
+    category: Categories;
 
     @ManyToMany(() => OrderDetails, (orderdetails) => orderdetails.product)
     @JoinColumn()

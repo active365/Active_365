@@ -6,11 +6,6 @@ import { CreateGymDto } from '../dto/create-gym.dto';
 export class GymsController {
   constructor(private readonly gymsService: GymsService) {}
 
-  @Get('seeder')
-  addGyms() {
-    return this.gymsService.addGyms()
-  }
-
   @Get()
   findAll() {
     return this.gymsService.getGyms();
