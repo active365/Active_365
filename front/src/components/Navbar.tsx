@@ -1,6 +1,9 @@
 "use client"
+
 import Link from "next/link";
+
 import React, { useState } from "react";
+
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -9,6 +12,7 @@ const Navbar: React.FC = () => {
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
+  
 
   return (
     <nav className="flex justify-between items-center py-4 bg-black">
@@ -48,8 +52,10 @@ const Navbar: React.FC = () => {
         </li>
       </ul>
 
-      {/* botones login y register */}
-<div className="ml-auto mr-4 space-x-4">
+     
+      {/* SearchBar y botones Login/Register */}
+      <div className="ml-auto mr-4 space-x-4 flex items-center">
+        
   
    {/* Botón Login */}
     <Link href="/login" className="btn">

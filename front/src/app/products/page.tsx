@@ -1,5 +1,6 @@
 import React from "react";
 import Card from "@/components/productsCard/Card";
+import { arrayProducts } from "@/helpers/arrayProducts"; // Ajusta la ruta según tu estructura de archivos
 
 const Products: React.FC = () => {
     const currentDate = new Date();
@@ -21,18 +22,16 @@ const Products: React.FC = () => {
                 </div>
             )}
 
-<h1 className="mt-11 text-3xl font-semibold text-center text-white mb-8">
-    Everything for your favorite sports
-</h1>
+            <h1 className="mt-11 text-3xl font-semibold text-center text-white mb-8">
+                Everything for your favorite sports
+            </h1>
 
-
-
+            {/* Pasa el array de productos al componente Card */}
             <div>
-                <Card />
+                <Card products={arrayProducts} />
             </div>
         </div>
     );
 };
 
 export default Products;
-

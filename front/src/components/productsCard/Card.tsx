@@ -1,12 +1,12 @@
 import Link from "next/link";
-import { arrayProducts } from "../../helpers/arrayProducts";
 import { IProducts } from "@/interfaces/IProducts";
 
-const Card: React.FC = () => {
+// Recibe productos como props
+const Card: React.FC<{ products: IProducts[] }> = ({ products }) => {
   return (
     <div className="bg-black">
       <div className="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 px-6">
-        {arrayProducts.map((product: IProducts) => {
+        {products.map((product: IProducts) => {
           return (
             <div
               key={product.id}
