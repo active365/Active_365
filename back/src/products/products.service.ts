@@ -5,6 +5,7 @@ import { Categories } from 'src/entities/categories.entity';
 import { Products } from 'src/entities/products.entity';
 import { Repository } from 'typeorm';
 import { CreateProductDto } from 'src/dto/createProduct.dto';
+import { FilesUploadService } from 'src/files-upload/files-upload.service';
 
 
 @Injectable()
@@ -14,34 +15,34 @@ export class ProductsService {
     @InjectRepository(Products) 
     private productsRepository: Repository<Products>,
     @InjectRepository(Categories)
-    private categoriesRepository: Repository<Categories>
+    private categoriesRepository: Repository<Categories>,
+    private readonly filesUploadService: FilesUploadService,
 ) {}
 
-async addProducts() {
-  const categories = await this.categoriesRepository.find();
+  async addProducts() {
+    const categories = await this.categoriesRepository.find();
 
-  data?.map(async (element) => {
-      const category = categories.find(
-          (category) => category.name === element.category,
-      )
-      const product = new Products();
-      product.name = element.name;
-      product.description = element.description;
-      product.price = element.price;
-      product.stock = element.stock;
-      product.category = category;
+    data?.map(async (element) => {
+        const category = categories.find(
+            (category) => category.name === element.category,
+        )
+        const product = new Products();
+        product.name = element.name;
+        product.description = element.description;
+        product.price = element.price;
+        product.stock = element.stock;
+        product.category = category;
 
-      await this.productsRepository
-      .createQueryBuilder()
-      .insert()
-      .into(Products)
-      .values(product)
-      .orUpdate(['description', 'price', 'stock'], ['name'])
-      .execute()
-  });
-  return "Products added"
-
-}
+        await this.productsRepository
+        .createQueryBuilder()
+        .insert()
+        .into(Products)
+        .values(product)
+        .orUpdate(['description', 'price', 'stock'], ['name'])
+        .execute()
+    });
+    return "Products added"
+  }
   
   async getProducts() {
     const products = await this.productsRepository.find();
@@ -63,7 +64,7 @@ async addProducts() {
     return product
   }
   
-  async createProduct(product: CreateProductDto) {
+  async createProduct(product: CreateProductDto, file: Express.Multer.File) {
     const categoryFound = await this.categoriesRepository.findOne({
       where: { name: product.category }
     });
@@ -71,20 +72,29 @@ async addProducts() {
       throw new NotFoundException(`Category with name "${product.category}" not found.`);
     }
 
+    const imgUrl = await this.filesUploadService.uploadImage(file);
+
     const newProduct = this.productsRepository.create({
       ...product,
-      category: categoryFound
+      category: categoryFound,
+      imgUrl: imgUrl.secure_url
     });
     return await this.productsRepository.save(newProduct);
   }
 
-  async updateProduct(id: string, product: Partial<Products>) {
+  async updateProduct(id: string, product: Partial<Products>, file:Express.Multer.File) {
     const productUpdate = await this.productsRepository.findOneBy({ id });
     if (!productUpdate) {
         throw new NotFoundException(`Producto con ID ${id} no encontrado.`);
     }
-    Object.assign(productUpdate, product);
+
+    let imgUrl: string | undefined;
+    if (file) {
+      const uploadImage = await this.filesUploadService.uploadImage(file);
+      imgUrl = uploadImage.secure_url;
+    }
+
+    Object.assign(productUpdate, product, imgUrl? {imgUrl}: {});
     return await this.productsRepository.save(productUpdate);
   }
-  
 }

@@ -1,7 +1,10 @@
-import { Controller, Get, Post, Body, Param, ParseUUIDPipe, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, ParseUUIDPipe, Put, UseInterceptors, UploadedFile } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { Products } from 'src/entities/products.entity';
 import { CreateProductDto } from 'src/dto/createProduct.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { ValidateImages } from 'src/files-upload/file-validation.constans';
+
 
 
 @Controller('products')
@@ -19,12 +22,21 @@ export class ProductsController {
   }
 
   @Post()
-  createProduct(@Body() product: CreateProductDto){
-    return this.productsService.createProduct(product);
+  @UseInterceptors(FileInterceptor('file'))
+  createProduct(
+    @Body() product: CreateProductDto,
+    @UploadedFile(ValidateImages()) file: Express.Multer.File,
+  ){
+    return this.productsService.createProduct(product, file);
   }
 
   @Put(':id')
-  updateProduct(@Param('id', ParseUUIDPipe) id:string, @Body() product: Partial<Products>){
-    return this.productsService.updateProduct(id, product)
+  @UseInterceptors(FileInterceptor('file'))
+  updateProduct(
+    @Param('id', ParseUUIDPipe) id:string, 
+    @Body() product: Partial<Products>,
+    @UploadedFile(ValidateImages()) file: Express.Multer.File
+  ){
+    return this.productsService.updateProduct(id, product, file)
   }
 }
