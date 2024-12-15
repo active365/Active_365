@@ -4,7 +4,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Categories } from 'src/entities/categories.entity';
 import { Products } from 'src/entities/products.entity';
 import { Repository } from 'typeorm';
-import { CreateProductDto } from 'src/dto/createProduct.dto';
 import { FilesUploadService } from 'src/files-upload/files-upload.service';
 
 
@@ -29,6 +28,7 @@ export class ProductsService {
         const product = new Products();
         product.name = element.name;
         product.description = element.description;
+        product.imgUrl = element.imgUrl;
         product.price = element.price;
         product.stock = element.stock;
         product.category = category;
@@ -45,10 +45,13 @@ export class ProductsService {
   }
   
   async getProducts() {
-    const products = await this.productsRepository.find();
+    const products = await this.productsRepository.find({
+      relations: ['category'],
+      select: ['id', 'name', 'description', 'price', 'stock', 'imgUrl', 'category']
+    });
 
         if(products.length === 0) {
-            throw new NotFoundException('No se encontraron productos en la base de datos.');
+            throw new NotFoundException('No products were found in the database.');
         }
         return products;
   }
@@ -56,10 +59,12 @@ export class ProductsService {
   async getProductById(id: string) {
         
     const product = await this.productsRepository.findOne({
-        where: { id: id }
+        where: { id: id },
+        relations: ['category'],
+        select: ['id', 'name', 'description', 'price', 'stock', 'imgUrl', 'category']
     });
     if (!product) {
-        throw new NotFoundException(`Producto con ID ${id} no encontrado.`);
+        throw new NotFoundException(`Product with ID ${id} not found..`);
     }
     return product
   }
@@ -92,7 +97,7 @@ export class ProductsService {
       relations: ['category'] 
     });
     if (!productUpdate) {
-        throw new NotFoundException(`Producto con ID ${id} no encontrado.`);
+        throw new NotFoundException(`Product with ID ${id} not found.`);
     }
 
     if (product.category) {
@@ -100,7 +105,7 @@ export class ProductsService {
       where: { name: product.category },
     });
     if (!categoryFound) {
-      throw new NotFoundException(`Categoría con nombre "${product.category}" no encontrada.`);
+      throw new NotFoundException(`Category with name "${product.category}" not found.`);
     }
     productUpdate.category = categoryFound;
     }
