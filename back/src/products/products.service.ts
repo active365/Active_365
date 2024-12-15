@@ -86,26 +86,31 @@ export class ProductsService {
     return await this.productsRepository.save(newProduct);
   }
 
-  async updateProduct(id: string, product: any, file:Express.Multer.File) {
-    const productUpdate = await this.productsRepository.findOneBy({ id });
+  async updateProduct(id: string, product: any, file?:Express.Multer.File) {
+    const productUpdate = await this.productsRepository.findOne({
+      where: { id },
+      relations: ['category'] 
+    });
     if (!productUpdate) {
         throw new NotFoundException(`Producto con ID ${id} no encontrado.`);
     }
 
+    if (product.category) {
     const categoryFound = await this.categoriesRepository.findOne({
-      where: { name: product.category }
+      where: { name: product.category },
     });
     if (!categoryFound) {
-      throw new NotFoundException(`Category with name "${product.category}" not found.`);
+      throw new NotFoundException(`Categoría con nombre "${product.category}" no encontrada.`);
+    }
+    productUpdate.category = categoryFound;
     }
 
-    let imgUrl: string | undefined;
     if (file) {
       const uploadImage = await this.filesUploadService.uploadImage(file);
-      imgUrl = uploadImage.secure_url;
+      productUpdate.imgUrl = uploadImage.secure_url;
     }
 
-    Object.assign(productUpdate, product, categoryFound, imgUrl? {imgUrl}: {});
+    Object.assign(productUpdate, { ...product, category: productUpdate.category });
     return await this.productsRepository.save(productUpdate);
   }
 
