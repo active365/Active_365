@@ -3,7 +3,7 @@ import { ProductsService } from './products.service';
 import { Products } from 'src/entities/products.entity';
 import { CreateProductDto } from 'src/dto/createProduct.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ValidateImages } from 'src/files-upload/file-validation.constans';
+import { ValidateImagesPipe } from 'src/files-upload/file-validation.pipe';
 
 
 
@@ -24,8 +24,8 @@ export class ProductsController {
   @Post()
   @UseInterceptors(FileInterceptor('file'))
   createProduct(
-    @Body() product: CreateProductDto,
-    @UploadedFile(ValidateImages()) file: Express.Multer.File,
+    @Body() product: Partial<CreateProductDto>,
+    @UploadedFile(ValidateImagesPipe) file?: Express.Multer.File,
   ){
     return this.productsService.createProduct(product, file);
   }
@@ -35,7 +35,7 @@ export class ProductsController {
   updateProduct(
     @Param('id', ParseUUIDPipe) id:string, 
     @Body() product: Partial<Products>,
-    @UploadedFile(ValidateImages()) file: Express.Multer.File
+    @UploadedFile(ValidateImagesPipe) file?: Express.Multer.File
   ){
     return this.productsService.updateProduct(id, product, file)
   }
