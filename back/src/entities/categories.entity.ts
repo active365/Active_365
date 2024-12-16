@@ -6,10 +6,10 @@ export class Categories {
     @PrimaryGeneratedColumn('uuid')
     id: string = uuid();
 
-    @Column({length: 50, nullable: false})
+    @Column({length: 50, unique:true, nullable: false})
     name: string;
 
-    @OneToMany(() => Products, (product) => product.categories)
+    @OneToMany(() => Products, (product) => product.category)
     @JoinColumn()
     product: Products[];
 }

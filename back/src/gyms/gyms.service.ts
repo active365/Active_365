@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Gyms } from 'src/entities/gyms.entity';
 import { Repository } from 'typeorm';
-// import * as data from '../assets/gyms.json';
+import * as data from '../seeders/gyms.json'
 import * as bcrypt from 'bcrypt'
 
 
@@ -15,7 +15,6 @@ export class GymsService {
   ) {}
 
   async addGyms() {
-    const data = await import('../assets/gyms.json');
     data.gyms.map(async (gym) => {
       
       const saltRounds = 10;
@@ -36,7 +35,7 @@ export class GymsService {
       .values(newGym)
       .orUpdate(['password', 'phone', 'address', 'city', 'name'], ['email'])
       .execute()
-    })
+    });
     return `The Gyms have been added`
   }
   
