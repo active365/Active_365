@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Body, UseGuards, Req } from '@nestjs/common';
-import { GoogleAuthGuard } from 'src/auth/guards/google-auth/google-auth.guard';
+import { GoogleGymAuthGuard } from 'src/auth/guards/google-auth/googleGymAuth.guard';
 import { CreateGymDto, LoginGymDto } from 'src/dto/create-gym.dto';
 import { reverseAndMixEmail } from 'src/utils/generateGooglePassword.util';
 import { AuthGymsService } from './auth-gyms.service';
@@ -22,11 +22,11 @@ export class AuthGymsController {
   }
 
     @Get('google/login')
-    @UseGuards(GoogleAuthGuard)
+    @UseGuards(GoogleGymAuthGuard)
     googleLogin() {}
 
-  @Get('googleGym/callback')
-  @UseGuards(GoogleAuthGuard)
+  @Get('google/callback')
+  @UseGuards(GoogleGymAuthGuard)
   async googleCallback(@Req() req) {
     if(req.user.email){
       const email = req.user.email;

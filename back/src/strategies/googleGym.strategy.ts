@@ -6,7 +6,7 @@ import { AuthGymsService } from "src/auth-gyms/auth-gyms.service";
 import googleOauthConfig from "src/config/googleOauth.config";
 import { reverseAndMixEmail } from 'src/utils/generateGooglePassword.util';
 @Injectable()
-export class GoogleStrategyForGyms extends PassportStrategy(Strategy) {
+export class GoogleStrategyForGyms extends PassportStrategy(Strategy, 'google-gyms') {
     constructor(@Inject(googleOauthConfig.KEY) 
                 private googleConfiguration: ConfigType<typeof googleOauthConfig>,
                 private authGymsService: AuthGymsService){

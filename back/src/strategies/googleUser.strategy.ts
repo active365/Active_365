@@ -6,7 +6,7 @@ import { AuthUsersService } from "src/auth-user/auth-users.service";
 import googleOauthConfig from "src/config/googleOauth.config";
 import { reverseAndMixEmail } from 'src/utils/generateGooglePassword.util';
 @Injectable()
-export class GoogleStrategyForUsers extends PassportStrategy(Strategy) {
+export class GoogleStrategyForUsers extends PassportStrategy(Strategy, 'google-users') {
     constructor(@Inject(googleOauthConfig.KEY) 
                 private googleConfiguration: ConfigType<typeof googleOauthConfig>,
                 private authUsersService: AuthUsersService){

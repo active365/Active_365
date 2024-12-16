@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } from '@nestjs/common';
 import { AuthUsersService } from './auth-users.service';
 import { CreateUserDto, LoginUserDto } from 'src/dto/users.dto';
-import { GoogleAuthGuard } from 'src/auth/guards/google-auth/google-auth.guard';
+import {GoogleUserAuthGuard } from 'src/auth/guards/google-auth/googleUserAuth.guard';
 import { reverseAndMixEmail } from 'src/utils/generateGooglePassword.util';
 
 
@@ -23,11 +23,11 @@ export class AuthUsersController {
   }
 
   @Get('google/login')
-  @UseGuards(GoogleAuthGuard)
+  @UseGuards(GoogleUserAuthGuard)
   googleLogin() {}
 
   @Get('google/callback')
-  @UseGuards(GoogleAuthGuard)
+  @UseGuards(GoogleUserAuthGuard)
   async googleCallback(@Req() req) {
     if(req.user.email){
       const email = req.user.email;
