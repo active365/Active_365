@@ -1,28 +1,58 @@
-import React from "react";
+"use client";
+
+import React, { useState, useEffect } from "react";
 import DetailCard from "@/components/detailCard/DetailCard";
 import { arrayProducts } from "@/helpers/arrayProducts";
+import { useCart } from "@/context/CartContext";
+import { IProducts } from "@/interfaces/IProducts";
+import toast, { Toaster } from 'react-hot-toast';
 
-const Detail = async ({ params }: { params: { id: string } }) => {
-    const resolvedParams = await Promise.resolve(params);
-    const id = resolvedParams?.id;
 
-    if (!id) {
-        return (
-            <div className="flex items-center justify-center min-h-screen">
-                <h1 className="text-2xl font-bold text-red-500">
-                    Invalid Product ID
-                </h1>
-            </div>
-        );
-    }
+const Detail = ({ params }: { params: Promise<{ id: string }> }) => {
+    const { id } = React.use(params); 
 
-    const product = arrayProducts.find((product) => product.id.toString() === id);
+    const { dispatch } = useCart();
+    const [product, setProduct] = useState<IProducts | null>(null);
+    const [quantity, setQuantity] = useState(1);
 
+    
+    useEffect(() => {
+        const foundProduct = arrayProducts.find((product) => product.id.toString() === id) || null;
+        setProduct(foundProduct);
+    }, [id]);
+
+    
+    const handleIncrement = () => setQuantity((prev) => prev + 1);
+
+    
+    const handleDecrement = () => {
+        if (quantity > 1) {
+            setQuantity((prev) => prev - 1);
+        }
+    };
+
+    
+    const handleAddToCart = () => {
+        if (product) {
+            dispatch({
+                type: "ADD_TO_CART",
+                payload: {
+                    id: product.id.toString(),
+                    name: product.name,
+                    price: product.price,
+                    quantity,
+                },
+            });
+            toast.success(`${quantity} units of ${product.name} added to the cart.`)
+        }
+    };
+
+    
     if (!product) {
         return (
             <div className="flex items-center justify-center min-h-screen">
                 <h1 className="text-2xl font-bold text-red-500">
-                    Product not found
+                    {id ? "Product not found" : "Invalid Product ID"}
                 </h1>
             </div>
         );
@@ -43,8 +73,7 @@ const Detail = async ({ params }: { params: { id: string } }) => {
                         backgroundRepeat: "no-repeat",
                         height: "400px",
                     }}
-                >
-                </div>
+                ></div>
             )}
 
             <div className="flex w-full max-w-7xl px-4 py-10 space-x-8">
@@ -59,10 +88,38 @@ const Detail = async ({ params }: { params: { id: string } }) => {
                         description={product.description}
                         category={product.category}
                     />
+
+                    <div className="mt-6">
+                        <div className="flex items-center space-x-4">
+                            <button
+                                onClick={handleDecrement}
+                                className="px-4 py-2 bg-gray-700 text-white rounded-md hover:bg-gray-600"
+                                disabled={quantity <= 1}
+                            >
+                                -
+                            </button>
+                            <span className="text-xl font-semibold text-white">{quantity}</span>
+                            <button
+                                onClick={handleIncrement}
+                                className="px-4 py-2 bg-gray-700 text-white rounded-md hover:bg-gray-600"
+                            >
+                                +
+                            </button>
+                        </div>
+
+                        <button
+                            onClick={handleAddToCart}
+                            className="mt-4 w-full px-4 py-2 bg-yellow-500 text-white font-semibold rounded-md hover:bg-yellow-600"
+                        >
+                            Add to Cart
+                        </button>
+                    </div>
                 </div>
 
                 <div className="lg:w-1/4 bg-gradient-to-r from-yellow-500 to-yellow-600 text-white rounded-lg shadow-md p-6">
-                    <h2 className="text-xl font-semibold mb-3">Transform your body with our training plans!</h2>
+                    <h2 className="text-xl font-semibold mb-3">
+                        Transform your body with our training plans!
+                    </h2>
                     <p className="text-base mb-4">
                         Join our personalized training plans to reach your goals. Whether you are looking to increase
                         strength, flexibility, or overall wellness, we have the perfect plan for you.
@@ -72,6 +129,8 @@ const Detail = async ({ params }: { params: { id: string } }) => {
                     </button>
                 </div>
             </div>
+            <Toaster />
+
         </div>
     );
 };

@@ -1,4 +1,3 @@
-// app/products/page.tsx (o donde esté tu componente Products)
 'use client';
 
 import React, { useState, useEffect } from "react";
@@ -16,14 +15,13 @@ const categoryImages: Record<CategoryName, string> = {
 };
 
 interface ProductsProps {
-  searchQuery: string;  // Declarar la propiedad searchQuery aquí
+  searchQuery: string;  
 }
 
 const Products: React.FC<ProductsProps> = ({ searchQuery }) => { 
     const [selectedCategory, setSelectedCategory] = useState<CategoryName | null>(null);
     const [filteredProducts, setFilteredProducts] = useState(arrayProducts);
 
-    // Definición de las fechas para el video
     const currentDate = new Date();
     const deadline = new Date("2024-12-31");
 
@@ -42,7 +40,6 @@ const Products: React.FC<ProductsProps> = ({ searchQuery }) => {
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-black">
-            {/* Video promocional antes de los productos */}
             {currentDate < deadline && (
                 <div className="relative text-white text-center w-full py-20">
                     <video
@@ -61,7 +58,7 @@ const Products: React.FC<ProductsProps> = ({ searchQuery }) => {
                 Everything for your favorite sports
             </h1>
 
-            {/* Categorías */}
+
             <div className="flex justify-center space-x-10 mb-8">
                 {categories.map((category) => (
                     <div 
@@ -81,7 +78,6 @@ const Products: React.FC<ProductsProps> = ({ searchQuery }) => {
                 ))}
             </div>
 
-            {/* Productos filtrados */}
             <div>
                 {filteredProducts.length === 0 ? (
                     <p className="text-white">No products found</p>
