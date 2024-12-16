@@ -7,6 +7,7 @@ import DropdownMenu from "@/components/DropdownMenu";
 import { categories } from "@/helpers/arrayProducts";
 import { CartProvider } from "@/context/CartContext"; 
 
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -32,6 +33,7 @@ export default function RootLayout({
           <main>{children}</main>
           <Footer />
         </CartProvider>
+
       </body>
     </html>
   );

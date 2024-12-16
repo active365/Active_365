@@ -86,7 +86,7 @@ const Detail = ({ params }: { params: Promise<{ id: string }> }) => {
                         price={product.price}
                         stock={product.stock}
                         description={product.description}
-                        category_id={product.category_id}
+                        category={product.category}
                     />
 
                     <div className="mt-6">
