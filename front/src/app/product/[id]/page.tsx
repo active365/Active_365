@@ -57,7 +57,7 @@ const Detail = async ({ params }: { params: { id: string } }) => {
                         price={product.price}
                         stock={product.stock}
                         description={product.description}
-                        category_id={product.category_id}
+                        category={product.category}
                     />
                 </div>
 
