@@ -6,6 +6,8 @@ import { arrayProducts } from "@/helpers/arrayProducts";
 import { categories } from "@/helpers/arrayProducts";
 import { filterProducts } from "@/helpers/filterProducts"; 
 
+
+
 export type CategoryName = "Fitness Equipment" | "Yoga Accessories" | "Supplements";
 
 const categoryImages: Record<CategoryName, string> = {
@@ -58,6 +60,7 @@ const Products: React.FC<ProductsProps> = ({ searchQuery }) => {
                 Everything for your favorite sports
             </h1>
 
+          
 
             <div className="flex justify-center space-x-10 mb-8">
                 {categories.map((category) => (

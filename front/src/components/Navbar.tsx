@@ -39,7 +39,7 @@ const Navbar: React.FC = () => {
           </Link>
         </li>
         <li>
-          {/* Actualizamos el enlace de Products para incluir el searchTerm en la URL */}
+          {/* Enlace a la página de productos con el término de búsqueda */}
           <Link href={`/products?search=${searchTerm}`} className="button">
             <span className="p">Products</span>
           </Link>
@@ -58,7 +58,7 @@ const Navbar: React.FC = () => {
 
       <div className="ml-auto mr-4 space-x-4 flex items-center">
         {/* SearchBar */}
-        <SearchBar onSearch={handleSearch} />
+        <SearchBar onSearch={handleSearch} />{/* Asumimos que SearchPage recibe onSearch */}
         {/* Botón Login */}
         <Link href="/login" className="btn">
           Login
@@ -101,18 +101,18 @@ const Navbar: React.FC = () => {
               tabIndex={-1}
             >
               <div className="py-1" role="none">
-              <Link
-                href="/registerGym"
-                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-yellow-light"
-              >
+                <Link
+                  href="/registerGym"
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-yellow-light"
+                >
                   Gym
-              </Link>
-              <Link
-                href="/registerPerson"
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-yellow-light"
-              >
-                 Person
-              </Link>
+                </Link>
+                <Link
+                  href="/registerPerson"
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-yellow-light"
+                >
+                  Person
+                </Link>
               </div>
             </div>
           )}
