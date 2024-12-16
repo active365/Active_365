@@ -3,8 +3,6 @@ import "@/app/globals.css";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import SearchPage from "./search/page";
-import DropdownMenu from "@/components/DropdownMenu";
-import { categories } from "@/helpers/arrayProducts";
 import { CartProvider } from "@/context/CartContext"; 
 
 
@@ -25,8 +23,6 @@ export default function RootLayout({
               {/* El buscador */}
               <SearchPage />
 
-              {/* Componente DropdownMenu (botón de categorías) */}
-              <DropdownMenu categories={categories} />
             </div>
           </div>
 
