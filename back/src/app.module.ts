@@ -11,8 +11,8 @@ import { CategoriesModule } from './categories/categories.module';
   imports: [
     CategoriesModule,
     GymsModule,
-    ProductsModule,
     UserModule,
+    ProductsModule,
     ConfigModule.forRoot({
     isGlobal: true,
     load: [typeorm],

@@ -8,8 +8,8 @@ import { FilesUploadModule } from 'src/files-upload/files-upload.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Products]),
     TypeOrmModule.forFeature([Categories]),
+    TypeOrmModule.forFeature([Products]),
     FilesUploadModule
   ],
   controllers: [ProductsController],

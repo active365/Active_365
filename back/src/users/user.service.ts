@@ -51,9 +51,7 @@ export class UserService {
         await this.waitForGyms();
         const usersMock = await Promise.all(usersSeed.map(async (user) => {
           const gyms = await this.gymsRepository.find();
-          console.log(gyms);
           const gymForUser = await this.gymsRepository.findOne({ where: { city: user.city } });
-          console.log(gymForUser);
             const newUser = new Users();
             newUser.name = user.name;
             newUser.email = user.email;
