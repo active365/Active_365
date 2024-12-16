@@ -6,6 +6,7 @@ import { UserModule } from './users/user.module';
 import { GymsModule } from './gyms/gyms.module';
 import { OrdersModule } from './orders/orders.module';
 import { AuthUsersModule } from './auth-user/auth-users.module';
+import { AuthGymsModule } from './auth-gyms/auth-gyms.module';
 @Module({
   imports: [GymsModule,
     UserModule,
@@ -18,7 +19,8 @@ import { AuthUsersModule } from './auth-user/auth-users.module';
     inject: [ConfigService],
     useFactory: (config: ConfigService) => config.get('typeorm'),
   }),
-  AuthUsersModule,
+  AuthGymsModule,
+ AuthUsersModule
   ]
 })
 export class AppModule {}
