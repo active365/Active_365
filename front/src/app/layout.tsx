@@ -2,7 +2,6 @@
 import "@/app/globals.css";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
-import { CartProvider } from "@/context/CartContext"; 
 
 
 export default function RootLayout({
@@ -23,12 +22,11 @@ export default function RootLayout({
             
 
             </div>
+
           </div>
+        </div>
 
-          <main>{children}</main>
-          <Footer />
-        </CartProvider>
-
+        <Footer />
       </body>
     </html>
   );
