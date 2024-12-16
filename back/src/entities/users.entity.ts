@@ -15,27 +15,30 @@ export class Users {
     @Column({ length: 50, unique: true, nullable: false })
     email: string;
 
-    @Column({ type: 'bigint' })
-    phone: number;
+    @Column({ type: 'bigint', nullable: true })
+    phone?: number;
 
-    @Column({ type: 'text' })
-    address: string;
+    @Column({ type: 'text', nullable: true })
+    address?: string;
   
-    @Column({ length: 50 })
-    city: string;
+    @Column({ length: 50, nullable: true })
+    city?: string;
     
     @Column({type: 'varchar', length: 15, nullable: false, default: userRoles.registered})
     rol: string;
     
-    @Column({ type: 'float' })
+    @Column({ type: 'float', nullable: true })
     height?: number;
 
-    @Column({ type: 'float' })
+    @Column({ type: 'float', nullable: true })
     weight?: number;
 
-    @Column({ length: 100, nullable: false })
+    @Column({ length: 100 , nullable: true })
     password: string;
 
+    @Column({ length: 100 , nullable: true })
+    googlePassword: string;
+    
     @CreateDateColumn({ type: "date", nullable: false})
     createdAt: Date;
     

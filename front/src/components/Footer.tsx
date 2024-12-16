@@ -6,7 +6,7 @@ const Footer: React.FC = () => {
     <footer className="bg-black text-sm text-gray-light py-8">
       <div className="max-w-7xl mx-auto px-6 flex flex-col items-center space-y-6">
         <div className="flex space-x-8">
-          <Link href="/home">
+          <Link href="/">
             <span className="btn">
               Home
             </span>
@@ -18,7 +18,7 @@ const Footer: React.FC = () => {
           </Link>
         </div>
         <p className="text-center">
-          &copy; 2024 Apple Store. Todos los derechos reservados.
+        &copy; 2024 Active 365. All rights reserved.
         </p>
       </div>
     </footer>

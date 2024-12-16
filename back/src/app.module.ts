@@ -7,12 +7,15 @@ import { GymsModule } from './gyms/gyms.module';
 import { ProductsModule } from './products/products.module';
 import { CategoriesModule } from './categories/categories.module';
 
+import { OrdersModule } from './orders/orders.module';
+import { AuthUsersModule } from './auth-user/auth-users.module';
 @Module({
   imports: [
     CategoriesModule,
     GymsModule,
     UserModule,
     ProductsModule,
+    OrdersModule,
     ConfigModule.forRoot({
     isGlobal: true,
     load: [typeorm],
@@ -21,6 +24,7 @@ import { CategoriesModule } from './categories/categories.module';
     inject: [ConfigService],
     useFactory: (config: ConfigService) => config.get('typeorm'),
   }),
-]
+  AuthUsersModule,
+  ]
 })
 export class AppModule {}

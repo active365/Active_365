@@ -63,7 +63,6 @@ export class UserService {
             newUser.weight = user.weight;
             newUser.password = await bcrypt.hash(user.password, 10);
             newUser.gym = gymForUser ? gymForUser : null;
-            //console.log(newUser);
             return newUser;
           }));
           for (const user of usersMock) {
