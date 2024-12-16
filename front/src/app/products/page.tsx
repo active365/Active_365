@@ -35,7 +35,6 @@ const Products: React.FC = () => {
                 Everything for your favorite sports
             </h1>
 
-            {/* Sección de Categorías */}
             <div className="flex justify-center space-x-10 mb-8">
                 {categories.map((category) => (
                     <div key={category.id} className="flex flex-col items-center">
