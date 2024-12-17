@@ -33,6 +33,9 @@ export class Classes {
   @Column({ type: 'date', nullable: false })
   date: Date;
 
+  @Column({ type: 'time', nullable: false })
+  time: string;
+
   @ManyToOne(() => Gyms, (gym) => gym.classes, { nullable: false })
   @JoinColumn()
   gym: Gyms;

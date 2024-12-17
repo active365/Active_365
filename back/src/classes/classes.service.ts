@@ -19,8 +19,29 @@ export class ClassesService {
 
   async getClasses() {
     const classes = await this.classesRepository.find({
-      relations: ['gyms'],
+      relations: ['gym'],
+      select: {
+        gym: {
+          name: true,
+        },
+      },
     });
+    return classes;
+  }
+
+  async getClassesById(id: string) {
+    const classes = await this.classesRepository.findOne({
+      where: { id },
+      relations: ['gym'],
+      select: {
+        gym: {
+          name: true,
+        },
+      },
+    });
+    if (!classes) {
+      throw new NotFoundException(`Class with id ${id} not found`);
+    }
     return classes;
   }
 
@@ -30,6 +51,7 @@ export class ClassesService {
     capacity: number,
     duration: number,
     date: Date,
+    time: string,
     gymId: string,
     file?: Express.Multer.File,
   ) {
@@ -51,6 +73,7 @@ export class ClassesService {
         capacity,
         duration,
         date,
+        time,
         gym,
         ...(imgUrl && { imgUrl }),
       });

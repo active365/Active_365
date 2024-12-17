@@ -8,6 +8,7 @@ import {
   IsTimeZone,
   IsUrl,
   IsUUID,
+  Matches,
   MaxLength,
 } from 'class-validator';
 
@@ -34,6 +35,13 @@ export class CreateClassDto {
   @Type(() => Date) 
   @IsDate()
   date: Date;
+
+  @IsString()
+  @IsNotEmpty()
+  @Matches(/^(0[8-9]|1[0-9]):([0-5][0-9])$/, {
+    message: 'Time must be between 08:00 and 20:00',
+  })
+  time: string;
 
   @IsNotEmpty()
   @IsUUID()
