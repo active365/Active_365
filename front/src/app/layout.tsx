@@ -20,7 +20,7 @@ export default function RootLayout({
             {/* Contenedor de la búsqueda y el menú desplegable, apilados uno encima del otro */}
             <div className="flex flex-col items-center space-y-4 w-full max-w-screen-xl">
               {/* El buscador */}
-            
+              {/*<SearchPage />*/}
 
             </div>
           </div>

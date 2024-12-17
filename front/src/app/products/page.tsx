@@ -4,7 +4,8 @@ import React, { useState, useEffect } from "react";
 import Card from "@/components/productsCard/Card";
 import { arrayProducts } from "@/helpers/arrayProducts"; 
 import { categories } from "@/helpers/arrayProducts";
-import { filterProducts } from "@/helpers/filterProducts"; 
+import { filterProducts } from "@/helpers/filterProducts";
+
 
 
 
