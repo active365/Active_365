@@ -14,16 +14,19 @@ export class Gyms {
     @Column({ length: 50, unique: true, nullable: false })
     email: string;
 
-    @Column({ length: 100, nullable: false })
+    @Column({ length: 100, nullable: true })
     password: string;
 
-    @Column({ type: 'bigint' })
+    @Column({ length: 100, nullable: true })
+    googlePassword: string;
+
+    @Column({ type: 'bigint', nullable: true })
     phone: number;
 
-    @Column({ type: 'text' })
+    @Column({ type: 'text', nullable: true })
     address: string;
 
-    @Column({ length: 50 })
+    @Column({ length: 50, nullable: true })
     city: string;
     
     @Column({type: 'varchar', length: 15, nullable: false, default: userRoles.partner})

@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import React, { useState, useEffect } from "react";
@@ -5,7 +6,6 @@ import Card from "@/components/productsCard/Card";
 import { arrayProducts } from "@/helpers/arrayProducts"; 
 import { categories } from "@/helpers/arrayProducts";
 import { filterProducts } from "@/helpers/filterProducts";
-
 
 
 
@@ -37,7 +37,7 @@ const Products: React.FC<ProductsProps> = ({ searchQuery }) => {
         setFilteredProducts(finalFiltered);
     }, [searchQuery, selectedCategory]);
 
-    const handleProductSelect = (product: any) => {
+    const handleProductSelect = (product: IProducts) => {
         console.log("Producto seleccionado:", product);
     };
 
