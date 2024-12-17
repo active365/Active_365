@@ -14,7 +14,7 @@ export class ClassesService {
     private classesRepository: Repository<Classes>,
     @InjectRepository(Gyms)
     private gymsRepository: Repository<Gyms>,
-    private filesUploadService: FilesUploadService
+    private filesUploadService: FilesUploadService,
   ) {}
 
   async getClasses() {
@@ -38,13 +38,13 @@ export class ClassesService {
       if (!gym) {
         throw new NotFoundException(`Gym with id ${gymId} not found`);
       }
-  
+
       let imgUrl: string | undefined;
       if (file) {
         const uploadImage = await this.filesUploadService.uploadImage(file);
         imgUrl = uploadImage.secure_url;
       }
-  
+
       const newClass = manager.create(Classes, {
         name,
         description,
@@ -52,12 +52,40 @@ export class ClassesService {
         duration,
         date,
         gym,
-        ...(imgUrl && { imgUrl }), 
+        ...(imgUrl && { imgUrl }),
       });
-  
+
       await manager.save(newClass);
       return `Class ${name} added successfully`;
     });
   }
-  
+
+  async updateClasses(
+    id: string,
+    classes?: Partial<CreateClassDto>,
+    file?: Express.Multer.File,
+  ) {
+    return this.dataSource.transaction(async (manager) => {
+      const classToUpdate = await manager.findOneBy(Classes, { id });
+      if (!classToUpdate) {
+        throw new NotFoundException(`Class with id ${id} not found`);
+      }
+
+      const updateData: Partial<Classes> = { ...classes };
+
+      if (file) {
+        const uploadImage = await this.filesUploadService.uploadImage(file);
+        updateData.imgUrl = uploadImage.secure_url;
+      } else if (!file && !updateData.imgUrl) {
+        updateData.imgUrl = classToUpdate.imgUrl;
+      }
+
+      if (Object.keys(updateData).length > 0) {
+        await manager.update(Classes, { id }, updateData);
+      }
+
+      const updatedClass = await manager.findOneBy(Classes, { id });
+      return updatedClass;
+    });
+  }
 }

@@ -2,6 +2,8 @@ import {
   Body,
   Controller,
   Get,
+  Param,
+  ParseUUIDPipe,
   Post,
   Put,
   UploadedFile,
@@ -30,4 +32,18 @@ export class ClassesController {
     const { name, description, capacity, duration, date, gymId } = classes;
     return this.classesService.addClasses(name,description,capacity,duration,date,gymId, file);
   }
+
+  @Put(':id')
+  @UseInterceptors(FileInterceptor('file'))
+  updateClasses(
+    @Param('id', ParseUUIDPipe) id: string,
+    @Body() classes: Partial<CreateClassDto>,
+    @UploadedFile(ValidateImagesPipe) file?: Express.Multer.File,
+  ){
+    return this.classesService.updateClasses(id, classes, file);
+  }
+
+
+
+
 }
