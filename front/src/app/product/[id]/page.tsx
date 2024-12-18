@@ -1,53 +1,40 @@
-"use client";
-
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { GeneralContext } from "@/context/GeneralContext"; 
 import DetailCard from "@/components/detailCard/DetailCard";
 import { arrayProducts } from "@/helpers/arrayProducts";
-import { useCart } from "@/context/CartContext";
 import { IProducts } from "@/interfaces/IProducts";
 import toast, { Toaster } from 'react-hot-toast';
-
 
 const Detail = ({ params }: { params: Promise<{ id: string }> }) => {
     const { id } = React.use(params); 
 
-    const { dispatch } = useCart();
+    const { addToCart } = useContext(GeneralContext); 
     const [product, setProduct] = useState<IProducts | null>(null);
     const [quantity, setQuantity] = useState(1);
 
-    
     useEffect(() => {
         const foundProduct = arrayProducts.find((product) => product.id.toString() === id) || null;
         setProduct(foundProduct);
     }, [id]);
 
-    
     const handleIncrement = () => setQuantity((prev) => prev + 1);
 
-    
     const handleDecrement = () => {
         if (quantity > 1) {
             setQuantity((prev) => prev - 1);
         }
     };
 
-    
     const handleAddToCart = () => {
         if (product) {
-            dispatch({
-                type: "ADD_TO_CART",
-                payload: {
-                    id: product.id.toString(),
-                    name: product.name,
-                    price: product.price,
-                    quantity,
-                },
+            addToCart({
+                ...product,
+                quantity,
             });
             toast.success(`${quantity} units of ${product.name} added to the cart.`)
         }
     };
 
-    
     if (!product) {
         return (
             <div className="flex items-center justify-center min-h-screen">
@@ -96,7 +83,7 @@ const Detail = ({ params }: { params: Promise<{ id: string }> }) => {
                                 className="px-4 py-2 bg-gray-700 text-white rounded-md hover:bg-gray-600"
                                 disabled={quantity <= 1}
                             >
-                                -
+                                - 
                             </button>
                             <span className="text-xl font-semibold text-white">{quantity}</span>
                             <button
@@ -130,7 +117,6 @@ const Detail = ({ params }: { params: Promise<{ id: string }> }) => {
                 </div>
             </div>
             <Toaster />
-
         </div>
     );
 };

@@ -1,9 +1,7 @@
-// components/RootLayout.tsx
 import "@/app/globals.css";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
-import { CartProvider } from "@/context/CartContext"; 
-
+import { ContextProvider } from "@/context/GeneralContext";
 
 export default function RootLayout({
   children,
@@ -13,11 +11,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <CartProvider>
+        <ContextProvider>
           <Navbar />
           <main>{children}</main>
-        <Footer />
-        </CartProvider>
+          <Footer />
+        </ContextProvider>
       </body>
     </html>
   );
