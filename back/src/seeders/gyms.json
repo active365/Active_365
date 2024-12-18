@@ -1,0 +1,84 @@
+{"gyms":
+[
+    {
+        "name": "Elite Fitness Center",
+        "email": "elitefitness@gmail.com",
+        "password": "securePass123",
+        "phone":5551234567,
+        "address": "123 Main St",
+        "city": "New York"
+    },
+    {
+        "name": "Peak Performance Gym",
+        "email": "peakperformance@gmail.com",
+        "password": "peakPass789",
+        "phone":5559876543,
+        "address": "456 Elm St",
+        "city": "New York"
+    },
+    {
+        "name": "Ocean View Gym",
+        "email": "oceanviewgym@gmail.com",
+        "password": "oceanSecure456",
+        "phone": 5553217654,
+        "address": "789 Beach Rd",
+        "city": "Los Angeles"
+    },
+    {
+        "name": "Downtown Strength",
+        "email": "downtownstrength@gmail.com",
+        "password": "downtownPower123",
+        "phone": 5556543210,
+        "address": "321 Pine St",
+        "city": "Los Angeles"
+    },
+    {
+        "name": "Mountain Climbers Gym",
+        "email": "mountainclimbers@gmail.com",
+        "password": "mountainFit2024",
+        "phone": 5557654321,
+        "address": "456 Maple Ave",
+        "city": "Denver"
+    },
+    {
+        "name": "High Altitude Fitness",
+        "email": "highaltitudefitness@gmail.com",
+        "password": "altitudePro789",
+        "phone": 5558765432,
+        "address": "789 Aspen Rd",
+        "city": "Denver"
+    },
+    {
+        "name": "Sunny Side Gym",
+        "email": "sunnysidegym@gmail.com",
+        "password": "sunnyFit123",
+        "phone": 5552345678,
+        "address": "123 Sunshine Blvd",
+        "city": "Miami"
+    },
+    {
+        "name": "Tropical Fitness",
+        "email": "tropicalfitness@gmail.com",
+        "password": "tropicalGym456",
+        "phone": 5559871234,
+        "address": "456 Coconut Ave",
+        "city": "Miami"
+    },
+    {
+        "name": "Urban Fitness Hub",
+        "email": "urbanfitness@gmail.com",
+        "password": "urbanSecure321",
+        "phone": 5555436789,
+        "address": "123 City Center Rd",
+        "city": "Chicago"
+    },
+    {
+        "name": "Windy City Gym",
+        "email": "windycitygym@gmail.com",
+        "password": "windyStrong987",
+        "phone": 5556785432,
+        "address": "456 Lake Shore Dr",
+        "city": "Chicago"
+    }
+]
+}
