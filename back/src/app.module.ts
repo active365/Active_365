@@ -11,6 +11,8 @@ import { OrdersModule } from './orders/orders.module';
 import { AuthUsersModule } from './auth-user/auth-users.module';
 import { AuthGymsModule } from './auth-gyms/auth-gyms.module';
 import { ClassesModule } from './classes/classes.module';
+import { StripeModule } from './src/stripe/stripe.module';
+import { StripeModule } from './stripe/stripe.module';
 @Module({
   imports: [
     CategoriesModule,
@@ -28,7 +30,8 @@ import { ClassesModule } from './classes/classes.module';
   }),
   AuthGymsModule,
  AuthUsersModule,
- ClassesModule
+ ClassesModule,
+ StripeModule
   ]
 })
 export class AppModule {}
