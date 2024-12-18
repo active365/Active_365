@@ -1,3 +1,4 @@
+"use client"
 import React, { useState, useEffect, useContext } from "react";
 import { GeneralContext } from "@/context/GeneralContext"; 
 import DetailCard from "@/components/detailCard/DetailCard";
