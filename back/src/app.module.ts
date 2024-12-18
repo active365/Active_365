@@ -10,6 +10,7 @@ import { CategoriesModule } from './categories/categories.module';
 import { OrdersModule } from './orders/orders.module';
 import { AuthUsersModule } from './auth-user/auth-users.module';
 import { AuthGymsModule } from './auth-gyms/auth-gyms.module';
+import { ClassesModule } from './classes/classes.module';
 @Module({
   imports: [
     CategoriesModule,
@@ -26,7 +27,8 @@ import { AuthGymsModule } from './auth-gyms/auth-gyms.module';
     useFactory: (config: ConfigService) => config.get('typeorm'),
   }),
   AuthGymsModule,
- AuthUsersModule
+ AuthUsersModule,
+ ClassesModule
   ]
 })
 export class AppModule {}
