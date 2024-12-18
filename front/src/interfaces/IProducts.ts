@@ -8,6 +8,7 @@ export interface IProducts {
     stock: number;
     imgUrl: string;
     category: CategoryName;
+    quantity?: number;
     
 }
 
