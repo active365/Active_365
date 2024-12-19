@@ -31,8 +31,10 @@ export const ContextProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
     const addToCart = (product: IProducts) => {
         setCart((prevCart) => {
-            const updatedCart = [...prevCart, product];
-            return updatedCart;
+            if (prevCart.some((item) => item.id === product.id)) {
+                return prevCart; 
+            }
+            return [...prevCart, product];
         });
     };
 

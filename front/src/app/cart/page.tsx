@@ -1,4 +1,4 @@
-import CartComponent from "@/components/Cart";
+import CartComponent from "@/components/CartComponent";
 
 const Cart: React.FC = () => {
     return(
