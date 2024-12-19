@@ -1,28 +1,39 @@
-"use client"
-import React, { createContext, useState, useMemo } from "react";
-import { getProducts } from "@/app/api/getProducts";
+"use client";
+import React, { createContext, useState, useMemo, useEffect } from "react";
 import { IProducts } from "@/interfaces/IProducts";
 import { IGeneralContext } from "@/interfaces/IGeneralContext";
 
+
 export const GeneralContext = createContext<IGeneralContext>({
     cart: [],
-    fetchProducts: async () => { },
     addToCart: () => { },
     removeFromCart: () => { },
     clearCart: () => { },
 });
 
 export const ContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [products, setProducts] = useState<IProducts[]>([]);
     const [cart, setCart] = useState<IProducts[]>([]);
 
-    const fetchProducts = async () => {
-        const data = await getProducts();
-        setProducts(data);
-    };
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            const savedCart = localStorage.getItem("cart");
+            if (savedCart) {
+                setCart(JSON.parse(savedCart));
+            }
+        }
+    }, []);
+
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            localStorage.setItem("cart", JSON.stringify(cart));
+        }
+    }, [cart]);
 
     const addToCart = (product: IProducts) => {
-        setCart((prevCart) => [...prevCart, product]);
+        setCart((prevCart) => {
+            const updatedCart = [...prevCart, product];
+            return updatedCart;
+        });
     };
 
     const removeFromCart = (productId: string) => {
@@ -34,13 +45,11 @@ export const ContextProvider: React.FC<{ children: React.ReactNode }> = ({ child
     };
 
     const value = useMemo(() => ({
-        products,
-        cart, 
-        fetchProducts,
+        cart,
         addToCart,
         removeFromCart,
         clearCart,
-    }), [products, cart]);
+    }), [cart]);
 
     return <GeneralContext.Provider value={value}>{children}</GeneralContext.Provider>;
 };

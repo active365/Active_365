@@ -7,6 +7,7 @@ import { arrayProducts } from "@/helpers/arrayProducts";
 import { categories } from "@/helpers/arrayProducts";
 import { filterProducts } from "@/helpers/filterProducts"; 
 import { IProducts } from "@/interfaces/IProducts";
+import { getProducts } from "../api/getProducts";
 
 export type CategoryName = "Fitness Equipment" | "Yoga Accessories" | "Supplements";
 
@@ -20,22 +21,37 @@ interface ProductsProps {
   searchQuery: string;  
 }
 
+
 const Products: React.FC<ProductsProps> = ({ searchQuery }) => { 
-    
     const [selectedCategory, setSelectedCategory] = useState<CategoryName | null>(null);
     const [filteredProducts, setFilteredProducts] = useState(arrayProducts);
 
     const currentDate = new Date();
     const deadline = new Date("2024-12-31");
 
+    const [products, setProducts] = useState<IProducts[]>([]);
+
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const data = await getProducts();
+                setProducts(data);
+                setFilteredProducts(data);
+            } catch (error) {
+                console.error("Error fetching products:", error);
+            }
+        };
+        fetchProducts();
+    }, []);
+
     useEffect(() => {
         const filteredByCategory = selectedCategory
-            ? arrayProducts.filter(product => product.category === selectedCategory)
-            : arrayProducts;
+            ? products.filter(product => product.category === selectedCategory)
+            : products;
 
         const finalFiltered = filterProducts(filteredByCategory, searchQuery);
         setFilteredProducts(finalFiltered);
-    }, [searchQuery, selectedCategory]);
+    }, [searchQuery, selectedCategory, products]);
 
     const handleProductSelect = (product: IProducts) => {
         console.log("Producto seleccionado:", product);
