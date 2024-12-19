@@ -6,6 +6,7 @@ import { OrderDetails } from 'src/entities/orderDetails.entity';
 import { Orders } from 'src/entities/orders.entity';
 import { Users } from 'src/entities/users.entity';
 
+
 @Module({
   imports: [TypeOrmModule.forFeature([OrderDetails, Orders, Users])],
   controllers: [StripeController],

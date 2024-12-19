@@ -6,7 +6,7 @@ export class StripeController {
   constructor(private readonly stripeService: StripeService) {}
 
   @Get()
-  async getCheckoutSession(@Param('id', ParseUUIDPipe) id: string, @Body('orderID', ParseUUIDPipe) orderId: string) {
-    return this.stripeService.getCheckoutSession(id, orderId);
+  async getCheckoutSession() {
+    return this.stripeService.getCheckoutSession();
   }
 }
