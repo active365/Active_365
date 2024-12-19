@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Body, UseGuards, Req } from '@nestjs/common';
-import { GoogleGymAuthGuard } from 'src/auth/guards/google-auth/googleGymAuth.guard';
+import { GoogleGymAuthGuard } from '../guards/googleGymAuth.guard';
 import { CreateGymDto, LoginGymDto } from 'src/dto/create-gym.dto';
 import { reverseAndMixEmail } from 'src/utils/generateGooglePassword.util';
 import { AuthGymsService } from './auth-gyms.service';

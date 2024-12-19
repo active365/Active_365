@@ -1,9 +1,8 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } from '@nestjs/common';
 import { AuthUsersService } from './auth-users.service';
 import { CreateUserDto, LoginUserDto } from 'src/dto/users.dto';
-import {GoogleUserAuthGuard } from 'src/auth/guards/google-auth/googleUserAuth.guard';
+import {GoogleUserAuthGuard } from 'src/auth/guards/googleUserAuth.guard';
 import { reverseAndMixEmail } from 'src/utils/generateGooglePassword.util';
-
 
 @Controller('auth-users')
 export class AuthUsersController {

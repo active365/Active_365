@@ -3,11 +3,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { Gyms } from 'src/entities/gyms.entity';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthGymsService {
   constructor(
-    @InjectRepository(Gyms) private readonly gymsRepository: Repository<Gyms>){}
+    @InjectRepository(Gyms) private readonly gymsRepository: Repository<Gyms>,
+    private readonly jwtService: JwtService){}
     
     async loginGym(email: string, passwordLogin: string, isGoogleLogin: boolean = false) {
       const gym = await this.gymsRepository.findOne({ where: { email: email } });
@@ -18,8 +20,17 @@ export class AuthGymsService {
   
       const isMatch = await bcrypt.compare(passwordLogin, hashToCompare);
       if (!isMatch) throw new NotFoundException(`Credenciales incorrectas`);
-      const { password, googlePassword, ...gymWithoutPassword } = gym;
-      return gymWithoutPassword;
+      
+      const gymPayload = {
+        id: gym.id,
+        email: gym.email,
+        rol: gym.rol 
+      }
+      const token = this.jwtService.sign(gymPayload);
+      return {
+        message: 'Login successful',
+        token
+      }
   }
   
   async createGym(gym: Partial<Gyms>, isGoogleCreate: boolean = false) {
