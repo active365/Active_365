@@ -4,11 +4,14 @@ import { CreateUserDto, LoginUserDto } from 'src/dto/users.dto';
 import { Users } from 'src/entities/users.entity';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { EmailService } from 'src/email/email.service';
 
 @Injectable()
 export class AuthUsersService {
   constructor(
-    @InjectRepository(Users) private readonly userRepository: Repository<Users>){}
+    @InjectRepository(Users) private readonly userRepository: Repository<Users>,
+    private readonly emailService: EmailService,
+  ){}
     
     async loginUser(email: string, passwordLogin: string, isGoogleLogin: boolean = false) {
       const user = await this.userRepository.findOne({ where: { email: email } });
@@ -45,6 +48,9 @@ export class AuthUsersService {
     const savedUser = await this.userRepository.save(newUser);
 
     const { password, googlePassword, ...userWithoutPassword } = savedUser;
+
+    await this.emailService.sendWelcomeEmail(savedUser.email, savedUser.name);
+
     return userWithoutPassword;
 }
 

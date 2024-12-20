@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        margin: 0;
+        padding: 0;
+        color: #333;
+        }
+        .container {
+        max-width: 600px;
+        margin: 20px auto;
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        }
+        .header {
+        background-color: #FF5722;
+        color: #ffffff;
+        text-align: center;
+        padding: 20px;
+        }
+        .content {
+        padding: 20px;
+        line-height: 1.6;
+        }
+        .cta {
+        text-align: center;
+        margin-top: 20px;
+        }
+        .cta a {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #FF5722;
+        color: #ffffff;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 16px;
+        }
+        .cta a:hover {
+        background-color: #e64a19;
+        }
+        .footer {
+        text-align: center;
+        padding: 10px;
+        font-size: 12px;
+        color: #666;
+        }
+    </style>
+    </head>
+    <body>
+    <div class="container">
+        <div class="header">
+        <h1>Your Membership is About to Expire!</h1>
+        </div>
+        <div class="content">
+        <p>Hi {{name}},</p>
+        <p>We hope you've been enjoying the benefits of your Active365 membership. This is a friendly reminder that your membership will expire on <strong>{{expirationDate}}</strong>.</p>
+        <p>Don't let your access to our exclusive classes, gym services, and discounts on products lapse. Renew today and continue your fitness journey with us!</p>
+        </div>
+        <div class="cta">
+        <a href="{{renewLink}}">Renew Membership Now</a>
+        </div>
+        <div class="footer">
+        <p>Thank you for choosing Active365. We're here to support your fitness goals!</p>
+        <p>© 2024 Active365. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>

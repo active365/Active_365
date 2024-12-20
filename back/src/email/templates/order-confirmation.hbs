@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        margin: 0;
+        padding: 0;
+        color: #333;
+        }
+        .container {
+        max-width: 600px;
+        margin: 20px auto;
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        }
+        .header {
+        background-color: #007BFF;
+        color: #ffffff;
+        text-align: center;
+        padding: 20px;
+        }
+        .content {
+        padding: 20px;
+        line-height: 1.6;
+        }
+        .footer {
+        text-align: center;
+        padding: 10px;
+        font-size: 12px;
+        color: #666;
+        }
+        .btn {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 10px 20px;
+        background-color: #007BFF;
+        color: #ffffff;
+        text-decoration: none;
+        border-radius: 5px;
+        font-size: 16px;
+        }
+        .btn:hover {
+        background-color: #0056b3;
+        }
+    </style>
+    </head>
+    <body>
+    <div class="container">
+        <div class="header">
+        <h1>Order Confirmation</h1>
+        </div>
+        <div class="content">
+        <p>Hello {{name}},</p>
+        <p>Thank you for your purchase at <strong>Active365</strong>! Your order has been successfully placed, and we’re preparing it for shipment.</p>
+        <p><strong>Order Details:</strong></p>
+        <ul>
+            <li><strong>Order ID:</strong> {{orderId}}</li>
+            <li><strong>Total Amount:</strong> ${{totalAmount}}</li>
+        </ul>
+        <p>If you wish to cancel your order, you may do so within the next <strong>24 hours</strong>. After this period, cancellations will no longer be possible.</p>
+        <p>If you have any questions or concerns, feel free to contact our support team.</p>
+        <a href="{{cancelOrderLink}}" class="btn">Cancel Order</a>
+        <p>Thank you for choosing Active365!</p>
+        <p>Best regards,</p>
+        <p>The Active365 Team</p>
+        </div>
+        <div class="footer">
+        <p>© 2024 Active365. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>
