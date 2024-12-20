@@ -33,7 +33,7 @@ const CartComponent: React.FC = () => {
                             <div className="flex items-center space-x-2 mt-2">
                                 <p className="text-lg text-black">${item.price}</p>
                             </div>
-                            <p className="text-sm text-gray-500">{item.stock} disponibles</p>
+                            <p className="text-sm text-gray-500">{item.stock} stock</p>
                             <div className="flex items-center mt-2">
                                 <button
                                     onClick={() => {
@@ -83,7 +83,7 @@ const CartComponent: React.FC = () => {
                             onClick={() => removeFromCart(item.id.toString())}
                             className="ml-4 text-red-600 hover:text-red-700 text-sm flex items-center space-x-1"
                         >
-                            <span>Eliminar</span>
+                            <span>Delete</span>
                         </button>
                     </div>
                 ))}
@@ -91,11 +91,11 @@ const CartComponent: React.FC = () => {
 
             <div className="mt-6 border-t pt-4">
                 <div className="flex justify-between text-gray-800">
-                    <p>Productos ({cart.length})</p>
+                    <p>Products ({cart.length})</p>
                     <p>${totalProductsPrice}</p>
                 </div>
                 <div className="flex justify-between text-gray-800">
-                    <p>Costo de envío</p>
+                    <p>Shipping Cost</p>
                     <p>${shippingCost}</p>
                 </div>
                 <div className="flex justify-between text-xl font-bold text-gray-900 mt-2">
@@ -109,11 +109,19 @@ const CartComponent: React.FC = () => {
                     onClick={clearCart}
                     className="bg-red-500 text-white py-2 px-4 rounded-md hover:bg-red-600"
                 >
-                    Vaciar carrito
+                    Empty cart
                 </button>
                 <Link href="/products">
                     <button className="bg-yellow-400 text-white py-2 px-4 rounded-md hover:bg-yellow-500">
-                        Continuar compra
+                        Continue Shopping
+                    </button>
+                </Link>
+            </div>
+
+            <div className="mt-6 flex justify-center">
+                <Link href="/checkout">
+                    <button className="bg-yellow-500 text-white py-2 px-6 rounded-md hover:bg-yellow-600">
+                        Checkout
                     </button>
                 </Link>
             </div>
