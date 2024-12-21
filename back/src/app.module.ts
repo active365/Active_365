@@ -12,6 +12,8 @@ import { AuthUsersModule } from './auth/auth-user/auth-users.module';
 import { AuthGymsModule } from './auth/auth-gyms/auth-gyms.module';
 import { ClassesModule } from './classes/classes.module';
 import { JwtModule } from '@nestjs/jwt';
+import { StripeModule } from './stripe/stripe.module';
+
 @Module({
   imports: [
     CategoriesModule,
@@ -34,7 +36,8 @@ import { JwtModule } from '@nestjs/jwt';
   }),
   AuthGymsModule,
  AuthUsersModule,
- ClassesModule
+ ClassesModule,
+ StripeModule
   ]
 })
 export class AppModule {}
