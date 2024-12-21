@@ -14,7 +14,9 @@ export class EmailService {
 
     async sendWelcomeEmail(email: string, name: string) {
 
-        const templatePath = path.resolve(__dirname, '..', 'templates', 'welcome.hbs');
+        const templatePath = process.env.NODE_ENV === 'production'
+            ? path.join(__dirname, '..', 'templates', 'welcome.hbs')
+            : path.join(__dirname, '..', '..', 'src', 'templates', 'welcome.hbs');
         const source = fs.readFileSync(templatePath, 'utf-8');
         const compiledTemplate = handlebars.compile(source);
 
@@ -30,9 +32,9 @@ export class EmailService {
     
         try {
             const info = await this.transporter.sendMail(mailOptions);
-            console.log('Correo de bienvenida enviado:', info);
+            console.log('Welcome email sent:', info);
         } catch (error) {
-            console.error('Error al enviar el correo:', error);
+            console.error('Error sending email:', error);
         };
     }   
 }
