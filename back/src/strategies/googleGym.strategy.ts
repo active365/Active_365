@@ -2,7 +2,7 @@ import { Inject, Injectable } from "@nestjs/common";
 import { ConfigType } from "@nestjs/config";
 import { PassportStrategy } from "@nestjs/passport";
 import { Strategy, VerifyCallback } from "passport-google-oauth20";
-import { AuthGymsService } from "src/auth-gyms/auth-gyms.service";
+import { AuthGymsService } from "src/auth/auth-gyms/auth-gyms.service";
 import googleOauthConfig from "src/config/googleOauth.config";
 import { reverseAndMixEmail } from 'src/utils/generateGooglePassword.util';
 @Injectable()
@@ -19,7 +19,6 @@ export class GoogleStrategyForGyms extends PassportStrategy(Strategy, 'google-gy
     }
 
     async validate(accessToken: string, refreshToken: string, profile: any, done:VerifyCallback) {
-        console.log(profile);
         const gym = await this.authGymsService.validateGoogleGym({
             email: profile.emails[0].value,
             name: profile.displayName,

@@ -2,7 +2,7 @@
 import styles from "@/components/detailCard/detail.module.css";
 import { categories } from "@/helpers/arrayProducts";
 import { IProducts } from "@/interfaces/IProducts";
-import Link from "next/link";  // Importar el componente Link de Next.js
+import Link from "next/link";
 
 const DetailCard: React.FC<IProducts> = ({
     id,
@@ -11,9 +11,8 @@ const DetailCard: React.FC<IProducts> = ({
     price,
     stock,
     imgUrl,
-    category,  // 'category' ahora es un string literal
+    category,  
 }) => {
-    // Si category es un string literal, lo usamos directamente
     const categoryName = categories.find((cat) => cat.name === category)?.name || "Unknown";
 
     return (
@@ -37,7 +36,6 @@ const DetailCard: React.FC<IProducts> = ({
                     <strong>Category:</strong> {categoryName}
                 </h4>
 
-                {/* Botón para volver a todos los productos */}
                 <Link href="/products" className="mt-4 bg-yellow-400 text-black py-2 px-4 rounded-md w-full hover:bg-yellow-600">
                     Back to Products
                 </Link>

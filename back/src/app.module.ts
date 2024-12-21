@@ -8,10 +8,12 @@ import { ProductsModule } from './products/products.module';
 import { CategoriesModule } from './categories/categories.module';
 
 import { OrdersModule } from './orders/orders.module';
-import { AuthUsersModule } from './auth-user/auth-users.module';
-import { AuthGymsModule } from './auth-gyms/auth-gyms.module';
+import { AuthUsersModule } from './auth/auth-user/auth-users.module';
+import { AuthGymsModule } from './auth/auth-gyms/auth-gyms.module';
 import { ClassesModule } from './classes/classes.module';
+import { JwtModule } from '@nestjs/jwt';
 import { StripeModule } from './stripe/stripe.module';
+
 @Module({
   imports: [
     CategoriesModule,
@@ -26,6 +28,11 @@ import { StripeModule } from './stripe/stripe.module';
   TypeOrmModule.forRootAsync({
     inject: [ConfigService],
     useFactory: (config: ConfigService) => config.get('typeorm'),
+  }),
+  JwtModule.register({
+    global: true,
+    signOptions: { expiresIn: '1d' },
+    secret: process.env.JWT_SECRET,
   }),
   AuthGymsModule,
  AuthUsersModule,
