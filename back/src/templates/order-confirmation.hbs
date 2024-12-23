@@ -57,10 +57,13 @@
         <p>Hello {{name}},</p>
         <p>Thank you for your purchase at <strong>Active365</strong>! Your order has been successfully placed, and we’re preparing it for shipment.</p>
         <p><strong>Order Details:</strong></p>
-        <ul>
-            <li><strong>Order ID:</strong> {{orderId}}</li>
-            <li><strong>Total Amount:</strong> ${{totalAmount}}</li>
-        </ul>
+        <p>Your order was placed on {{date}}. Here are the details:</p>
+            <ul>
+            {{#each products}}
+                <li>{{quantity}}x {{name}} - ${{price}}</li>
+            {{/each}}
+            </ul>
+        <p><strong>Total: ${{total}}</strong></p>
         <p>If you wish to cancel your order, you may do so within the next <strong>24 hours</strong>. After this period, cancellations will no longer be possible.</p>
         <p>If you have any questions or concerns, feel free to contact our support team.</p>
         <a href="{{cancelOrderLink}}" class="btn">Cancel Order</a>

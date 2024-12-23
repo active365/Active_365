@@ -1,5 +1,6 @@
 import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { EmailService } from 'src/email/email.service';
 import { OrderDetails } from 'src/entities/orderdetails.entity';
 import { Orders } from 'src/entities/orders.entity';
 import { Products } from 'src/entities/products.entity';
@@ -17,7 +18,8 @@ export class OrdersService {
         @InjectRepository(OrderDetails)
         private orderDetailsRepository: Repository<OrderDetails>,
         @InjectRepository(Products)
-        private productsRepository: Repository<Products>
+        private productsRepository: Repository<Products>,
+        private readonly emailService: EmailService,
     ){}
 
     async createOrder(userId: string, products: any) {
@@ -54,10 +56,26 @@ export class OrdersService {
             await manager.save(orderDetail);
     
             newOrder.orderdetails = orderDetail;
+
+            await this.emailService.sendOrderConfirmationEmail(
+                user.email,
+                {
+                    user: user,
+                    date: newOrder.date,
+                    orderDetails: orderDetail,
+                    products: products.map((product: any, index: number) => ({
+                        name: productsArray[index].name,
+                        quantity: product.quantity,
+                        price: productsArray[index].price,
+                    })),
+                },
+            );
+            
             return manager.findOne(Orders, {
                 where: { id: newOrder.id },
                 relations: ['orderDetails']
             });
+
         });
     }
 

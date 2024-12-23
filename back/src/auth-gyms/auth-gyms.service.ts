@@ -3,11 +3,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { Gyms } from 'src/entities/gyms.entity';
+import { EmailService } from 'src/email/email.service';
 
 @Injectable()
 export class AuthGymsService {
   constructor(
-    @InjectRepository(Gyms) private readonly gymsRepository: Repository<Gyms>){}
+    @InjectRepository(Gyms) private readonly gymsRepository: Repository<Gyms>,
+    private readonly emailService: EmailService,
+  ){}
     
     async loginGym(email: string, passwordLogin: string, isGoogleLogin: boolean = false) {
       const gym = await this.gymsRepository.findOne({ where: { email: email } });
@@ -44,6 +47,8 @@ export class AuthGymsService {
     const savedGym = await this.gymsRepository.save(newGym);
 
     const { password, googlePassword, ...gymWithoutPassword } = savedGym;
+
+    await this.emailService.sendWelcomeGymEmail(savedGym.email, savedGym.name);
     return gymWithoutPassword;
 }
 

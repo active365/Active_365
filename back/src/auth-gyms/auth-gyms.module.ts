@@ -6,10 +6,11 @@ import { AuthGymsService } from './auth-gyms.service';
 import { Gyms } from 'src/entities/gyms.entity';
 import { AuthGymsController } from './auth-gyms.controller';
 import { GoogleStrategyForGyms } from 'src/strategies/googleGym.strategy';
+import { EmailModule } from 'src/email/email.module';
 
 @Module({
   imports: [ConfigModule.forFeature(googleOauthConfig), 
-            TypeOrmModule.forFeature([Gyms])],
+            TypeOrmModule.forFeature([Gyms]), EmailModule],
   controllers: [AuthGymsController],
   providers: [AuthGymsService, GoogleStrategyForGyms],
 })
