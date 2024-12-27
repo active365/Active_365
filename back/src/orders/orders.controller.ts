@@ -6,14 +6,15 @@ import { CreateOrderDto } from 'src/dto/create-order.dto';
 export class OrdersController {
   constructor(private readonly ordersService: OrdersService) {}
 
-  @Get()
+  @Get(':id')
   getOrder(@Param('id', ParseUUIDPipe) id:string){
     return this.ordersService.getOrder(id);
   }
 
   @Post()
-    createOrder(@Body() order: CreateOrderDto) {
-    const {userId, products} = order;
-    return this.ordersService.createOrder(userId, products)
+  createOrder(@Body() order: CreateOrderDto) {
+      const { userId, products } = order;
+      return this.ordersService.createOrder(userId, products);
   }
+  
 }
