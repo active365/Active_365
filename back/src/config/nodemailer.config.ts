@@ -17,8 +17,6 @@ export const nodemailerConfig = {
             access_type: 'offline',
             scope: ['https://www.googleapis.com/auth/gmail.send'],
         });
-        
-        console.log('Authorize this app by visiting this url:', authUrl);
 
         oauth2Client.setCredentials({
             refresh_token: process.env.OAUTH_REFRESH_TOKEN, 

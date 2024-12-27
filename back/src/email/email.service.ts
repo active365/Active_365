@@ -32,9 +32,9 @@ export class EmailService {
     
         try {
             const info = await this.transporter.sendMail(mailOptions);
-            console.log('Welcome email sent:', info);
+            console.log('Welcome email sent:');
         } catch (error) {
-            console.error('Error sending email:', error);
+            console.error('Error sending email:');
         };
     }
 
@@ -58,9 +58,9 @@ export class EmailService {
     
         try {
             const info = await this.transporter.sendMail(mailOptions);
-            console.log('Welcome email sent:', info);
+            console.log('Welcome email sent:');
         } catch (error) {
-            console.error('Error sending email:', error);
+            console.error('Error sending email:');
         };
     }
 
@@ -92,12 +92,10 @@ export class EmailService {
     
         try {
             const info = await this.transporter.sendMail(mailOptions);
-            console.log('Order confirmation email sent:', info);
+            console.log('Order confirmation email sent:');
         } catch (error) {
-            console.error('Error sending email:', error);
+            console.error('Error sending email:');
         }
     }
-
-
 }
 
