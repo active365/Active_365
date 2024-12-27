@@ -1,19 +1,18 @@
-"use client"
 import React, { useState } from "react";
 import { AiOutlineRobot } from "react-icons/ai";
 
 const Chatbot = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [messages, setMessages] = useState([
-        { sender: "bot", text: "¡Hola! ¿En qué puedo ayudarte hoy?" },
+        { sender: "bot", text: "Hello! How can I assist you today?" },
     ]);
     const [showFaqs, setShowFaqs] = useState(false);
 
     const faqs = [
-        { question: "¿Cuáles son los horarios de entrenamiento?", answer: "Nuestros horarios son de 6:00 AM a 10:00 PM todos los días." },
-        { question: "¿Qué suplementos recomiendan para ganar masa muscular?", answer: "Recomendamos proteínas en polvo, creatina y BCAA según tus objetivos." },
-        { question: "¿Tienen envíos de ropa deportiva?", answer: "Sí, realizamos envíos a todo el país." },
-        { question: "¿Cómo puedo inscribirme en un plan de entrenamiento?", answer: "Puedes inscribirte a través de nuestra página web o en la recepción del gimnasio." },
+        { question: "What are the training hours?", answer: "Our hours are from 6:00 AM to 10:00 PM every day." },
+        { question: "What supplements do you recommend for gaining muscle mass?", answer: "We recommend protein powders, creatine, and BCAAs based on your goals." },
+        { question: "Do you ship sportswear?", answer: "Yes, we ship nationwide." },
+        { question: "How can I enroll in a training plan?", answer: "You can enroll through our website or at the gym reception." },
     ];
 
     const handleSelectQuestion = (question: string) => {
@@ -36,7 +35,7 @@ const Chatbot = () => {
             {isOpen && (
                 <div className="bg-white shadow-lg rounded-lg w-80 h-[32rem] flex flex-col overflow-hidden">
                     <div className="bg-yellow-600 text-white p-4 font-bold flex justify-between items-center">
-                        <span>Asistente Virtual</span>
+                        <span>Virtual Assistant</span>
                         <button onClick={() => setIsOpen(false)} className="text-xl">×</button>
                     </div>
 
@@ -64,7 +63,7 @@ const Chatbot = () => {
                             onClick={() => setShowFaqs(!showFaqs)}
                             className="w-full text-left px-4 py-2 bg-yellow-400 text-black rounded-lg hover:bg-yellow-600 hover:text-white"
                         >
-                            {showFaqs ? "Ocultar preguntas frecuentes" : "Mostrar preguntas frecuentes"}
+                            {showFaqs ? "Hide FAQs" : "Show FAQs"}
                         </button>
 
                         {showFaqs && (
