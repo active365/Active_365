@@ -15,8 +15,8 @@ const searchPage: React.FC = () => {
 
     return (
         <div>
-            <SearchBar onSearch={handleSearch} /> {/* Componente SearchBar */}
-            <Products searchQuery={search} /> {/* Cambiar 'search' a 'searchQuery' */}
+            <SearchBar onSearch={handleSearch} /> 
+            <Products searchQuery={search} /> 
         </div>
     );
 };

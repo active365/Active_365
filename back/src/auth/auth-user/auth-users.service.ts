@@ -4,35 +4,46 @@ import { CreateUserDto, LoginUserDto } from 'src/dto/users.dto';
 import { Users } from 'src/entities/users.entity';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
 import { EmailService } from 'src/email/email.service';
 
 @Injectable()
 export class AuthUsersService {
   constructor(
     @InjectRepository(Users) private readonly userRepository: Repository<Users>,
-    private readonly emailService: EmailService,
+    private readonly jwtService: JwtService,
+    private readonly emailService: EmailService
   ){}
     
     async loginUser(email: string, passwordLogin: string, isGoogleLogin: boolean = false) {
       const user = await this.userRepository.findOne({ where: { email: email } });
-      if (!user) throw new NotFoundException(`Credenciales incorrectas`);
+      if (!user) throw new NotFoundException(`Incorrect credentials`);
   
       const hashToCompare = isGoogleLogin ? user.googlePassword : user.password;
-      if (!hashToCompare) throw new NotFoundException(`Credenciales incorrectas`);
+      if (!hashToCompare) throw new NotFoundException(`Incorrect credentials`);
   
       const isMatch = await bcrypt.compare(passwordLogin, hashToCompare);
-      if (!isMatch) throw new NotFoundException(`Credenciales incorrectas`);
-      const { password, googlePassword, ...userWithoutPassword } = user;
-      return userWithoutPassword;
+      if (!isMatch) throw new NotFoundException(`Incorrect credentials`);
+
+      const userPayload = {
+        id: user.id,
+        email: user.email,
+        rol: user.rol 
+      }
+      const token = this.jwtService.sign(userPayload);
+      return {
+        message: 'Login successful',
+        token
+      }
   }
   
   async createUser(user: Partial<Users>, isGoogleCreate: boolean = false) {
     const userFound = await this.userRepository.findOne({ where: { email: user.email } });
-    if (userFound) throw new BadRequestException(`El email ${user.email} ya existe`);
+    if (userFound) throw new BadRequestException(`The email ${user.email} already exists`);
 
     const passwordToHash = isGoogleCreate ? user.googlePassword : user.password;
     if (!passwordToHash) {
-        throw new BadRequestException('Se requiere una contraseña para crear el usuario');
+        throw new BadRequestException('A password is required to create the user');
     }
 
     const hashedPassword = await bcrypt.hash(passwordToHash, 10);
@@ -43,12 +54,11 @@ export class AuthUsersService {
         googlePassword: isGoogleCreate ? hashedPassword : undefined,
     });
 
-    if (!newUser) throw new BadRequestException('No se pudo crear el usuario');
+    if (!newUser) throw new BadRequestException('Failed to create user');
 
     const savedUser = await this.userRepository.save(newUser);
 
     const { password, googlePassword, ...userWithoutPassword } = savedUser;
-
     await this.emailService.sendWelcomeEmail(savedUser.email, savedUser.name);
 
     return userWithoutPassword;
