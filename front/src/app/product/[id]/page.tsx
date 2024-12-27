@@ -1,46 +1,34 @@
-import React, { useState, useEffect, useContext } from "react";
-import { GeneralContext } from "@/context/GeneralContext"; 
+"use client";
+import React, { useState, useEffect } from "react";
+import { use } from "react";
 import DetailCard from "@/components/detailCard/DetailCard";
-import { arrayProducts } from "@/helpers/arrayProducts";
 import { IProducts } from "@/interfaces/IProducts";
-import toast, { Toaster } from 'react-hot-toast';
+import { Toaster } from "react-hot-toast";
+import { getProductById } from "@/app/api/getProducts";
+import AddToCart from "@/components/AddToCart";
 
 const Detail = ({ params }: { params: Promise<{ id: string }> }) => {
-    const { id } = React.use(params); 
+    const resolvedParams = use(params);
+    const productId = resolvedParams.id;
 
-    const { addToCart } = useContext(GeneralContext); 
     const [product, setProduct] = useState<IProducts | null>(null);
-    const [quantity, setQuantity] = useState(1);
 
     useEffect(() => {
-        const foundProduct = arrayProducts.find((product) => product.id.toString() === id) || null;
-        setProduct(foundProduct);
-    }, [id]);
-
-    const handleIncrement = () => setQuantity((prev) => prev + 1);
-
-    const handleDecrement = () => {
-        if (quantity > 1) {
-            setQuantity((prev) => prev - 1);
-        }
-    };
-
-    const handleAddToCart = () => {
-        if (product) {
-            addToCart({
-                ...product,
-                quantity,
-            });
-            toast.success(`${quantity} units of ${product.name} added to the cart.`)
-        }
-    };
+        const fetchProduct = async () => {
+            try {
+                const fetchedProduct = await getProductById(productId);
+                setProduct(fetchedProduct);
+            } catch (error) {
+                console.error("Failed to fetch product:", error);
+            }
+        };
+        fetchProduct();
+    }, [productId]);
 
     if (!product) {
         return (
             <div className="flex items-center justify-center min-h-screen">
-                <h1 className="text-2xl font-bold text-red-500">
-                    {id ? "Product not found" : "Invalid Product ID"}
-                </h1>
+                <h1 className="text-2xl font-bold text-red-500">Product not found</h1>
             </div>
         );
     }
@@ -66,7 +54,7 @@ const Detail = ({ params }: { params: Promise<{ id: string }> }) => {
             <div className="flex w-full max-w-7xl px-4 py-10 space-x-8">
                 <div className="flex-1 bg-black shadow-lg rounded-lg p-6">
                     <DetailCard
-                        key={product.id}
+                        key={`${product.id}-${Math.random()}`}
                         id={product.id}
                         name={product.name}
                         imgUrl={product.imgUrl}
@@ -76,31 +64,7 @@ const Detail = ({ params }: { params: Promise<{ id: string }> }) => {
                         category={product.category}
                     />
 
-                    <div className="mt-6">
-                        <div className="flex items-center space-x-4">
-                            <button
-                                onClick={handleDecrement}
-                                className="px-4 py-2 bg-gray-700 text-white rounded-md hover:bg-gray-600"
-                                disabled={quantity <= 1}
-                            >
-                                - 
-                            </button>
-                            <span className="text-xl font-semibold text-white">{quantity}</span>
-                            <button
-                                onClick={handleIncrement}
-                                className="px-4 py-2 bg-gray-700 text-white rounded-md hover:bg-gray-600"
-                            >
-                                +
-                            </button>
-                        </div>
-
-                        <button
-                            onClick={handleAddToCart}
-                            className="mt-4 w-full px-4 py-2 bg-yellow-500 text-white font-semibold rounded-md hover:bg-yellow-600"
-                        >
-                            Add to Cart
-                        </button>
-                    </div>
+                    <AddToCart product={product} />
                 </div>
 
                 <div className="lg:w-1/4 bg-gradient-to-r from-yellow-500 to-yellow-600 text-white rounded-lg shadow-md p-6">
@@ -111,7 +75,7 @@ const Detail = ({ params }: { params: Promise<{ id: string }> }) => {
                         Join our personalized training plans to reach your goals. Whether you are looking to increase
                         strength, flexibility, or overall wellness, we have the perfect plan for you.
                     </p>
-                    <button className="w-full px-4 py-2 bg-white text-yellow-600 font-semibold rounded-md hover:bg-gray-100">
+                    <button className="w-full px-4 py-2 bg-yellow-400 text-black font-semibold rounded-md hover:bg-yellow-600">
                         Explore the plans!
                     </button>
                 </div>
