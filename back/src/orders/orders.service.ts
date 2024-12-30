@@ -64,22 +64,22 @@ export class OrdersService {
 
             newOrder.orderDetails = orderDetails;
 
+            await manager.save(newOrder);
             await this.emailService.sendOrderConfirmationEmail(
                 user.email,
                 {
                     user: user,
                     date: newOrder.date,
-                    orderDetails: orderDetail,
-                    products: products.map((product: any, index: number) => ({
-                        name: productsArray[index].name,
-                        quantity: product.quantity,
-                        price: productsArray[index].price,
+                    orderDetails,
+                    totalPrice,
+                    products: OrderProducts.map((orderProduct) => ({
+                        name: orderProduct.product.name,
+                        quantity: orderProduct.quantity,
+                        price: orderProduct.price,
                     })),
                 },
             );
-            
-            await manager.save(newOrder);
-           return manager.findOne(Orders, { where: { id: newOrder.id }, relations: ['orderDetails'] });
+            return manager.findOne(Orders, { where: { id: newOrder.id }, relations: ['orderDetails'] });
         });
 
     }

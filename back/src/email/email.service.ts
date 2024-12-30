@@ -75,7 +75,7 @@ export class EmailService {
         const htmlToSend = compiledTemplate({
             name: orderDetails.user.name, 
             date: new Date(orderDetails.date).toLocaleDateString(), 
-            total: orderDetails.orderDetails.price, 
+            total: orderDetails.totalPrice, 
             products: orderDetails.products.map((product: any) => ({
                 name: product.name,
                 quantity: product.quantity,
@@ -95,6 +95,43 @@ export class EmailService {
             console.log('Order confirmation email sent:');
         } catch (error) {
             console.error('Error sending email:');
+        }
+    }
+
+    async sendClassConfirmationEmail(
+        email: string,
+        name: string,
+        gymName: string,
+        classDate: string,
+        classTime: string,
+    ){
+        
+        const templatePath =
+        process.env.NODE_ENV === 'production'
+            ? path.join(__dirname, '..', 'templates', 'class-confirmation.hbs')
+            : path.join(__dirname, '..', '..', 'src', 'templates', 'class-confirmation.hbs');
+        const source = fs.readFileSync(templatePath, 'utf-8');
+        const compiledTemplate = handlebars.compile(source);
+    
+        const htmlToSend = compiledTemplate({
+            name,
+            gymName,
+            classDate,
+            classTime,
+        });
+    
+        const mailOptions = {
+            from: `"No Reply" <${process.env.MAIL_FROM}>`,
+            to: email,
+            subject: 'Class Confirmation - Active365',
+            html: htmlToSend,
+        };
+    
+        try {
+            const info = await this.transporter.sendMail(mailOptions);
+            console.log('Class confirmation email sent:', info.response);
+        } catch (error) {
+            console.error('Error sending class confirmation email:', error);
         }
     }
 }
