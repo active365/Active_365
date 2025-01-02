@@ -7,14 +7,15 @@ import { Toaster } from "react-hot-toast";
 import { getProductById } from "@/app/api/getProducts";
 import AddToCart from "@/components/AddToCart";
 import { UserContext } from "@/context/UserContext";
-import Loader from "@/components/Loader"; 
+import Loader from "@/components/Loader";
+import Link from "next/link";
 
 const Detail = ({ params }: { params: Promise<{ id: string }> }) => {
     const resolvedParams = use(params);
     const productId = resolvedParams.id;
 
     const [product, setProduct] = useState<IProducts | null>(null);
-    const [loading, setLoading] = useState<boolean>(true); 
+    const [loading, setLoading] = useState<boolean>(true);
 
     const user = useContext(UserContext);
     const isUserLoggedIn = Boolean(user);
@@ -27,14 +28,14 @@ const Detail = ({ params }: { params: Promise<{ id: string }> }) => {
             } catch (error) {
                 console.error("Failed to fetch product:", error);
             } finally {
-                setLoading(false);  
+                setLoading(false);
             }
         };
         fetchProduct();
     }, [productId]);
 
     if (loading) {
-        return <Loader />;  
+        return <Loader />;
     }
 
     if (!product) {
@@ -87,9 +88,12 @@ const Detail = ({ params }: { params: Promise<{ id: string }> }) => {
                         Join our personalized training plans to reach your goals. Whether you are looking to increase
                         strength, flexibility, or overall wellness, we have the perfect plan for you.
                     </p>
-                    <button className="w-full px-4 py-2 bg-yellow-400 text-black font-semibold rounded-md hover:bg-yellow-600">
-                        Explore the plans!
-                    </button>
+                    <Link href="/membership">
+                        <button className="w-full px-4 py-2 bg-yellow-400 text-black font-semibold rounded-md hover:bg-yellow-600">
+                            Explore the plans!
+                        </button>
+                    </Link>
+
                 </div>
             </div>
             <Toaster />

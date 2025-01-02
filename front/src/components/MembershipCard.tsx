@@ -70,7 +70,7 @@ const StyledWrapper = styled.div`
   }
 
   .front, .back {
-    background-color: #f7e600;  // Color amarillo para la tarjeta
+    background-color: #f7e600;  
     position: absolute;
     width: 100%;
     height: 100%;
