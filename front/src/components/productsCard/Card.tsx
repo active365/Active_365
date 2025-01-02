@@ -7,9 +7,10 @@ import { Toaster } from "react-hot-toast";
 interface CardProps {
   products: IProducts[];
   onProductSelect: (product: IProducts) => void;
+  isUserLoggedIn: boolean; 
 }
 
-const Card: React.FC<CardProps> = ({ products, onProductSelect }) => {
+const Card: React.FC<CardProps> = ({ products, onProductSelect, isUserLoggedIn }) => {
   if (products.length === 0) {
     return <p className="text-white">No products found.</p>;
   }
@@ -42,8 +43,8 @@ const Card: React.FC<CardProps> = ({ products, onProductSelect }) => {
                 </button>
               </Link>
             </div>
-            <div className="px-6 py-1 w-full"> 
-              <AddToCart product={product} />
+            <div className="px-6 py-1 w-full">
+              <AddToCart product={product} isUserLoggedIn={isUserLoggedIn} /> 
             </div>
           </div>
         ))}

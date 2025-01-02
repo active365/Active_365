@@ -1,12 +1,12 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
 import React, { useContext, useState } from "react";
 import { GeneralContext } from "@/context/GeneralContext";
 import Link from "next/link";
+import { UserContext } from "@/context/UserContext";
 
 const CartComponent: React.FC = () => {
     const { cart, removeFromCart, clearCart } = useContext(GeneralContext);
-
+    const user = useContext(UserContext);
     const [quantities, setQuantities] = useState<{ [key: number]: number }>({});
     const isMember = true;
     const shippingCost = isMember ? 0 : 10;
@@ -17,6 +17,43 @@ const CartComponent: React.FC = () => {
     }, 0);
 
     const totalPrice = totalProductsPrice + shippingCost;
+
+    const createOrder = async () => {
+        try {
+            const response = await fetch("/api/orders", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    userId: user.userSession?.user.id,
+                    products: cart.map((item) => ({
+                        productId: item.id,
+                        quantity: quantities[item.id] || 1,
+                    })),
+                }),
+            });
+
+            if (!response.ok) {
+                throw new Error("Failed to create order");
+            }
+
+            const order = await response.json();
+            return order.id; 
+        } catch (error) {
+            console.error("Error creating order:", error);
+            return null;
+        }
+    };
+
+    const handleCheckout = async () => {
+        const orderId = await createOrder();
+        if (orderId) {
+            window.location.href = `/checkout/${orderId}`;
+        } else {
+            alert("Error al crear la orden. Inténtalo nuevamente.");
+        }
+    };
 
     return (
         <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg">
@@ -119,11 +156,13 @@ const CartComponent: React.FC = () => {
             </div>
 
             <div className="mt-6 flex justify-center">
-                <Link href="/checkout">
-                    <button className="bg-yellow-500 text-white py-2 px-6 rounded-md hover:bg-yellow-600">
-                        Checkout
-                    </button>
-                </Link>
+                <button
+                    onClick={handleCheckout}
+                    className="bg-yellow-500 text-white py-2 px-6 rounded-md hover:bg-yellow-600"
+                    disabled={cart.length === 0}
+                >
+                    Checkout
+                </button>
             </div>
         </div>
     );

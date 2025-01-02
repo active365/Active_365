@@ -1,23 +1,16 @@
-// components/Navbar.tsx
 'use client';
 
 import Link from "next/link";
-import React, { useState } from "react";
-import SearchBar from "./SearchBar";
+import React, { useState, useContext } from "react";
+import { UserContext } from "../context/UserContext"; 
+import { FaShoppingCart } from "react-icons/fa"; 
 
 const Navbar: React.FC = () => {
+  const { userSession } = useContext(UserContext); 
   const [isOpen, setIsOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState(''); // Estado para la búsqueda
 
-  // Función para el desplegable
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
-  };
-
-  // Función para actualizar el término de búsqueda
-  const handleSearch = (term: string) => {
-    setSearchTerm(term)
-    console.log(term);
   };
 
   return (
@@ -39,8 +32,7 @@ const Navbar: React.FC = () => {
           </Link>
         </li>
         <li>
-          {/* Enlace a la página de productos con el término de búsqueda */}
-          <Link href='/productSearch' className="button">
+          <Link href="/productSearch" className="button">
             <span className="p">Products</span>
           </Link>
         </li>
@@ -61,6 +53,13 @@ const Navbar: React.FC = () => {
         <Link href="/login" className="btn">
           Login
         </Link>
+
+        {userSession && (
+          <Link href="/cart" className="btn flex items-center space-x-2">
+            <FaShoppingCart className="text-white text-2xl" />
+            <span className="text-white">Cart</span>
+          </Link>
+        )}
 
         {/* Dropdown Register */}
         <div className="relative inline-block text-left">

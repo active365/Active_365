@@ -1,17 +1,23 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { use } from "react";
 import DetailCard from "@/components/detailCard/DetailCard";
 import { IProducts } from "@/interfaces/IProducts";
 import { Toaster } from "react-hot-toast";
 import { getProductById } from "@/app/api/getProducts";
 import AddToCart from "@/components/AddToCart";
+import { UserContext } from "@/context/UserContext";
+import Loader from "@/components/Loader"; 
 
 const Detail = ({ params }: { params: Promise<{ id: string }> }) => {
     const resolvedParams = use(params);
     const productId = resolvedParams.id;
 
     const [product, setProduct] = useState<IProducts | null>(null);
+    const [loading, setLoading] = useState<boolean>(true); 
+
+    const user = useContext(UserContext);
+    const isUserLoggedIn = Boolean(user);
 
     useEffect(() => {
         const fetchProduct = async () => {
@@ -20,10 +26,16 @@ const Detail = ({ params }: { params: Promise<{ id: string }> }) => {
                 setProduct(fetchedProduct);
             } catch (error) {
                 console.error("Failed to fetch product:", error);
+            } finally {
+                setLoading(false);  
             }
         };
         fetchProduct();
     }, [productId]);
+
+    if (loading) {
+        return <Loader />;  
+    }
 
     if (!product) {
         return (
@@ -64,7 +76,7 @@ const Detail = ({ params }: { params: Promise<{ id: string }> }) => {
                         category={product.category}
                     />
 
-                    <AddToCart product={product} />
+                    <AddToCart product={product} isUserLoggedIn={isUserLoggedIn} />
                 </div>
 
                 <div className="lg:w-1/4 bg-gradient-to-r from-yellow-500 to-yellow-600 text-white rounded-lg shadow-md p-6">
