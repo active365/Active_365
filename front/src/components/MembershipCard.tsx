@@ -1,129 +1,211 @@
-import React from "react";
-
-interface MembershipCardProps {
-    id: number;
-    name: string;
-    description: string;
-    price: number;
-}
-
+"use client";
+import React from 'react';
 import styled from 'styled-components';
+import { useRouter } from 'next/navigation';
 
-const Card: React.FC<MembershipCardProps> = ({ name, description, price }) => {
-    return (
-        <StyledWrapper>
-            <div className="card">
-                <div className="content">
-                    <img src="/front/public/logo.png" alt="logo" />
-                    <h1>{name}</h1>
-                    <p className="para">
-                        {description}
-                    </p>
-                    <h4>Price: ${price}</h4>
-                </div>
-            </div>
-        </StyledWrapper>
-    );
+interface CardProps {
+  name: string;
+  color: string;
+  detailUrl: string;
+  description: string;
+  price: string;
 }
+
+const Card: React.FC<CardProps> = ({ name, color, detailUrl, description, price }) => {
+  const router = useRouter();
+
+  const handleClick = () => {
+    router.push(detailUrl); 
+  };
+
+  return (
+    <StyledWrapper onClick={handleClick}>
+      <div className="card">
+        <div className="content">
+          <div className="back">
+            <div className="back-content">
+              <strong>{name}</strong>
+            </div>
+          </div>
+          <div className="front">
+            <div className="img">
+              <div className="circle" style={{ backgroundColor: `rgb(${color})` }}></div>
+              <div className="circle" id="right"></div>
+              <div className="circle" id="bottom"></div>
+            </div>
+            <div className="front-content">
+              <small className="badge">{name}</small>
+              <div className="description">
+                <div className="title">
+                  <p className="title">
+                    <strong>{description}</strong>
+                  </p>
+                </div>
+                <p className="card-footer">
+                  Price: ${price}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </StyledWrapper>
+  );
+};
 
 const StyledWrapper = styled.div`
   .card {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 320px;
-    border-radius: 24px;
-    line-height: 1.6;
-    transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
+    overflow: visible;
+    width: 280px;
+    height: 350px;
   }
 
   .content {
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 300ms;
+    box-shadow: 0px 0px 10px 1px #000000ee;
+    border-radius: 5px;
+  }
+
+  .front, .back {
+    background-color: #f7e600;  // Color amarillo para la tarjeta
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+
+  .back {
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .back-content {
+    position: absolute;
+    width: 99%;
+    height: 99%;
+    background-color: #f7e600;
+    border-radius: 5px;
+    color: white;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    gap: 24px;
-    padding: 36px;
-    border-radius: 22px;
-    color: #ffffff;
-    overflow: hidden;
-    background: #ffff;
-    transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
   }
 
-  .content::before {
+  .card:hover .content {
+    transform: rotateY(180deg);
+  }
+
+  .front {
+    transform: rotateY(180deg);
+    color: white;
+  }
+
+  .front .front-content {
     position: absolute;
-    content: "";
-    top: -4%;
-    left: 50%;
-    width: 90%;
-    height: 90%;
-    transform: translate(-50%);
-    background: rgb(169,169,0);
-    background: linear-gradient(108deg, rgba(169,169,0,0.5543009440104167) 0%, rgba(191,192,41,0.32741018770789565) 28%, rgba(244,255,0,0.6075222325258228) 100%);
-    z-index: -1;
-    transform-origin: bottom;
-
-    border-radius: inherit;
-    transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
-  }
-
-  .content::after {
-    position: absolute;
-    content: "";
-    top: -8%;
-    left: 50%;
-    width: 80%;
-    height: 80%;
-    transform: translate(-50%);
-    background: #ffff;
-    z-index: -2;
-    transform-origin: bottom;
-    border-radius: inherit;
-    transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
-  }
-
-  .content svg {
-    width: 48px;
-    height: 48px;
-  }
-
-  .content .para {
-    z-index: 1;
-    opacity: 1;
-    font-size: 18px;
-    transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
-  }
-
-  .content .link {
-    z-index: 1;
-    color: #fea000;
-    text-decoration: none;
-    font-family: inherit;
-    font-size: 16px;
-    transition: all 0.48s cubic-bezier(0.23, 1, 0.32, 1);
-  }
-
-  .content .link:hover {
-    text-decoration: underline;
-  }
-
-  .card:hover {
-    transform: translate(0px, -16px);
-  }
-
-  .card:hover .content::before {
-    rotate: -8deg;
-    top: 0;
     width: 100%;
     height: 100%;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
 
-  .card:hover .content::after {
-    rotate: 8deg;
-    top: 0;
+  .front-content .badge {
+    background-color: #00000055;
+    padding: 2px 10px;
+    border-radius: 10px;
+    backdrop-filter: blur(2px);
+    width: fit-content;
+  }
+
+  .description {
+    box-shadow: 0px 0px 10px 5px #00000088;
+    width: 100%;
+    padding: 10px;
+    background-color: #00000099;
+    backdrop-filter: blur(5px);
+    border-radius: 5px;
+  }
+
+  .title {
+    font-size: 14px;
+    max-width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .title p {
+    width: 50%;
+  }
+
+  .card-footer {
+    color: #ffffff88;
+    margin-top: 20px;  // Más espacio entre el footer y la tarjeta
+    font-size: 12px;
+  }
+
+  .front .img {
+    position: absolute;
     width: 100%;
     height: 100%;
-  }`;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .circle {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background-color: #ffbb66;
+    position: relative;
+    filter: blur(15px);
+    animation: floating 2600ms infinite linear;
+  }
+
+  #bottom {
+    background-color: #ffdd55;
+    left: 50px;
+    top: 0px;
+    width: 150px;
+    height: 150px;
+    animation-delay: -800ms;
+  }
+
+  #right {
+    background-color: #ff9900;
+    left: 160px;
+    top: -80px;
+    width: 30px;
+    height: 30px;
+    animation-delay: -1800ms;
+  }
+
+  @keyframes floating {
+    0% {
+      transform: translateY(0px);
+    }
+
+    50% {
+      transform: translateY(10px);
+    }
+
+    100% {
+      transform: translateY(0px);
+    }
+  }
+`;
 
 export default Card;
+
