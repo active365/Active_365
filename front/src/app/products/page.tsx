@@ -7,10 +7,9 @@ import { ICategory } from "@/interfaces/ICategory";
 import Card from "@/components/productsCard/Card";
 import SearchBar from "@/components/SearchBar"; // Correcta importación
 import { useEffect, useState } from "react";
+import { categories } from "@/helpers/arrayProducts";
 
 
-// Importamos las categorías pre-cargadas
-import categoriesToPreLoad from "@/helpers/categories";
 
 // Ajustamos la estructura de categorías con la interfaz ICategory
 const categoryImages: Record<string, string> = {
@@ -89,7 +88,7 @@ const Products: React.FC<ProductsProps> = ({ searchQuery }) => {
             </h1>
 
             <div className="flex justify-center space-x-10 mb-8">
-                {categoriesToPreLoad.map((category: ICategory) => (
+                {categories.map((category: ICategory) => (
                     <div 
                         key={category.id} 
                         className={`flex flex-col items-center cursor-pointer ${

@@ -84,3 +84,22 @@ export const getProductsByCategory = async (categoryId: string): Promise<IProduc
     }
 };
 
+export const getProductsByCategoryOrName = async (categoryOrName: string): Promise<IProducts[]> => {
+    try {
+      // Realizar la petición para obtener los productos filtrados por categoría o nombre
+      const res = await fetch(`${APIURL}/products?category=${categoryOrName}`, {
+        mode: 'cors',
+        next: { revalidate: 1200 },
+      });
+  
+      if (!res.ok) {
+        throw new Error("Failed to fetch products by category or name");
+      }
+  
+      const products: IProducts[] = await res.json();
+      return products;
+    } catch (error) {
+      console.error("Error fetching products by category or name:", error);
+      throw new Error("Failed to fetch products by category or name");
+    }
+  };
