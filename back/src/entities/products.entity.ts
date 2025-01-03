@@ -29,4 +29,7 @@ export class Products {
 
     @OneToMany(() => OrderProduct, (orderProduct) => orderProduct.product)
     orderProducts: OrderProduct[];
+
+    @Column({ type: 'text', nullable: true })
+    subcategory: string;
 }

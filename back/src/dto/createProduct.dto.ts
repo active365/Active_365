@@ -26,4 +26,19 @@ export class CreateProductDto {
     @IsString()
     @IsUrl()
     imgUrl: string;
+
+    @IsOptional()
+    @IsString()
+    subcategory: string;
+}
+
+
+export class FilterProductsDto {
+    @IsOptional()
+    @IsString()
+    category?: string;
+
+    @IsOptional()
+    @IsString()
+    subcategory?: string; 
 }

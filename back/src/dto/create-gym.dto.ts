@@ -1,5 +1,4 @@
 import { IsEmail, IsEmpty, IsIn, IsInt, IsNotEmpty, IsString, Matches, MaxLength, MinLength } from "class-validator";
-import { userRoles } from "src/enums/userRoles.enum";
 
 export class CreateGymDto {
 
@@ -37,11 +36,6 @@ export class CreateGymDto {
     @MaxLength(20)
     city: string;
 
-    @IsEmpty()
-    @IsString()
-    @MaxLength(15)
-    @IsIn([userRoles.registered, userRoles.partner])
-    rol: string;
 }
 export class LoginGymDto {
     @IsNotEmpty()
