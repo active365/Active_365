@@ -1,17 +1,19 @@
-/* eslint-disable @next/next/no-img-element */
-'use client';
+'use client'
 
-import React, { useState, useEffect } from "react";
-import Card from "@/components/productsCard/Card";
-import { arrayProducts } from "@/helpers/arrayProducts"; 
-import { categories } from "@/helpers/arrayProducts";
+import { getProducts } from "../api/getProducts";
 import { filterProducts } from "@/helpers/filterProducts"; 
 import { IProducts } from "@/interfaces/IProducts";
-import { getProducts } from "../api/getProducts";
+import { ICategory } from "@/interfaces/ICategory";
+import Card from "@/components/productsCard/Card";
+import SearchBar from "@/components/SearchBar"; // Correcta importación
+import { useEffect, useState } from "react";
 
-export type CategoryName = "Fitness Equipment" | "Yoga Accessories" | "Supplements";
 
-const categoryImages: Record<CategoryName, string> = {
+// Importamos las categorías pre-cargadas
+import categoriesToPreLoad from "@/helpers/categories";
+
+// Ajustamos la estructura de categorías con la interfaz ICategory
+const categoryImages: Record<string, string> = {
     "Fitness Equipment": "/Pesa.png",
     "Yoga Accessories": "/mat.png",
     "Supplements": "/supplement.png",
@@ -21,22 +23,22 @@ interface ProductsProps {
   searchQuery: string;  
 }
 
-
 const Products: React.FC<ProductsProps> = ({ searchQuery }) => { 
-    const [selectedCategory, setSelectedCategory] = useState<CategoryName | null>(null);
-    const [filteredProducts, setFilteredProducts] = useState(arrayProducts);
+    const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+    const [filteredProducts, setFilteredProducts] = useState<IProducts[]>([]);
 
     const currentDate = new Date();
     const deadline = new Date("2024-12-31");
 
     const [products, setProducts] = useState<IProducts[]>([]);
 
+    // Fetch products on mount
     useEffect(() => {
         const fetchProducts = async () => {
             try {
                 const data = await getProducts();
                 setProducts(data);
-                setFilteredProducts(data);
+                setFilteredProducts(data);  // Initialize filtered products with all products
             } catch (error) {
                 console.error("Error fetching products:", error);
             }
@@ -44,6 +46,7 @@ const Products: React.FC<ProductsProps> = ({ searchQuery }) => {
         fetchProducts();
     }, []);
 
+    // Update filtered products whenever searchQuery, selectedCategory, or products change
     useEffect(() => {
         const filteredByCategory = selectedCategory
             ? products.filter(product => product.category === selectedCategory)
@@ -57,8 +60,16 @@ const Products: React.FC<ProductsProps> = ({ searchQuery }) => {
         console.log("Producto seleccionado:", product);
     };
 
+    // Handle search query update
+    const handleSearch = (query: string) => {
+        setFilteredProducts(filterProducts(products, query));  // Filter products based on query
+    };
+
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-black">
+            {/* SearchBar now accepts the handleSearch function */}
+            <SearchBar onSearch={handleSearch} />
+
             {currentDate < deadline && (
                 <div className="relative text-white text-center w-full py-20">
                     <video
@@ -77,18 +88,17 @@ const Products: React.FC<ProductsProps> = ({ searchQuery }) => {
                 Everything for your favorite sports
             </h1>
 
-
             <div className="flex justify-center space-x-10 mb-8">
-                {categories.map((category) => (
+                {categoriesToPreLoad.map((category: ICategory) => (
                     <div 
                         key={category.id} 
                         className={`flex flex-col items-center cursor-pointer ${
                             selectedCategory === category.name ? "opacity-100" : "opacity-50"
                         }`}
-                        onClick={() => setSelectedCategory(category.name as CategoryName)}
+                        onClick={() => setSelectedCategory(category.name)}
                     >
                         <img
-                            src={categoryImages[category.name as CategoryName]}
+                            src={categoryImages[category.name]}
                             alt={category.name}
                             className="w-20 h-20 object-contain mb-2 hover:opacity-80"
                         />
