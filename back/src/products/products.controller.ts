@@ -44,4 +44,9 @@ export class ProductsController {
   ){
     return this.productsService.updateProduct(id, product, file)
   }
+
+  @Get('category/:categoryId')
+  getProductsByCategory(@Param('categoryId') categoryId: string) {
+  return this.productsService.getProductsByCategory(categoryId);
+}
 }
