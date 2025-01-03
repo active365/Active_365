@@ -5,7 +5,7 @@ export interface IRegisterData {
     phone: number;
     address: string;
     city: string;
-    height: number;
-    weight: number;
+    height?: number;
+    weight?: number;
   }
   
