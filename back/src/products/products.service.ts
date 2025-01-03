@@ -145,4 +145,16 @@ export class ProductsService {
     return await this.productsRepository.save(productUpdate);
   }
 
+  async getProductsByCategory(categoryId: string) {
+    const products = await this.productsRepository.find({
+      where: { category: { id: categoryId } },
+      relations: ['category'],
+      select: ['id', 'name', 'description', 'price', 'stock', 'imgUrl', 'category', 'subcategory']
+    });
+  
+    if (products.length === 0) {
+      throw new NotFoundException(`No products found for category with ID ${categoryId}.`);
+    }
+    return products;
+  }
 }
