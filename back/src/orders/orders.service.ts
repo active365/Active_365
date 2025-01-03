@@ -1,5 +1,6 @@
 import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { EmailService } from 'src/email/email.service';
 import { ProductOrderDto } from 'src/dto/product-order.dto';
 import { OrderDetails } from 'src/entities/orderDetails.entity';
 import { OrderProduct } from 'src/entities/orderProduct.entity';
@@ -19,7 +20,8 @@ export class OrdersService {
         @InjectRepository(OrderDetails)
         private orderDetailsRepository: Repository<OrderDetails>,
         @InjectRepository(Products)
-        private productsRepository: Repository<Products>
+        private productsRepository: Repository<Products>,
+        private readonly emailService: EmailService,
     ){}
 
     async createOrder(userId: string, products: ProductOrderDto[]) {
@@ -61,9 +63,25 @@ export class OrdersService {
             await manager.save(orderDetails);
 
             newOrder.orderDetails = orderDetails;
+
             await manager.save(newOrder);
-           return manager.findOne(Orders, { where: { id: newOrder.id }, relations: ['orderDetails'] });
+            await this.emailService.sendOrderConfirmationEmail(
+                user.email,
+                {
+                    user: user,
+                    date: newOrder.date,
+                    orderDetails,
+                    totalPrice,
+                    products: OrderProducts.map((orderProduct) => ({
+                        name: orderProduct.product.name,
+                        quantity: orderProduct.quantity,
+                        price: orderProduct.price,
+                    })),
+                },
+            );
+            return manager.findOne(Orders, { where: { id: newOrder.id }, relations: ['orderDetails'] });
         });
+
     }
     
     

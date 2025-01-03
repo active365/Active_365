@@ -33,4 +33,19 @@ export class CreateProductDto {
     @ApiProperty()
     @IsUrl()
     imgUrl: string;
+
+    @IsOptional()
+    @IsString()
+    subcategory: string;
+}
+
+
+export class FilterProductsDto {
+    @IsOptional()
+    @IsString()
+    category?: string;
+
+    @IsOptional()
+    @IsString()
+    subcategory?: string; 
 }

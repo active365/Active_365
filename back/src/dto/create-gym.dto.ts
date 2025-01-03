@@ -1,6 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsEmail, IsEmpty, IsIn, IsInt, IsNotEmpty, IsString, Matches, MaxLength, MinLength } from "class-validator";
-import { userRoles } from "src/enums/userRoles.enum";
 
 export class CreateGymDto {
 
@@ -44,12 +43,6 @@ export class CreateGymDto {
     @ApiProperty()
     city: string;
 
-    @IsEmpty()
-    @IsString()
-    @MaxLength(15)
-    @IsIn([userRoles.registered, userRoles.partner])
-    @ApiProperty()
-    rol: string;
 }
 export class LoginGymDto {
     @IsNotEmpty()
