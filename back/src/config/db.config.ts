@@ -13,7 +13,7 @@ const config = {
     entities: [`dist/**/*.entity{.ts,.js}`],
     migrations: [`dist/**/migrations/*{.ts,.js}`],
     autoLoadEntities: true,
-    dropSchema: false,
+    dropSchema: true,
     synchronize: true,
 };
 export default registerAs('typeorm', () => config);
