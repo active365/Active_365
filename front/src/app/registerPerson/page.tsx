@@ -1,6 +1,8 @@
 "use client";
 import { useState } from "react";
 import validateRegister from "@/helpers/validateRegister";
+import fetchRegister from "../api/RegisterAPI";
+import { useRouter } from "next/navigation";
 
 const RegisterPerson: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -9,6 +11,9 @@ const RegisterPerson: React.FC = () => {
     address: "",
     email: "",
     password: "",
+    city: "",
+    height: "",
+    weight: ""
   });
 
   const [errors, setErrors] = useState<Record<string, string | null>>({});
@@ -17,6 +22,8 @@ const RegisterPerson: React.FC = () => {
     uppercase: false,
     special: false,
   });
+
+  const router = useRouter()
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -42,7 +49,7 @@ const RegisterPerson: React.FC = () => {
     }
   };
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
     const validationErrors: Record<string, string | null> = {};
@@ -59,9 +66,20 @@ const RegisterPerson: React.FC = () => {
     setErrors(validationErrors);
 
     if (!hasErrors) {
-      console.log("Form submitted successfully:", formData);
-      // Aquí puedes enviar los datos al backend
+      const response = await fetchRegister({
+        ...formData,
+        phone: Number(formData.phone),
+        height: Number(formData.height),
+        weight: Number(formData.weight),
+      });
+    
+      if (response) {
+        setTimeout(() => {
+          router.push("/login");
+        }, 1500); // Espera 1.5 segundos antes de redirigir
+      }
     }
+    
   };
 
   return (
@@ -69,7 +87,7 @@ const RegisterPerson: React.FC = () => {
       <div className="w-full max-w-md bg-white rounded-lg shadow p-6 space-y-6">
         <h1 className="text-2xl font-bold text-black text-center">Register Person</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
-          {["name", "phone", "address", "email", "password"].map((field) => (
+          {["name", "phone", "address", "email", "city", "height", "weight", "password"].map((field) => (
             <div key={field}>
               <label htmlFor={field} className="block mb-2 text-sm font-medium text-black">
                 {field.charAt(0).toUpperCase() + field.slice(1)}

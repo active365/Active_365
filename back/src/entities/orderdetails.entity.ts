@@ -1,20 +1,21 @@
-import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { v4 as uuid } from 'uuid';
-import { Products } from "./products.entity";
+
 import { Orders } from "./orders.entity";
+import { OrderProduct } from "./orderProduct.entity";
+
 @Entity({ name: 'OrderDetails' })
 export class OrderDetails {
     @PrimaryGeneratedColumn('uuid')
     id: string = uuid();
 
     @Column({ type: 'decimal', precision: 10, scale: 2, nullable: false })
-    price: number;
+    totalPrice: number;
 
-    @ManyToMany(() => Products)
-    @JoinTable({ name: 'orderdetails_products' })
-    product: Products[];
-
-    @OneToOne(() => Orders, (order) => order.orderdetails)
+    @OneToOne(() => Orders, (order) => order.orderDetails)
     @JoinColumn()
     order: Orders;
+
+    @OneToMany(() => OrderProduct, (orderProduct) => orderProduct.orderDetails, { cascade: true })
+    orderProducts: OrderProduct[];
 }

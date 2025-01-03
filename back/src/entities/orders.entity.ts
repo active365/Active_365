@@ -1,7 +1,7 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { v4 as uuid } from 'uuid';
 import { Users } from "./users.entity";
-import { OrderDetails } from "./orderdetails.entity";
+import { OrderDetails } from "./orderDetails.entity";
 @Entity({name: 'Orders'})
 export class Orders {
     @PrimaryGeneratedColumn('uuid')
@@ -14,7 +14,7 @@ export class Orders {
     @JoinColumn()
     user: Users;
 
-    @OneToOne(() => OrderDetails, (orderdetails) => orderdetails.order)
+    @OneToOne(() => OrderDetails, (orderDetails) => orderDetails.order, {cascade: true})
     @JoinColumn()
-    orderdetails: OrderDetails;
+    orderDetails: OrderDetails;
 }

@@ -1,8 +1,9 @@
-// components/RootLayout.tsx
 import "@/app/globals.css";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
-import { CartProvider } from "@/context/CartContext"; 
+import { ContextProvider } from "@/context/GeneralContext";
+import { Toaster } from "react-hot-toast";
+import { UserProvider } from "@/context/UserContext"
 
 
 export default function RootLayout({
@@ -13,11 +14,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <CartProvider>
+        <ContextProvider>
+        <UserProvider> 
           <Navbar />
+          <Toaster position="top-center" reverseOrder={false} />
           <main>{children}</main>
-        <Footer />
-        </CartProvider>
+          <Footer />
+          </UserProvider>
+        </ContextProvider>
       </body>
     </html>
   );
