@@ -7,7 +7,7 @@ import { ILoginData, ILoginErrors } from "@/interfaces/ILogin";
 import { UserContext } from "@/context/UserContext";
 
 const Login: React.FC = () => {
-  const { handleLogin, handleGoogleLogin } = useContext(UserContext); // Consumir el contexto
+  const { handleLogin } = useContext(UserContext); // Consumir el contexto
 
   const [loginData, setLoginData] = useState<ILoginData>({
     email: "",
@@ -52,6 +52,11 @@ const Login: React.FC = () => {
       await handleLogin(loginData); // Llamada al método handleLogin
     }
   };
+
+  const handleGoogleLogin = () => {
+    
+  };
+
 
   return (
     <section className="bg-gray-dark h-screen flex items-center justify-center">

@@ -2,10 +2,9 @@
 import { createContext, useState, useEffect, ReactNode } from "react";
 import Cookies from "js-cookie"
 import { IUserSession, ILoginData } from "@/interfaces/ILogin";
-import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import fetchLogin from "@/app/api/LoginAPI";
-import fetchLoginGoogle from "@/app/api/LoginGoogleAPI";
+
 
 interface UserContextType {
   userSession: IUserSession | null;
@@ -13,7 +12,7 @@ interface UserContextType {
   initializeUserSession: () => void;
   handleLogout: () => Promise<void>;
   handleLogin: (loginData: ILoginData) => Promise<void>;
-  handleGoogleLogin: () => Promise<void>;
+
 }
 
 export const UserContext = createContext<UserContextType>({
@@ -22,7 +21,6 @@ export const UserContext = createContext<UserContextType>({
   initializeUserSession: () => {},
   handleLogout: async () => {},
   handleLogin: async () => {},
-  handleGoogleLogin: async () => {},
 });
 
 interface UserProviderProps {
@@ -45,8 +43,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
   const handleLogout = async () => {
     Cookies.remove("loginData");
-    toast.success("Successfully logged out. Redirecting to home...");
-    router.push("/home");
+    router.push("/");
     setTimeout(() => {
       window.location.reload();
     }, 500);
@@ -57,29 +54,10 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     if (user) {
       Cookies.set("loginData", JSON.stringify(user), { expires: 7 });
       setUserSession(user);
-      toast.success("Login successful! Welcome back.");
       router.push("/");
-    } else {
-      toast.error("Login failed. Invalid credentials, please try again.");
-    }
+    } 
   };
 
-  const handleGoogleLogin = async () => {
-    try {
-      const user = await fetchLoginGoogle(); // Llama a la API para iniciar sesión con Google
-      if (user) {
-        Cookies.set("loginData", JSON.stringify(user), { expires: 7 });
-        setUserSession(user);
-        toast.success("Login with Google successful! Welcome back.");
-        router.push("/");
-      } else {
-        toast.error("Google login failed. Please try again.");
-      }
-    } catch (error) {
-      console.error("Google login error:", error);
-      toast.error("An error occurred during Google login. Please try again.");
-    }
-  };
 
   useEffect(() => {
     initializeUserSession();
@@ -91,7 +69,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     initializeUserSession,
     handleLogout,
     handleLogin,
-    handleGoogleLogin
+
   };
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;

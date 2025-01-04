@@ -6,12 +6,12 @@ import googleOauthConfig from 'src/config/googleOauth.config';
 import { Users } from 'src/entities/users.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { GoogleStrategyForUsers } from 'src/strategies/googleUser.strategy';
+import { EmailModule } from 'src/email/email.module';
 
 @Module({
   imports: [ConfigModule.forFeature(googleOauthConfig),
-            TypeOrmModule.forFeature([Users])],
+            TypeOrmModule.forFeature([Users]), EmailModule],
   controllers: [AuthUsersController],
   providers: [AuthUsersService, GoogleStrategyForUsers],
 })
 export class AuthUsersModule {}
- 
