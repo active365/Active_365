@@ -3,15 +3,16 @@
 
 import React, { useState, useEffect } from "react";
 import Card from "@/components/productsCard/Card";
-import { arrayProducts } from "@/helpers/arrayProducts"; 
-import { categories } from "@/helpers/arrayProducts";
 import { filterProducts } from "@/helpers/filterProducts"; 
 import { IProducts } from "@/interfaces/IProducts";
 import { getProducts } from "../api/getProducts";
 
-export type CategoryName = "Fitness Equipment" | "Yoga Accessories" | "Supplements";
+interface Category {
+  id: string;
+  name: string;
+}
 
-const categoryImages: Record<CategoryName, string> = {
+const categoryImages: Record<string, string> = {
     "Fitness Equipment": "/Pesa.png",
     "Yoga Accessories": "/mat.png",
     "Supplements": "/supplement.png",
@@ -21,37 +22,65 @@ interface ProductsProps {
   searchQuery: string;  
 }
 
-
 const Products: React.FC<ProductsProps> = ({ searchQuery }) => { 
-    const [selectedCategory, setSelectedCategory] = useState<CategoryName | null>(null);
-    const [filteredProducts, setFilteredProducts] = useState(arrayProducts);
-
-    const currentDate = new Date();
-    const deadline = new Date("2024-12-31");
-
+    const [categories, setCategories] = useState<Category[]>([]); // Guardar categorías
+    const [selectedCategory, setSelectedCategory] = useState<string | null>(null); // Guardar el ID de la categoría seleccionada
+    const [filteredProducts, setFilteredProducts] = useState<IProducts[]>([]);
     const [products, setProducts] = useState<IProducts[]>([]);
 
+    // Obtener las categorías desde la API
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const response = await fetch("http://localhost:3000/categories");
+                const data = await response.json();
+                setCategories(data); // Establecer categorías en el estado
+            } catch (error) {
+                console.error("Error fetching categories:", error);
+            }
+        };
+        fetchCategories();
+    }, []);
+
+    // Obtener todos los productos (si no hay categoría seleccionada)
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const data = await getProducts();
-                setProducts(data);
-                setFilteredProducts(data);
+                const response = await fetch("http://localhost:3000/products");
+                const data = await response.json();
+                setProducts(data); // Establecer todos los productos en el estado
             } catch (error) {
-                console.error("Error fetching products:", error);
+                console.error("Error fetching all products:", error);
             }
         };
-        fetchProducts();
-    }, []);
 
+        if (!selectedCategory) {
+            fetchProducts(); // Obtener todos los productos si no hay categoría seleccionada
+        }
+    }, [selectedCategory]);
+
+    // Obtener los productos filtrados por categoría (si hay una categoría seleccionada)
     useEffect(() => {
-        const filteredByCategory = selectedCategory
-            ? products.filter(product => product.category === selectedCategory)
-            : products;
+        if (selectedCategory) {
+            const fetchProductsByCategory = async (categoryId: string) => {
+                try {
+                    const response = await fetch(`http://localhost:3000/products/category/${categoryId}`);
+                    const data = await response.json();
+                    setProducts(data); // Establecer los productos filtrados por categoría
+                } catch (error) {
+                    console.error("Error fetching products for category:", error);
+                }
+            };
 
-        const finalFiltered = filterProducts(filteredByCategory, searchQuery);
-        setFilteredProducts(finalFiltered);
-    }, [searchQuery, selectedCategory, products]);
+            fetchProductsByCategory(selectedCategory); // Obtener productos de la categoría seleccionada
+        }
+    }, [selectedCategory]);
+
+    // Filtrar productos por búsqueda
+    useEffect(() => {
+        const filteredBySearch = filterProducts(products, searchQuery); // Filtrar por búsqueda
+        setFilteredProducts(filteredBySearch); // Establecer los productos filtrados por búsqueda
+    }, [searchQuery, products]);
 
     const handleProductSelect = (product: IProducts) => {
         console.log("Producto seleccionado:", product);
@@ -59,36 +88,22 @@ const Products: React.FC<ProductsProps> = ({ searchQuery }) => {
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-black">
-            {currentDate < deadline && (
-                <div className="relative text-white text-center w-full py-20">
-                    <video
-                        className="absolute inset-0 w-full h-full object-cover"
-                        autoPlay
-                        loop
-                        muted
-                    >
-                        <source src="/mostPopular.mp4" type="video/mp4" />
-                        Your browser does not support the video tag.
-                    </video>
-                </div>
-            )}
-
             <h1 className="mt-11 text-3xl font-semibold text-center text-white mb-8">
                 Everything for your favorite sports
             </h1>
 
-
+            {/* Barra de selección de categorías */}
             <div className="flex justify-center space-x-10 mb-8">
                 {categories.map((category) => (
                     <div 
                         key={category.id} 
                         className={`flex flex-col items-center cursor-pointer ${
-                            selectedCategory === category.name ? "opacity-100" : "opacity-50"
+                            selectedCategory === category.id ? "opacity-100" : "opacity-50"
                         }`}
-                        onClick={() => setSelectedCategory(category.name as CategoryName)}
+                        onClick={() => setSelectedCategory(category.id)} // Actualizar categoría seleccionada con el ID
                     >
                         <img
-                            src={categoryImages[category.name as CategoryName]}
+                            src={categoryImages[category.name] || "/default-category.png"} // Usar una imagen por defecto si no se encuentra la categoría
                             alt={category.name}
                             className="w-20 h-20 object-contain mb-2 hover:opacity-80"
                         />
@@ -97,6 +112,7 @@ const Products: React.FC<ProductsProps> = ({ searchQuery }) => {
                 ))}
             </div>
 
+            {/* Mostrar los productos filtrados */}
             <div>
                 {filteredProducts.length === 0 ? (
                     <p className="text-white">No products found</p>
