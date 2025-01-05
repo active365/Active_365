@@ -1,17 +1,13 @@
 'use client'
 
-import { getProducts } from "../api/getProducts";
+import React, { useState, useEffect } from "react";
 import { filterProducts } from "@/helpers/filterProducts"; 
 import { IProducts } from "@/interfaces/IProducts";
 import { ICategory } from "@/interfaces/ICategory";
 import Card from "@/components/productsCard/Card";
-import SearchBar from "@/components/SearchBar"; // Correcta importación
-import { useEffect, useState } from "react";
+import SearchBar from "@/components/SearchBar"; 
 import { categories } from "@/helpers/arrayProducts";
 
-
-
-// Ajustamos la estructura de categorías con la interfaz ICategory
 const categoryImages: Record<string, string> = {
     "Fitness Equipment": "/Pesa.png",
     "Yoga Accessories": "/mat.png",
@@ -25,64 +21,54 @@ interface ProductsProps {
 const Products: React.FC<ProductsProps> = ({ searchQuery }) => { 
     const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
     const [filteredProducts, setFilteredProducts] = useState<IProducts[]>([]);
-
-    const currentDate = new Date();
-    const deadline = new Date("2024-12-31");
-
     const [products, setProducts] = useState<IProducts[]>([]);
 
-    // Fetch products on mount
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const data = await getProducts();
+                const response = await fetch("http://localhost:3000/products");
+                const data = await response.json();
                 setProducts(data);
-                setFilteredProducts(data);  // Initialize filtered products with all products
             } catch (error) {
                 console.error("Error fetching products:", error);
             }
         };
+
         fetchProducts();
     }, []);
 
-    // Update filtered products whenever searchQuery, selectedCategory, or products change
     useEffect(() => {
-        const filteredByCategory = selectedCategory
-            ? products.filter(product => product.category === selectedCategory)
-            : products;
+        if (selectedCategory) {
+            const fetchProductsByCategory = async (categoryId: string) => {
+                try {
+                    const response = await fetch(`http://localhost:3000/products/category/${categoryId}`);
+                    const data = await response.json();
+                    setProducts(data);
+                } catch (error) {
+                    console.error("Error fetching products for category:", error);
+                }
+            };
 
-        const finalFiltered = filterProducts(filteredByCategory, searchQuery);
-        setFilteredProducts(finalFiltered);
-    }, [searchQuery, selectedCategory, products]);
+            fetchProductsByCategory(selectedCategory);
+        }
+    }, [selectedCategory]);
+
+    useEffect(() => {
+        const filteredBySearch = filterProducts(products, searchQuery);
+        setFilteredProducts(filteredBySearch);
+    }, [searchQuery, products]);
 
     const handleProductSelect = (product: IProducts) => {
         console.log("Producto seleccionado:", product);
     };
 
-    // Handle search query update
     const handleSearch = (query: string) => {
-        setFilteredProducts(filterProducts(products, query));  // Filter products based on query
+        setFilteredProducts(filterProducts(products, query));
     };
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-black">
-            {/* SearchBar now accepts the handleSearch function */}
             <SearchBar onSearch={handleSearch} />
-
-            {currentDate < deadline && (
-                <div className="relative text-white text-center w-full py-20">
-                    <video
-                        className="absolute inset-0 w-full h-full object-cover"
-                        autoPlay
-                        loop
-                        muted
-                    >
-                        <source src="/mostPopular.mp4" type="video/mp4" />
-                        Your browser does not support the video tag.
-                    </video>
-                </div>
-            )}
-
             <h1 className="mt-11 text-3xl font-semibold text-center text-white mb-8">
                 Everything for your favorite sports
             </h1>
@@ -92,12 +78,12 @@ const Products: React.FC<ProductsProps> = ({ searchQuery }) => {
                     <div 
                         key={category.id} 
                         className={`flex flex-col items-center cursor-pointer ${
-                            selectedCategory === category.name ? "opacity-100" : "opacity-50"
+                            selectedCategory === category.id ? "opacity-100" : "opacity-50"
                         }`}
-                        onClick={() => setSelectedCategory(category.name)}
+                        onClick={() => setSelectedCategory(category.id)}
                     >
                         <img
-                            src={categoryImages[category.name]}
+                            src={categoryImages[category.name] || "/default-category.png"}
                             alt={category.name}
                             className="w-20 h-20 object-contain mb-2 hover:opacity-80"
                         />

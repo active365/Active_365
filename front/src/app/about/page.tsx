@@ -57,7 +57,7 @@ const GymCard: React.FC<{
           />
         </div>
       )}
-      
+
       {/* Información del gimnasio */}
       <div className="p-4">
         <p className="text-sm text-gray-700 mb-2">
@@ -77,7 +77,7 @@ const GymCard: React.FC<{
         </p>
       </div>
 
-      {/* Recuadro para el enlace a Google Maps */}
+      {/* Recuadro para el enlace a Google Maps con imagen de fondo */}
       <div className="mt-4 p-4 bg-yellow-200 rounded-lg border border-gray-300">
         <h3 className="text-sm font-semibold text-gray-800">Location:</h3>
         {address && city ? (
@@ -85,7 +85,16 @@ const GymCard: React.FC<{
             href={googleMapsLink}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-blue-600 hover:underline"
+            className="block w-full mt-2 text-center py-2 text-white font-semibold"
+            style={{
+              backgroundImage: "url('https://motor.elpais.com/wp-content/uploads/2022/01/google-maps-22.jpg')",
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              borderRadius: '8px',
+              padding: '10px',
+              color: 'black', // Aseguramos que el texto se vea blanco
+              textAlign: 'center', // Alineamos el texto al centro
+            }}
           >
             View on Google Maps
           </a>
