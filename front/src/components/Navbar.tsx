@@ -40,7 +40,7 @@ const Navbar: React.FC = () => {
         </li>
         <li>
           {/* Enlace a la página de productos con el término de búsqueda */}
-          <Link href='/productSearch' className="button">
+          <Link href='/products/' className="button">
             <span className="p">Products</span>
           </Link>
         </li>
