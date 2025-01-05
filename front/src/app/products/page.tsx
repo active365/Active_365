@@ -1,17 +1,24 @@
-'use client'
+/* eslint-disable @next/next/no-img-element */
+'use client';
 
 import React, { useState, useEffect } from "react";
+import Card from "@/components/productsCard/Card";
 import { filterProducts } from "@/helpers/filterProducts"; 
 import { IProducts } from "@/interfaces/IProducts";
-import { ICategory } from "@/interfaces/ICategory";
-import Card from "@/components/productsCard/Card";
-import SearchBar from "@/components/SearchBar"; 
-import { categories } from "@/helpers/arrayProducts";
+import SearchBar from "@/components/SearchBar";
+
+interface Category {
+  id: string;
+  name: string;
+}
 
 const categoryImages: Record<string, string> = {
-    "Fitness Equipment": "/Pesa.png",
-    "Yoga Accessories": "/mat.png",
-    "Supplements": "/supplement.png",
+    "Nutritional Supplements": "/Pesa.png",
+    "Sports Apparel": "/mat.png",
+    "Home Equipment": "/supplement.png",
+    "Health & Wellness": "/Health.png",
+    "Training Accessories": "/Training Accessories.png",
+    
 };
 
 interface ProductsProps {
@@ -19,71 +26,94 @@ interface ProductsProps {
 }
 
 const Products: React.FC<ProductsProps> = ({ searchQuery }) => { 
-    const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+    const [categories, setCategories] = useState<Category[]>([]); // Guardar categorías
+    const [selectedCategory, setSelectedCategory] = useState<string | null>(null); // Guardar el ID de la categoría seleccionada
     const [filteredProducts, setFilteredProducts] = useState<IProducts[]>([]);
     const [products, setProducts] = useState<IProducts[]>([]);
 
+    // Obtener las categorías desde la API
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const response = await fetch("http://localhost:3000/categories");
+                const data = await response.json();
+                setCategories(data); // Establecer categorías en el estado
+            } catch (error) {
+                console.error("Error fetching categories:", error);
+            }
+        };
+        fetchCategories();
+    }, []);
+
+    // Obtener todos los productos (si no hay categoría seleccionada)
     useEffect(() => {
         const fetchProducts = async () => {
             try {
                 const response = await fetch("http://localhost:3000/products");
                 const data = await response.json();
-                setProducts(data);
+                setProducts(data); // Establecer todos los productos en el estado
             } catch (error) {
-                console.error("Error fetching products:", error);
+                console.error("Error fetching all products:", error);
             }
         };
 
-        fetchProducts();
-    }, []);
+        if (!selectedCategory) {
+            fetchProducts(); // Obtener todos los productos si no hay categoría seleccionada
+        }
+    }, [selectedCategory]);
 
+    // Obtener los productos filtrados por categoría (si hay una categoría seleccionada)
     useEffect(() => {
         if (selectedCategory) {
             const fetchProductsByCategory = async (categoryId: string) => {
                 try {
                     const response = await fetch(`http://localhost:3000/products/category/${categoryId}`);
                     const data = await response.json();
-                    setProducts(data);
+                    setProducts(data); // Establecer los productos filtrados por categoría
                 } catch (error) {
                     console.error("Error fetching products for category:", error);
                 }
             };
 
-            fetchProductsByCategory(selectedCategory);
+            fetchProductsByCategory(selectedCategory); // Obtener productos de la categoría seleccionada
         }
     }, [selectedCategory]);
 
+    // Filtrar productos por búsqueda
     useEffect(() => {
-        const filteredBySearch = filterProducts(products, searchQuery);
-        setFilteredProducts(filteredBySearch);
+        const filteredBySearch = filterProducts(products, searchQuery); // Filtrar por búsqueda
+        setFilteredProducts(filteredBySearch); // Establecer los productos filtrados por búsqueda
     }, [searchQuery, products]);
 
     const handleProductSelect = (product: IProducts) => {
         console.log("Producto seleccionado:", product);
     };
 
+    // Función para manejar el evento de búsqueda
     const handleSearch = (query: string) => {
-        setFilteredProducts(filterProducts(products, query));
+        setFilteredProducts(filterProducts(products, query)); // Filtrar los productos con la nueva búsqueda
     };
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-black">
-            <SearchBar onSearch={handleSearch} />
+            <SearchBar onSearch={handleSearch} /> {/* Pasamos handleSearch al componente SearchBar */}
+
             <h1 className="mt-11 text-3xl font-semibold text-center text-white mb-8">
                 Everything for your favorite sports
             </h1>
 
+            {/* Barra de selección de categorías */}
             <div className="flex justify-center space-x-10 mb-8">
-                {categories.map((category: ICategory) => (
+                {categories.map((category) => (
                     <div 
                         key={category.id} 
                         className={`flex flex-col items-center cursor-pointer ${
                             selectedCategory === category.id ? "opacity-100" : "opacity-50"
                         }`}
-                        onClick={() => setSelectedCategory(category.id)}
+                        onClick={() => setSelectedCategory(category.id)} // Actualizar categoría seleccionada con el ID
                     >
                         <img
-                            src={categoryImages[category.name] || "/default-category.png"}
+                            src={categoryImages[category.name] || "/default-category.png"} // Usar una imagen por defecto si no se encuentra la categoría
                             alt={category.name}
                             className="w-20 h-20 object-contain mb-2 hover:opacity-80"
                         />
@@ -92,6 +122,7 @@ const Products: React.FC<ProductsProps> = ({ searchQuery }) => {
                 ))}
             </div>
 
+            {/* Mostrar los productos filtrados */}
             <div>
                 {filteredProducts.length === 0 ? (
                     <p className="text-white">No products found</p>
