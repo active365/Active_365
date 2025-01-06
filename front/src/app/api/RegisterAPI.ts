@@ -17,15 +17,14 @@ export async function fetchRegister(registerData: IRegisterData) {
     }
 
     const data = await res.json();
-    toast.success("User registered successfully!"); // Notificación de éxito
+    toast.success("User registered successfully!"); 
     return data;
   } catch (error) {
-    // Manejo seguro del tipo del error
     if (error instanceof Error) {
-      toast.error(error.message); // Mostrar el mensaje del error
+      toast.error(error.message); 
       console.error(error.message);
     } else {
-      toast.error("An unexpected error occurred."); // Mensaje genérico para errores desconocidos
+      toast.error("An unexpected error occurred.");
       console.error("Unknown error:", error);
     }
   }

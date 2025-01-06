@@ -29,7 +29,6 @@ const RegisterGym: React.FC = () => {
       [name]: value,
     });
 
-    // Validación individual
     const error = validateRegister(name, value);
     setErrors((prevErrors) => ({
       ...prevErrors,

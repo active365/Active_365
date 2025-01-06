@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import { ContextProvider } from "@/context/GeneralContext";
 import { Toaster } from "react-hot-toast";
 import { UserProvider } from "@/context/UserContext"
+import { GymProvider } from "@/context/GymContext";
 
 
 export default function RootLayout({
@@ -16,10 +17,12 @@ export default function RootLayout({
       <body>
         <ContextProvider>
         <UserProvider> 
-          <Navbar />
-          <Toaster position="top-center" reverseOrder={false} />
-          <main>{children}</main>
-          <Footer />
+          <GymProvider>
+            <Navbar />
+            <Toaster position="top-center" reverseOrder={false} />
+            <main>{children}</main>
+            <Footer />
+          </GymProvider>
           </UserProvider>
         </ContextProvider>
       </body>
