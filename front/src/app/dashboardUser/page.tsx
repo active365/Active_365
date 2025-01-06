@@ -10,6 +10,7 @@ const DashboardPage: React.FC = () => {
 
   const [isOrdersOpen, setIsOrdersOpen] = useState(false);
   const [isMembershipOpen, setIsMembershipOpen] = useState(false);
+  const [isMyClassesOpen, setIsMyClassesOpen] = useState(false);
   const [isGymTrackerOpen, setIsGymTrackerOpen] = useState(false);
 
 
@@ -52,12 +53,12 @@ const DashboardPage: React.FC = () => {
 
       <div className="bg-white rounded-lg shadow-md mb-6">
         <button
-          onClick={() => setIsOrdersOpen(!isOrdersOpen)}
+          onClick={() => setIsMyClassesOpen(!isMyClassesOpen)}
           className="w-full text-left px-6 py-4 text-2xl font-semibold text-gray-600 hover:bg-gray-200 transition"
         >
           My Classes
         </button>
-        {isOrdersOpen && (
+        {isMyClassesOpen && (
           <MyClasses/>
         )}
       </div>
