@@ -1,6 +1,5 @@
 import { getProductsByCategoryOrName } from '@/app/api/getProducts';
 import Card from '@/components/productsCard/Card';
-import { IProducts } from '@/interfaces/IProducts';
 import React from 'react';
 
 const Products: React.FC<{ params: { categoryorname: string } }> = async ({ params }) => {
@@ -11,9 +10,11 @@ const Products: React.FC<{ params: { categoryorname: string } }> = async ({ para
       <h1 className="text-2xl font-bold text-center mb-6">Our Products</h1>
       <div className="flex flex-wrap justify-center">
         {products.length ? (
-          <Card products={products} onProductSelect={function (product: IProducts): void {
-                      throw new Error('Function not implemented.');
-                  } } /> // Ahora pasas el array completo de productos
+          <Card
+            products={products}
+            onProductSelect={() => {
+            }}
+          /> // Ahora se define como una función vacía sin parámetros no utilizados
         ) : (
           <div>Products not found</div>
         )}
