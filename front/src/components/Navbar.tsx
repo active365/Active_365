@@ -6,19 +6,23 @@ import Link from "next/link";
 import React, { useContext } from "react";
 import NavbarAuth from "./NavbarAuth";
 import NavbarGuest from "./NavbarGuest";
-//import SearchBar from "./SearchBar";
+import { GymContext } from "@/context/GymContext";
+import NavbarGym from "./NavbarGym";
 
 const Navbar: React.FC = () => {
   const { userSession } = useContext(UserContext);
-  //const [searchTerm, setSearchTerm] = useState(''); // Estado para la búsqueda
+  const { gymSession } = useContext(GymContext);
 
-
-
-  // Función para actualizar el término de búsqueda
-  /*const handleSearch = (term: string) => {
-    setSearchTerm(term)
-    console.log(term);
-  };*/
+  // Determinar qué Navbar mostrar
+  const renderNavbar = () => {
+    if (userSession) {
+      return <NavbarAuth />;
+    } else if (gymSession) {
+      return <NavbarGym />;
+    } else {
+      return <NavbarGuest />;
+    }
+  };
 
   return (
     <nav className="flex justify-between items-center py-4 bg-black">
@@ -27,6 +31,7 @@ const Navbar: React.FC = () => {
         <img src="/logo.png" alt="Logo" className="h-20" />
       </div>
 
+      {/* Navegación principal */}
       <ul className="flex space-x-4 ml-4">
         <li>
           <Link href="/" className="button">
@@ -39,7 +44,6 @@ const Navbar: React.FC = () => {
           </Link>
         </li>
         <li>
-          {/* Enlace a la página de productos con el término de búsqueda */}
           <Link href='/productSearch' className="button">
             <span className="p">Products</span>
           </Link>
@@ -56,9 +60,9 @@ const Navbar: React.FC = () => {
         </li>
       </ul>
 
+      {/* Renderizado condicional del Navbar */}
       <div className="ml-auto mr-4 space-x-4 flex items-center">
-      {userSession ? <NavbarAuth /> : <NavbarGuest />}
-        
+        {renderNavbar()}
       </div>
     </nav>
   );
