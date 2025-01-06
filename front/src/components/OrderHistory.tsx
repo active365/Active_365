@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import OrderDetailModal from "./OrderDetail";
 
 const OrderHistory: React.FC = () => {
-  const [orders, setOrders] = useState([
+  const orders = [
     { id: 1, date: "2024-04-01" },
     { id: 2, date: "2024-03-25" },
-  ]);
+  ]
 
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
