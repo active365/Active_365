@@ -1,4 +1,7 @@
+// components/Category.tsx
+
 import Image from "next/image";
+import Link from "next/link"; 
 import { categories } from "@/helpers/arrayProducts";
 
 const Category = () => {
@@ -24,13 +27,15 @@ const Category = () => {
 
                 return (
                     <div key={category.id} className="flex flex-col items-center">
-                        <Image
-                            src={getImage(category.name)}
-                            alt={category.name}
-                            width={80}
-                            height={70}
-                            className="mb-2"
-                        />
+                        <Link href={`/products/${category.name}`}>
+                            <Image
+                                src={getImage(category.name)}
+                                alt={category.name}
+                                width={80}
+                                height={70}
+                                className="mb-2 cursor-pointer"
+                            />
+                        </Link>
                         <span className="text-white text-sm text-center font-medium mb-8">
                             {category.name}
                         </span>

@@ -44,7 +44,12 @@ const Navbar: React.FC = () => {
           </Link>
         </li>
         <li>
+
           <Link href='/productSearch' className="button">
+
+          {/* Enlace a la página de productos con el término de búsqueda */}
+          <Link href='/products/' className="button">
+
             <span className="p">Products</span>
           </Link>
         </li>
