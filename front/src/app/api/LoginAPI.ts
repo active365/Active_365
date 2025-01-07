@@ -1,9 +1,11 @@
 import { ILoginData } from "@/interfaces/ILogin";
 import { toast } from "react-hot-toast";
 
+const APIURL = process.env.NEXT_PUBLIC_API_URL;
+
 export async function fetchLogin(loginData: ILoginData) {
   try {
-    const res = await fetch(`http://localhost:3000/auth-users/signin`, {
+    const res = await fetch(`${APIURL}/auth-users/signin`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
