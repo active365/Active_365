@@ -7,6 +7,7 @@ const PaymentForm: React.FC = () => {
   const [orderId, setOrderId] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const APIURL = process.env.NEXT_PUBLIC_API_URL 
 
   const handlePayment = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -20,8 +21,8 @@ const PaymentForm: React.FC = () => {
     }
 
     try {
-      const response = await fetch(`/api/checkout/${orderId}`, {
-        method: "GET",
+      const response = await fetch(`${APIURL}/checkout/${orderId}`, {
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${userSession?.token}`, 

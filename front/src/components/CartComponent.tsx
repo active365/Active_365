@@ -8,7 +8,8 @@ const CartComponent: React.FC = () => {
     const { cart, removeFromCart, clearCart } = useContext(GeneralContext);
     const user = useContext(UserContext);
     const [quantities, setQuantities] = useState<{ [key: number]: number }>({});
-    const isMember = true;
+
+    const isMember = user?.userSession?.user.role === "member"|| false; 
     const shippingCost = isMember ? 0 : 10;
 
     const totalProductsPrice = cart.reduce((total, item) => {
@@ -17,10 +18,15 @@ const CartComponent: React.FC = () => {
     }, 0);
 
     const totalPrice = totalProductsPrice + shippingCost;
+    const APIURL = process.env.NEXT_PUBLIC_API_URL 
+
+
+    const validateQuantity = (quantity: number, stock: number) =>
+        Math.max(1, Math.min(quantity, stock));
 
     const createOrder = async () => {
         try {
-            const response = await fetch("/api/orders", {
+            const response = await fetch(`/${APIURL}}/orders`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -39,7 +45,7 @@ const CartComponent: React.FC = () => {
             }
 
             const order = await response.json();
-            return order.id; 
+            return order.id;
         } catch (error) {
             console.error("Error creating order:", error);
             return null;
@@ -49,7 +55,18 @@ const CartComponent: React.FC = () => {
     const handleCheckout = async () => {
         const orderId = await createOrder();
         if (orderId) {
-            window.location.href = `/checkout/${orderId}`;
+            try {
+                const response = await fetch(`/api/checkout/${orderId}`);
+                if (!response.ok) {
+                    throw new Error("Failed to fetch Stripe session");
+                }
+
+                const data = await response.json();
+                window.location.href = data.url;
+            } catch (error) {
+                console.error("Error in Stripe checkout:", error);
+                alert("Error al procesar el pago. Inténtalo nuevamente.");
+            }
         } else {
             alert("Error al crear la orden. Inténtalo nuevamente.");
         }
@@ -73,15 +90,15 @@ const CartComponent: React.FC = () => {
                             <p className="text-sm text-gray-500">{item.stock} stock</p>
                             <div className="flex items-center mt-2">
                                 <button
-                                    onClick={() => {
-                                        const currentQty = quantities[item.id] || 1;
-                                        if (currentQty > 1) {
-                                            setQuantities({
-                                                ...quantities,
-                                                [item.id]: currentQty - 1,
-                                            });
-                                        }
-                                    }}
+                                    onClick={() =>
+                                        setQuantities((prev) => ({
+                                            ...prev,
+                                            [item.id]: validateQuantity(
+                                                (prev[item.id] || 1) - 1,
+                                                item.stock
+                                            ),
+                                        }))
+                                    }
                                     className="px-2 py-1 bg-yellow-400 text-white rounded-md hover:bg-yellow-500"
                                 >
                                     -
@@ -90,26 +107,26 @@ const CartComponent: React.FC = () => {
                                     type="number"
                                     value={quantities[item.id] || 1}
                                     onChange={(e) =>
-                                        setQuantities({
-                                            ...quantities,
-                                            [item.id]: Math.max(
-                                                1,
-                                                Math.min(parseInt(e.target.value, 10) || 1, item.stock)
+                                        setQuantities((prev) => ({
+                                            ...prev,
+                                            [item.id]: validateQuantity(
+                                                parseInt(e.target.value, 10) || 1,
+                                                item.stock
                                             ),
-                                        })
+                                        }))
                                     }
                                     className="w-12 text-center mx-2 p-1 border border-gray-300 rounded-md text-black"
                                 />
                                 <button
-                                    onClick={() => {
-                                        const currentQty = quantities[item.id] || 1;
-                                        if (currentQty < item.stock) {
-                                            setQuantities({
-                                                ...quantities,
-                                                [item.id]: currentQty + 1,
-                                            });
-                                        }
-                                    }}
+                                    onClick={() =>
+                                        setQuantities((prev) => ({
+                                            ...prev,
+                                            [item.id]: validateQuantity(
+                                                (prev[item.id] || 1) + 1,
+                                                item.stock
+                                            ),
+                                        }))
+                                    }
                                     className="px-2 py-1 bg-yellow-400 text-white rounded-md hover:bg-yellow-500"
                                 >
                                     +
@@ -158,8 +175,7 @@ const CartComponent: React.FC = () => {
             <div className="mt-6 flex justify-center">
                 <button
                     onClick={handleCheckout}
-                    className="bg-yellow-500 text-white py-2 px-6 rounded-md hover:bg-yellow-600"
-                    disabled={cart.length === 0}
+                    className="bg-green-500 text-white py-2 px-6 rounded-md hover:bg-green-600"
                 >
                     Checkout
                 </button>
