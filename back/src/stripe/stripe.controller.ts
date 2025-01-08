@@ -3,6 +3,7 @@ import {
   Get,
   Param,
   ParseUUIDPipe,
+  Post,
 } from '@nestjs/common';
 import { StripeService } from './stripe.service';
 
@@ -20,8 +21,13 @@ export class StripeController {
     return this.stripeService.cancelCheckout();
   }
 
-  @Get('/:orderId')
+  @Post('/:orderId')
   async getCheckoutSession(@Param('orderId', ParseUUIDPipe) orderId: string) {
     return this.stripeService.getCheckoutSession(orderId);
+  }
+
+  @Get('/status/:sessionId')
+  async sessionStatus(@Param('sessionId') sessionId: string) {
+    return this.stripeService.sessionStatus(sessionId);
   }
 }
