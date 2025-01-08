@@ -20,3 +20,4 @@ const searchPage: React.FC = () => {
 };
 
 export default searchPage;
+
