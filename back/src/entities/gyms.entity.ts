@@ -35,6 +35,12 @@ import {
   
     @Column({ length: 50, nullable: true })
     city: string;
+
+    @Column({ type: 'decimal', precision: 10, scale: 6, nullable: true })
+    latitude: number;
+
+    @Column({ type: 'decimal', precision: 10, scale: 6, nullable: true })
+    longitude: number;
   
     @Column({ type: 'varchar', length: 15, nullable: false, default: userRoles.partner })
     rol: string;
