@@ -1,9 +1,11 @@
 import { IRegisterData } from "../../interfaces/IRegister";
 import { toast } from "react-hot-toast";
 
+const APIURL = process.env.NEXT_PUBLIC_API_URL;
+
 export async function fetchRegisterGym(registerData: IRegisterData) {
   try {
-    const res = await fetch(`http://localhost:3000/auth-gyms/signup`, {
+    const res = await fetch(`${APIURL}/auth-gyms/signup`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
