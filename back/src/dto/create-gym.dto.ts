@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsEmail, IsEmpty, IsIn, IsInt, IsNotEmpty, IsString, Matches, MaxLength, MinLength } from "class-validator";
+import { IsEmail, IsEmpty, IsIn, IsInt, IsNotEmpty, IsNumber, IsString, Matches, MaxLength, MinLength } from "class-validator";
 
 export class CreateGymDto {
 
@@ -42,6 +42,16 @@ export class CreateGymDto {
     @MaxLength(20)
     @ApiProperty()
     city: string;
+
+    // @IsNotEmpty()
+    // @IsNumber()
+    // @ApiProperty()
+    // latitude: number;
+
+    // @IsNotEmpty()
+    // @IsNumber()
+    // @ApiProperty()
+    // longitude: number;
 
 }
 export class LoginGymDto {

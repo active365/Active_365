@@ -27,13 +27,15 @@ export class GymsService {
       newGym.phone = gym.phone;
       newGym.address = gym.address;
       newGym.city = gym.city;
+      newGym.latitude = gym.latitude;
+      newGym.longitude = gym.longitude;
 
       await this.gymsRepository
       .createQueryBuilder()
       .insert()
       .into(Gyms)
       .values(newGym)
-      .orUpdate(['password', 'phone', 'address', 'city', 'name'], ['email'])
+      .orUpdate(['password', 'phone', 'address', 'city', 'name', 'latitude', 'longitude'], ['email'])
       .execute()
     });
     return `The Gyms have been added`
@@ -42,7 +44,7 @@ export class GymsService {
   async getGyms() {
     const gyms = await this.gymsRepository.find({
       relations: ['users'],
-      select: ['id', 'name', 'email', 'phone' ,'address', 'city', 'rol', 'createdAt', 'users'],
+      select: ['id', 'name', 'email', 'phone' ,'address', 'city', 'latitude', 'longitude', 'rol', 'createdAt', 'users'],
     });
     if(gyms.length === 0) {
       throw new NotFoundException('No gyms registered in the database were found');
@@ -54,7 +56,7 @@ export class GymsService {
     const gymFound = await this.gymsRepository.findOne({
       where: { id: id },
       relations: ['users'],
-      select: ['id', 'name', 'email', 'phone' ,'address', 'city', 'rol', 'createdAt'],
+      select: ['id', 'name', 'email', 'phone' ,'address', 'city', 'latitude', 'longitude', 'rol', 'createdAt'],
   });
   if (!gymFound) {
       throw new NotFoundException(`Gym with ID ${id} not found.`);
