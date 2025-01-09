@@ -5,6 +5,7 @@ import { Classes } from 'src/entities/class.entity';
 import { Gyms } from 'src/entities/gyms.entity';
 import { FilesUploadService } from 'src/files-upload/files-upload.service';
 import { DataSource, Repository } from 'typeorm';
+import * as data from 'src/seeders/classes.json';
 
 @Injectable()
 export class ClassesService {
@@ -16,6 +17,29 @@ export class ClassesService {
     private gymsRepository: Repository<Gyms>,
     private filesUploadService: FilesUploadService,
   ) {}
+
+  async classesSeeder() {
+    const gyms = await this.gymsRepository.find();
+
+    for (const element of data.classes) {
+      const gymData = gyms.find((gym) => gym.name === element.gym);
+      if (!gymData) {
+        throw new NotFoundException(`Gym with name ${element.gym} not found`);
+      }
+      else {
+        const newClass = new Classes();
+        newClass.name = element.name;
+        newClass.description = element.description;
+        newClass.capacity = element.capacity;
+        newClass.duration = element.duration;
+        newClass.date = new Date (element.date);
+        newClass.time = element.time;
+        newClass.gym = gymData;
+        await this.classesRepository.save(newClass);
+      }
+    }
+    return 'Classes added';
+  }
 
   async getClasses() {
     const classes = await this.classesRepository.find({
@@ -41,6 +65,38 @@ export class ClassesService {
     });
     if (!classes) {
       throw new NotFoundException(`Class with id ${id} not found`);
+    }
+    return classes;
+  }
+
+  async getClassesByGymId(gymId: string) {
+    const classes = await this.classesRepository.find({
+      relations: ['gym'],
+      where: { gym: { id: gymId } },
+      select: {
+        gym: {
+          name: true,
+        },
+      },
+    });
+    if (classes.length === 0) {
+      throw new NotFoundException(`Classes for gym with id ${gymId} not found`);
+    }
+    return classes;
+  }
+
+  async getClassesByGymName(name: string) {
+    const classes = await this.classesRepository.find({
+      relations: ['gym'],
+      where: { gym: { name } },
+      select: {
+        gym: {
+          name: true,
+        },
+      },
+    });
+    if (classes.length === 0) {
+      throw new NotFoundException(`Classes for gym ${name} not found`);
     }
     return classes;
   }

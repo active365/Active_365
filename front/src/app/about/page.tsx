@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Image from 'next/image'; // Importamos el componente de Next.js
+import Image from 'next/image';
 
 const GymCard: React.FC<{
   name: string;
@@ -9,26 +9,26 @@ const GymCard: React.FC<{
   phone: number;
   address: string;
   city: string;
+  latitude: number;
+  longitude: number;
   createdAt: Date;
   imageUrl: string;
   gymId: string;
-}> = ({ name, email, phone, address, city, createdAt, imageUrl, gymId }) => {
+}> = ({ name, email, phone, address, city, latitude, longitude, createdAt, imageUrl, gymId }) => {
   const [classes, setClasses] = useState<{ id: string; name: string; time: string }[]>([]);
   const [loadingClasses, setLoadingClasses] = useState<boolean>(true);
   const [errorClasses, setErrorClasses] = useState<string | null>(null);
 
-  const googleMapsLink = `https://www.google.com/maps?q=${encodeURIComponent(address)},${encodeURIComponent(city)}`;
+  const googleMapsLink = `https://www.google.com/maps?q=${latitude},${longitude}`;
 
   useEffect(() => {
     const fetchClasses = async () => {
       try {
-        const response = await fetch(`http://localhost:3000/Classes?gymId=${gymId}`);
-        if (!response.ok) {
-          throw new Error('Error fetching classes');
-        }
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/classes?gymId=${gymId}`);
+        if (!response.ok) throw new Error('Error fetching classes');
         const data = await response.json();
         setClasses(data);
-      } catch {
+      } catch (error) {
         setErrorClasses('Failed to load classes');
       } finally {
         setLoadingClasses(false);
@@ -61,7 +61,7 @@ const GymCard: React.FC<{
           <strong>Email:</strong> {email}
         </p>
         <p className="text-sm text-gray-700 mb-2">
-          <strong>Phone:</strong> {phone ? phone : 'Not provided'}
+          <strong>Phone:</strong> {phone || 'Not provided'}
         </p>
         <p className="text-sm text-gray-700 mb-2">
           <strong>Address:</strong> {address || 'Not provided'}
@@ -74,28 +74,19 @@ const GymCard: React.FC<{
         </p>
       </div>
 
-      <div className="mt-4 p-4 bg-yellow-200 rounded-lg border border-gray-300">
+      <div className="mt-4 p-4 bg-blue-200 rounded-lg border border-gray-300">
         <h3 className="text-sm font-semibold text-gray-800">Location:</h3>
-        {address && city ? (
+        {latitude && longitude ? (
           <a
             href={googleMapsLink}
             target="_blank"
             rel="noopener noreferrer"
-            className="block w-full mt-2 text-center py-2 text-white font-semibold"
-            style={{
-              backgroundImage: "url('https://motor.elpais.com/wp-content/uploads/2022/01/google-maps-22.jpg')",
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              borderRadius: '8px',
-              padding: '10px',
-              color: 'black',
-              textAlign: 'center',
-            }}
+            className="block mt-2 py-2 text-center bg-yellow-500 text-white rounded-lg"
           >
             View on Google Maps
           </a>
         ) : (
-          <p className="text-gray-600">No address available</p>
+          <p className="text-gray-600">Location not available</p>
         )}
       </div>
 
@@ -114,7 +105,7 @@ const GymCard: React.FC<{
             ))}
           </ul>
         ) : (
-          <p className="text-gray-600">Classes not available at the moment</p>
+          <p className="text-gray-600">No classes available</p>
         )}
       </div>
     </div>
@@ -123,20 +114,29 @@ const GymCard: React.FC<{
 
 const About: React.FC = () => {
   const [gyms, setGyms] = useState<
-    { id: string; name: string; email: string; phone: number; address: string; city: string; createdAt: Date; imageUrl: string }[]
+    {
+      id: string;
+      name: string;
+      email: string;
+      phone: number;
+      address: string;
+      city: string;
+      latitude: number;
+      longitude: number;
+      createdAt: Date;
+      imageUrl: string;
+    }[]
   >([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchGyms = async () => {
       try {
-        const response = await fetch('http://localhost:3000/Gyms');
-        if (!response.ok) {
-          throw new Error('Error fetching gyms');
-        }
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/Gyms`);
+        if (!response.ok) throw new Error('Error fetching gyms');
         const data = await response.json();
         setGyms(data);
-      } catch {
+      } catch (error) {
         console.error('Failed to load gyms');
       } finally {
         setLoading(false);
@@ -146,17 +146,14 @@ const About: React.FC = () => {
     fetchGyms();
   }, []);
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  if (loading) return <div className="text-center py-4">Loading...</div>;
 
-  if (!gyms || gyms.length === 0) {
-    return <div>No gyms found</div>;
-  }
+  if (!gyms || gyms.length === 0)
+    return <div className="text-center py-4">No gyms found</div>;
 
   return (
     <div className="container mx-auto py-8">
-      <h1 className="text-2xl font-bold text-center mb-6">About</h1>
+      <h1 className="text-2xl font-bold text-center mb-6">About Our Gyms</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {gyms.map((gym) => (
           <GymCard
@@ -167,6 +164,8 @@ const About: React.FC = () => {
             phone={gym.phone}
             address={gym.address}
             city={gym.city}
+            latitude={gym.latitude}
+            longitude={gym.longitude}
             createdAt={gym.createdAt}
             imageUrl={gym.imageUrl || ''}
           />

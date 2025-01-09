@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, OnModuleInit } from '@nestjs/common';
 import { ClassesService } from './classes.service';
 import { ClassesController } from './classes.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -11,4 +11,10 @@ import { FilesUploadModule } from 'src/files-upload/files-upload.module';
   controllers: [ClassesController],
   providers: [ClassesService],
 })
-export class ClassesModule {}
+export class ClassesModule implements OnModuleInit{
+  constructor(private readonly classesService: ClassesService) {}
+
+  async onModuleInit() {
+    await this.classesService.classesSeeder();
+  }
+}
