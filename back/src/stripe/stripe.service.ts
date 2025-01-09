@@ -48,7 +48,7 @@ export class StripeService {
          cancel_url: `${process.env.CLIENT_URL}/checkout/cancelled`,
        });
        console.log(session)
-       return { clientSecret: session.client_secret };
+       return session;
   }
 
   async sessionStatus(sessionId: string) {
