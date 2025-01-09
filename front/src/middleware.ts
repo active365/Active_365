@@ -6,7 +6,7 @@ export function middleware(request: NextRequest) {
 
     if (
         (pathname === "/dashboard" || pathname === "/cart" || pathname === "/orders") &&
-        !request.cookies.get("userData")?.value
+        !request.cookies.get("loginData")?.value
     ) {
         const loginURL = new URL("/login", request.nextUrl.origin);
         return NextResponse.redirect(loginURL);
@@ -14,7 +14,7 @@ export function middleware(request: NextRequest) {
 
     if (
         (pathname === "/login" || pathname === "/register") &&
-        request.cookies.get("userData")?.value
+        request.cookies.get("loginData")?.value
     ) {
         const homeURL = new URL("/home", request.nextUrl.origin);
         return NextResponse.redirect(homeURL);

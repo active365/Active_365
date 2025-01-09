@@ -8,7 +8,7 @@ import { categories } from "@/helpers/arrayProducts";
 import { filterProducts } from "@/helpers/filterProducts"; 
 import { IProducts } from "@/interfaces/IProducts";
 import { getProducts } from "@/app/api/getProducts";
-import { UserContext } from "@/context/UserContext"; // Importa el UserContext
+import { UserContext } from "@/context/UserContext"; 
 
 export type CategoryName = "Fitness Equipment" | "Yoga Accessories" | "Supplements";
 
@@ -23,7 +23,7 @@ interface ProductsProps {
 }
 
 const Products: React.FC<ProductsProps> = ({ searchQuery }) => { 
-    const  user  = useContext(UserContext); // Obtener el usuario del contexto
+    const  userSession  = useContext(UserContext); 
     const [selectedCategory, setSelectedCategory] = useState<CategoryName | null>(null);
     const [filteredProducts, setFilteredProducts] = useState(arrayProducts);
 
@@ -31,7 +31,7 @@ const Products: React.FC<ProductsProps> = ({ searchQuery }) => {
     const deadline = new Date("2024-12-31");
 
     const [products, setProducts] = useState<IProducts[]>([]);
-    const [loading, setLoading] = useState(true); // Estado de carga
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -114,7 +114,7 @@ const Products: React.FC<ProductsProps> = ({ searchQuery }) => {
                             <Card 
                                 products={filteredProducts} 
                                 onProductSelect={handleProductSelect} 
-                                isUserLoggedIn={!!user} 
+                                isUserLoggedIn={!!userSession} 
                             />
                         )}
                     </div>
