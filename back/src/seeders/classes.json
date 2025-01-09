@@ -12,6 +12,16 @@
     },
     {
       "name": "HIIT Blast",
+      "description": "Una clase de entrenamiento en intervalos de alta intensidad para quemar calorías rápidamente.",
+      "capacity": 25,
+      "duration": 45,
+      "imgUrl": "https://example.com/hiit-blast.jpg",
+      "date": "2025-01-10T00:00:00Z",
+      "time": "12:00:00",
+      "gym": "Windy City Strength & Conditioning"
+    },    
+    {
+      "name": "HIIT Blast",
       "description": "A high-intensity interval training class to burn calories fast.",
       "capacity": 25,
       "duration": 45,

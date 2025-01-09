@@ -6,6 +6,7 @@ import {
   ParseUUIDPipe,
   Post,
   Put,
+  Query,
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
@@ -14,13 +15,25 @@ import { CreateClassDto } from 'src/dto/create-class.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ValidateImagesPipe } from 'src/files-upload/file-validation.pipe';
 
+
 @Controller('classes')
 export class ClassesController {
   constructor(private readonly classesService: ClassesService) {}
 
+  
   @Get()
+  getClassesByGymId(@Query('gymId') gymId: string) {
+    return this.classesService.getClassesByGymId(gymId);
+  }
+
+  @Get('/all')
   getClasses() {
     return this.classesService.getClasses();
+  }
+  
+  @Get('/gym/:name')
+  getClasssesByGymName(@Param('name') name: string) {
+    return this.classesService.getClassesByGymName(name);
   }
 
   @Get(':id')

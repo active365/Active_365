@@ -69,6 +69,38 @@ export class ClassesService {
     return classes;
   }
 
+  async getClassesByGymId(gymId: string) {
+    const classes = await this.classesRepository.find({
+      relations: ['gym'],
+      where: { gym: { id: gymId } },
+      select: {
+        gym: {
+          name: true,
+        },
+      },
+    });
+    if (classes.length === 0) {
+      throw new NotFoundException(`Classes for gym with id ${gymId} not found`);
+    }
+    return classes;
+  }
+
+  async getClassesByGymName(name: string) {
+    const classes = await this.classesRepository.find({
+      relations: ['gym'],
+      where: { gym: { name } },
+      select: {
+        gym: {
+          name: true,
+        },
+      },
+    });
+    if (classes.length === 0) {
+      throw new NotFoundException(`Classes for gym ${name} not found`);
+    }
+    return classes;
+  }
+
   async addClasses(
     name: string,
     description: string,

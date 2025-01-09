@@ -24,7 +24,7 @@ const GymCard: React.FC<{
   useEffect(() => {
     const fetchClasses = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/Classes?gymId=${gymId}`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/classes?gymId=${gymId}`);
         if (!response.ok) throw new Error('Error fetching classes');
         const data = await response.json();
         setClasses(data);
