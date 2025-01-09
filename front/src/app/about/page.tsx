@@ -28,7 +28,8 @@ const GymCard: React.FC<{
         if (!response.ok) throw new Error('Error fetching classes');
         const data = await response.json();
         setClasses(data);
-      } catch (error) {
+      } catch {
+        // Eliminar 'error' aquí ya que no lo necesitamos
         setErrorClasses('Failed to load classes');
       } finally {
         setLoadingClasses(false);
@@ -113,20 +114,18 @@ const GymCard: React.FC<{
 };
 
 const About: React.FC = () => {
-  const [gyms, setGyms] = useState<
-    {
-      id: string;
-      name: string;
-      email: string;
-      phone: number;
-      address: string;
-      city: string;
-      latitude: number;
-      longitude: number;
-      createdAt: Date;
-      imageUrl: string;
-    }[]
-  >([]);
+  const [gyms, setGyms] = useState<{
+    id: string;
+    name: string;
+    email: string;
+    phone: number;
+    address: string;
+    city: string;
+    latitude: number;
+    longitude: number;
+    createdAt: Date;
+    imageUrl: string;
+  }[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -136,7 +135,8 @@ const About: React.FC = () => {
         if (!response.ok) throw new Error('Error fetching gyms');
         const data = await response.json();
         setGyms(data);
-      } catch (error) {
+      } catch {
+        // Eliminamos 'error' aquí también, no es necesario
         console.error('Failed to load gyms');
       } finally {
         setLoading(false);
