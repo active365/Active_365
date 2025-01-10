@@ -4,6 +4,7 @@ import { PrimaryGeneratedColumn } from "typeorm";
 import { Gyms } from "./gyms.entity";
 import { Orders } from "./orders.entity";
 import { userRoles } from "src/enums/userRoles.enum";
+import { Appointments } from "./appointments.entity";
 @Entity({name: "Users"})
 export class Users {
     @PrimaryGeneratedColumn('uuid')
@@ -45,6 +46,10 @@ export class Users {
     @ManyToOne(() => Gyms, gym => gym.users)
     @JoinColumn()
     gym: Gyms
+
+    @OneToMany(() => Appointments, appointment => appointment.user )
+    @JoinColumn()
+    appointments: Appointments[]
 
     @OneToMany(() => Orders, order => order.user)
     @JoinColumn()

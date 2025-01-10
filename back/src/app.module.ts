@@ -15,6 +15,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { StripeModule } from './stripe/stripe.module';
 
 import { EmailModule } from './email/email.module';
+import { AppointmentsModule } from './appointments/appointments.module';
 @Module({
   imports: [
     CategoriesModule,
@@ -39,7 +40,8 @@ import { EmailModule } from './email/email.module';
  AuthUsersModule,
  ClassesModule,
  StripeModule,
- EmailModule
+ EmailModule,
+ AppointmentsModule
   ]
 })
 export class AppModule {}
