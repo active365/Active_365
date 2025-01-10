@@ -15,7 +15,7 @@ export class GymsService {
   ) {}
 
   async addGyms() {
-    data.gyms.map(async (gym) => {
+    for (const gym of data.gyms) {
       
       const saltRounds = 10;
       const hashedPassword = await bcrypt.hash(gym.password, saltRounds);
@@ -37,7 +37,7 @@ export class GymsService {
       .values(newGym)
       .orUpdate(['password', 'phone', 'address', 'city', 'name', 'latitude', 'longitude'], ['email'])
       .execute()
-    });
+    };
     return `The Gyms have been added`
   }
   

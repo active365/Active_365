@@ -15,12 +15,14 @@ import { JwtModule } from '@nestjs/jwt';
 import { StripeModule } from './stripe/stripe.module';
 
 import { EmailModule } from './email/email.module';
+import { NotificationsModule } from './notifications/notifications.module';
+import { ScheduleModule } from '@nestjs/schedule';
 @Module({
   imports: [
     CategoriesModule,
     GymsModule,
-    UserModule,
     ProductsModule,
+    UserModule,
     OrdersModule,
     ConfigModule.forRoot({
     isGlobal: true,
@@ -35,11 +37,13 @@ import { EmailModule } from './email/email.module';
     signOptions: { expiresIn: '1d' },
     secret: process.env.JWT_SECRET,
   }),
+  ScheduleModule.forRoot(),
   AuthGymsModule,
- AuthUsersModule,
- ClassesModule,
- StripeModule,
- EmailModule
+  AuthUsersModule,
+  ClassesModule,
+  StripeModule,
+  EmailModule,
+  NotificationsModule
   ]
 })
 export class AppModule {}

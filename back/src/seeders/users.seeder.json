@@ -31,5 +31,16 @@
       "height": 1.80,
       "weight": 80.1,
       "password": "contraseña789"
+    },
+    {
+      "name": "Diana Franco",
+      "email": "dimafraq29@gmail.com",
+      "phone": 5551234567,
+      "address": "Calle 901, Avenida 234",
+      "city": "Los Angeles",
+      "rol": "registered",
+      "height": 1.80,
+      "weight": 80.1,
+      "password": "contraseña789"
     }
   ]
