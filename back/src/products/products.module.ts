@@ -14,6 +14,7 @@ import { FilesUploadModule } from 'src/files-upload/files-upload.module';
   ],
   controllers: [ProductsController],
   providers: [ProductsService],
+  exports: [ProductsService, TypeOrmModule]
 })
 export class ProductsModule implements OnModuleInit{
   constructor(private readonly productsService: ProductsService) {}
