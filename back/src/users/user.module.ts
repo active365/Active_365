@@ -9,6 +9,7 @@ import { Gyms } from 'src/entities/gyms.entity';
   imports: [TypeOrmModule.forFeature([Users]), 
             TypeOrmModule.forFeature([Gyms])],
   controllers: [UserController],
-  providers: [UserService]
+  providers: [UserService],
+  exports: [UserService]
 })
 export class UserModule {}
