@@ -88,6 +88,7 @@ export class EmailService {
     async sendClassConfirmationEmail(
         email: string,
         name: string,
+        className: string,
         gymName: string,
         classDate: string,
         classTime: string,
@@ -102,6 +103,7 @@ export class EmailService {
     
         const htmlToSend = compiledTemplate({
             name,
+            className,
             gymName,
             classDate,
             classTime,
@@ -114,12 +116,7 @@ export class EmailService {
             html: htmlToSend,
         };
     
-        try {
-            const info = await this.transporter.sendMail(mailOptions);
-            console.log('Class confirmation email sent:', info.response);
-        } catch (error) {
-            console.error('Error sending class confirmation email:', error);
-        }
+        await this.transporter.sendMail(mailOptions);
     }
 
     async sendProductOffersEmail(email: string, name: string, shopLink: string) {
@@ -148,6 +145,82 @@ export class EmailService {
             from: `"Active365" <${process.env.MAIL_FROM}>`,
             to: email,
             subject: 'Don’t Miss Out on These Exclusive Offers!',
+            html: htmlToSend,
+        };
+
+        await this.transporter.sendMail(mailOptions);
+    }
+
+    async sendClassModificationEmail(
+        email: string,
+        name: string,
+        previousClassName: string,
+        previousGymName: string,
+        previousClassDate: string,
+        previousClassTime: string,
+        newClassName: string,
+        newGymName: string,
+        newClassDate: string,
+        newClassTime: string
+    ) {
+        const templatePath =
+            process.env.NODE_ENV === 'production'
+                ? path.join(__dirname, '..', 'templates', 'class-modification.hbs')
+                : path.join(__dirname, '..', '..', 'src', 'templates', 'class-modification.hbs');
+        
+        const source = fs.readFileSync(templatePath, 'utf-8');
+        const compiledTemplate = handlebars.compile(source);
+    
+        const htmlToSend = compiledTemplate({
+            name,
+            previousClassName,
+            previousGymName,
+            previousClassDate,
+            previousClassTime,
+            newClassName,
+            newGymName,
+            newClassDate,
+            newClassTime,
+        });
+    
+        const mailOptions = {
+            from: `"No Reply" <${process.env.MAIL_FROM}>`,
+            to: email,
+            subject: 'Class Modification Confirmation - Active365',
+            html: htmlToSend,
+        };
+
+        await this.transporter.sendMail(mailOptions);
+    }
+
+    async sendAppointmentCancellationEmail(
+        email: string,
+        name: string,
+        className: string,
+        gymName: string,
+        classDate: string,
+        classTime: string,
+    ) {
+        const templatePath =
+        process.env.NODE_ENV === 'production'
+            ? path.join(__dirname, '..', 'templates', 'class-cancellation.hbs')
+            : path.join(__dirname, '..', '..', 'src', 'templates', 'class-cancellation.hbs');
+        
+        const source = fs.readFileSync(templatePath, 'utf-8');
+        const compiledTemplate = handlebars.compile(source);
+    
+        const htmlToSend = compiledTemplate({
+            name,
+            className,
+            gymName,
+            classDate,
+            classTime,
+        });
+    
+        const mailOptions = {
+            from: `"No Reply" <${process.env.MAIL_FROM}>`,
+            to: email,
+            subject: 'Appointment Cancellation - Active365',
             html: htmlToSend,
         };
 
