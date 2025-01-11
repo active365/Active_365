@@ -54,22 +54,3 @@ export class CreateGymDto {
     // longitude: number;
 
 }
-export class LoginGymDto {
-    @IsNotEmpty()
-    @IsString()
-    @IsEmail()
-    @ApiProperty()
-    email: string;
-      
-    @IsNotEmpty()
-    @IsString()
-    @MinLength(8)
-    @MaxLength(15)
-    @IsString()
-    @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).+$/, {
-      message:
-      'La contraseña debe contener al menos una letra minúscula, una letra mayúscula, un número y uno de los siguientes caracteres especiales: !@#$%^&*',
-    })
-    @ApiProperty()
-    password: string;
-  }

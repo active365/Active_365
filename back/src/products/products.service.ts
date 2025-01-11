@@ -157,4 +157,12 @@ export class ProductsService {
     }
     return products;
   }
+
+  async getRandomProducts(limit: number): Promise<Products[]> {
+    return this.productsRepository
+      .createQueryBuilder('product')
+      .orderBy('RANDOM()') 
+      .limit(limit)
+      .getMany();
+  }
 }

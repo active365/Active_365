@@ -6,36 +6,45 @@ import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { EmailService } from 'src/email/email.service';
+import { Gyms } from 'src/entities/gyms.entity';
 
 @Injectable()
 export class AuthUsersService {
   constructor(
     @InjectRepository(Users) private readonly userRepository: Repository<Users>,
+    @InjectRepository(Gyms) private readonly gymRepository: Repository<Gyms>,
     private readonly jwtService: JwtService,
     private readonly emailService: EmailService
   ){}
     
-    async loginUser(email: string, passwordLogin: string, isGoogleLogin: boolean = false) {
-      const user = await this.userRepository.findOne({ where: { email: email } });
-      if (!user) throw new NotFoundException(`Incorrect credentials`);
-  
-      const hashToCompare = isGoogleLogin ? user.googlePassword : user.password;
-      if (!hashToCompare) throw new NotFoundException(`Incorrect credentials`);
-  
-      const isMatch = await bcrypt.compare(passwordLogin, hashToCompare);
-      if (!isMatch) throw new NotFoundException(`Incorrect credentials`);
+  async login(email: string, passwordLogin: string, isGoogleLogin: boolean = false) {
+    let userOrGym: Users | Gyms = await this.userRepository.findOne({ where: { email: email } });
 
-      const userPayload = {
-        id: user.id,
-        email: user.email,
-        rol: user.rol 
-      }
-      const token = this.jwtService.sign(userPayload);
-      return {
-        message: 'Login successful',
-        token
-      }
+    if (!userOrGym) {
+      userOrGym = await this.gymRepository.findOne({ where: { email: email } });
+    }
+    
+    if (!userOrGym) throw new NotFoundException(`Incorrect credentials`);
+  
+    const hashToCompare = isGoogleLogin ? userOrGym.googlePassword : userOrGym.password;
+    if (!hashToCompare) throw new NotFoundException(`Incorrect credentials`);
+  
+    const isMatch = await bcrypt.compare(passwordLogin, hashToCompare);
+    if (!isMatch) throw new NotFoundException(`Incorrect credentials`);
+  
+    const userPayload = {
+      id: userOrGym.id,
+      email: userOrGym.email,
+      rol: userOrGym.rol 
+    }
+    const token = this.jwtService.sign(userPayload);
+    return {
+      message: 'Login successful',
+      token,
+      user: userPayload
+    }
   }
+  
   
   async createUser(user: Partial<Users>, isGoogleCreate: boolean = false) {
     const userFound = await this.userRepository.findOne({ where: { email: user.email } });
@@ -65,8 +74,11 @@ export class AuthUsersService {
 }
 
   async validateGoogleUser(googleUser: Partial<Users>) {
-    const userFound = await this.userRepository.findOne({ where: { email: googleUser.email } });
-    if (userFound) return userFound;
+    let userOrGym: Users | Gyms =  await this.gymRepository.findOne({ where: { email: googleUser.email } });
+    if(userOrGym) throw new BadRequestException(`The email ${googleUser.email} is currently registered as a gym`);
+    
+    userOrGym = await this.userRepository.findOne({ where: { email: googleUser.email } });
+    if(userOrGym) return userOrGym;
     return await this.createUser(googleUser, true);
   }
 }
