@@ -9,15 +9,15 @@ const CartComponent: React.FC = () => {
     const user = useContext(UserContext);
     const [quantities, setQuantities] = useState<{ [key: number]: number }>({});
 
-    const isMember = user?.userSession?.user.role === "member"|| false; 
-    const shippingCost = isMember ? 0 : 10;
+    //const isMember = user?.userSession?.user.role === "member"|| false; 
+    //const shippingCost = isMember ? 0 : 10;
 
     const totalProductsPrice = cart.reduce((total, item) => {
         const quantity = quantities[item.id] || 1;
         return total + item.price * quantity;
     }, 0);
 
-    const totalPrice = totalProductsPrice + shippingCost;
+    const totalPrice = totalProductsPrice //+ shippingCost;
     const APIURL = process.env.NEXT_PUBLIC_API_URL 
 
 
@@ -25,25 +25,32 @@ const CartComponent: React.FC = () => {
         Math.max(1, Math.min(quantity, stock));
 
     const createOrder = async () => {
+        if (!user?.userSession || !user.userSession.user) {
+            console.error("User session or user data is missing. Please ensure the user is logged in.");
+            alert("You must be logged in to place an order.");
+            return null;
+        }
+    
+        const userId = user.userSession.user.id;
         try {
-            const response = await fetch(`/${APIURL}}/orders`, {
+            const response = await fetch(`${APIURL}/orders`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    userId: user.userSession?.user.id,
+                    userId: userId,
                     products: cart.map((item) => ({
                         productId: item.id,
                         quantity: quantities[item.id] || 1,
                     })),
                 }),
             });
-
+    
             if (!response.ok) {
                 throw new Error("Failed to create order");
             }
-
+    
             const order = await response.json();
             return order.id;
         } catch (error) {
@@ -51,26 +58,33 @@ const CartComponent: React.FC = () => {
             return null;
         }
     };
+    
+    
 
     const handleCheckout = async () => {
         const orderId = await createOrder();
-        if (orderId) {
-            try {
-                const response = await fetch(`/api/checkout/${orderId}`);
-                if (!response.ok) {
-                    throw new Error("Failed to fetch Stripe session");
-                }
-
-                const data = await response.json();
-                window.location.href = data.url;
-            } catch (error) {
-                console.error("Error in Stripe checkout:", error);
-                alert("Error al procesar el pago. Inténtalo nuevamente.");
-            }
-        } else {
-            alert("Error al crear la orden. Inténtalo nuevamente.");
+console.log("orderId:", orderId); 
+if (orderId) {
+    try {
+        const response = await fetch(`${APIURL}/checkout/${orderId}`, { 
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+        });
+        if (!response.ok) {
+            throw new Error("Failed to fetch Stripe session");
         }
+        const { url } = await response.json();
+        window.location.href = url;
+    } catch (error) {
+        console.error("Error in Stripe checkout:", error);
+        alert("Error al procesar el pago. Inténtalo nuevamente.");
+    }
+} else {
+    alert("Error al crear la orden. Inténtalo nuevamente.");
+}
+
     };
+    
 
     return (
         <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg">
@@ -150,7 +164,7 @@ const CartComponent: React.FC = () => {
                 </div>
                 <div className="flex justify-between text-gray-800">
                     <p>Shipping Cost</p>
-                    <p>${shippingCost}</p>
+                    {/*<p>${shippingCost}</p>*/}
                 </div>
                 <div className="flex justify-between text-xl font-bold text-gray-900 mt-2">
                     <p>Total</p>

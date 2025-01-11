@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import React, { useState, useEffect, useContext } from "react";
@@ -9,6 +8,8 @@ import { filterProducts } from "@/helpers/filterProducts";
 import { IProducts } from "@/interfaces/IProducts";
 import { getProducts } from "@/app/api/getProducts";
 import { UserContext } from "@/context/UserContext"; 
+import Breadcrumbs from "@/components/Breadcrumbs";
+import { BreadcrumbItem } from "@/components/Breadcrumbs";
 
 export type CategoryName = "Fitness Equipment" | "Yoga Accessories" | "Supplements";
 
@@ -18,21 +19,15 @@ const categoryImages: Record<CategoryName, string> = {
     "Supplements": "/supplement.png",
 };
 
-interface ProductsProps {
-  searchQuery: string;  
-}
+const Products: React.FC<{ searchQuery: string }> = ({ searchQuery }) => { 
 
-const Products: React.FC<ProductsProps> = ({ searchQuery }) => { 
-    const  userSession  = useContext(UserContext); 
+    const userSession = useContext(UserContext); 
     const [selectedCategory, setSelectedCategory] = useState<CategoryName | null>(null);
     const [filteredProducts, setFilteredProducts] = useState(arrayProducts);
-
-    const currentDate = new Date();
-    const deadline = new Date("2024-12-31");
-
     const [products, setProducts] = useState<IProducts[]>([]);
     const [loading, setLoading] = useState(true);
 
+    // Fetch products from the API
     useEffect(() => {
         const fetchProducts = async () => {
             try {
@@ -48,6 +43,7 @@ const Products: React.FC<ProductsProps> = ({ searchQuery }) => {
         fetchProducts();
     }, []);
 
+    // Filter products based on category and search query
     useEffect(() => {
         const filteredByCategory = selectedCategory
             ? products.filter(product => product.category === selectedCategory)
@@ -57,25 +53,21 @@ const Products: React.FC<ProductsProps> = ({ searchQuery }) => {
         setFilteredProducts(finalFiltered);
     }, [searchQuery, selectedCategory, products]);
 
-    const handleProductSelect = (product: IProducts) => {
-        console.log("Producto seleccionado:", product);
-    };
+    // Find selected category name for breadcrumb
+    const selectedCategoryName = categories.find(category => category.name === selectedCategory)?.name;
+
+const breadcrumbItems: BreadcrumbItem[] = [
+    { name: "Home", url: "/" },
+    { name: "Products", url: "/products" },
+    ...(selectedCategoryName ? [{ name: selectedCategoryName, url: `/products/${selectedCategoryName.toLowerCase()}` }] : []),
+];
+
+
+    console.log("Breadcrumb items:", breadcrumbItems);
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-black">
-            {currentDate < deadline && (
-                <div className="relative text-white text-center w-full py-20">
-                    <video
-                        className="absolute inset-0 w-full h-full object-cover"
-                        autoPlay
-                        loop
-                        muted
-                    >
-                        <source src="/mostPopular.mp4" type="video/mp4" />
-                        Your browser does not support the video tag.
-                    </video>
-                </div>
-            )}
+            <Breadcrumbs items={breadcrumbItems} />
 
             <h1 className="mt-11 text-3xl font-semibold text-center text-white mb-8">
                 Everything for your favorite sports
@@ -83,15 +75,16 @@ const Products: React.FC<ProductsProps> = ({ searchQuery }) => {
 
             {loading ? (
                 <div className="flex justify-center items-center text-white">
-                    <div className="animate-spin h-8 w-8 border-t-2 border-yellow-400 border-solid rounded-full"></div> {/* Spinner */}
+                    <div className="animate-spin h-8 w-8 border-t-2 border-yellow-400 border-solid rounded-full"></div>
                     <p className="ml-4">Loading...</p>
                 </div>
             ) : (
                 <>
+                    {/* Category selection */}
                     <div className="flex justify-center space-x-10 mb-8">
                         {categories.map((category) => (
                             <div 
-                                key={category.id} 
+                                key={category.name} 
                                 className={`flex flex-col items-center cursor-pointer ${
                                     selectedCategory === category.name ? "opacity-100" : "opacity-50"
                                 }`}
@@ -107,13 +100,14 @@ const Products: React.FC<ProductsProps> = ({ searchQuery }) => {
                         ))}
                     </div>
 
+                    {/* Product listing */}
                     <div>
                         {filteredProducts.length === 0 ? (
                             <p className="text-white">No products found</p>
                         ) : (
                             <Card 
                                 products={filteredProducts} 
-                                onProductSelect={handleProductSelect} 
+                                onProductSelect={(product) => console.log("Producto seleccionado:", product)}
                                 isUserLoggedIn={!!userSession} 
                             />
                         )}

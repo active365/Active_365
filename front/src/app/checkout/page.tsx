@@ -25,7 +25,7 @@ const PaymentForm: React.FC = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          //Authorization: `Bearer ${userSession?.token}`, 
+          Authorization: `Bearer ${userSession?.token}`, 
         },
       });
 

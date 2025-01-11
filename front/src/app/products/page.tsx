@@ -6,6 +6,9 @@ import Card from "@/components/productsCard/Card";
 import { filterProducts } from "@/helpers/filterProducts"; 
 import { IProducts } from "@/interfaces/IProducts";
 import SearchBar from "@/components/SearchBar";
+import Breadcrumbs from "@/components/Breadcrumbs";
+import { BreadcrumbItem } from "@/components/Breadcrumbs";
+
 
 interface Category {
   id: string;
@@ -26,6 +29,7 @@ interface ProductsProps {
 }
 
 const Products: React.FC<ProductsProps> = ({ searchQuery }) => { 
+
     const [categories, setCategories] = useState<Category[]>([]); // Guardar categorías
     const [selectedCategory, setSelectedCategory] = useState<string | null>(null); // Guardar el ID de la categoría seleccionada
     const [filteredProducts, setFilteredProducts] = useState<IProducts[]>([]);
@@ -94,8 +98,18 @@ const Products: React.FC<ProductsProps> = ({ searchQuery }) => {
         setFilteredProducts(filterProducts(products, query)); // Filtrar los productos con la nueva búsqueda
     };
 
+    const breadcrumbItems: BreadcrumbItem[] = [
+            { name: "Home", url: "/" },
+            { name: "Products", url: "/products" },
+            ...(selectedCategory ? [{ name: selectedCategory, url: `/products/${selectedCategory.toLowerCase()}` }] : []),
+          ];
+    
+          console.log("Breadcrumb items:", breadcrumbItems);
+
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-black">
+                        <Breadcrumbs items={breadcrumbItems} />
+
             <SearchBar onSearch={handleSearch} /> {/* Pasamos handleSearch al componente SearchBar */}
 
             <h1 className="mt-11 text-3xl font-semibold text-center text-white mb-8">

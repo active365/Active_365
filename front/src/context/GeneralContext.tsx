@@ -30,7 +30,7 @@ export const ContextProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
     const addToCart = (product: IProducts) => {
         setCart((prevCart) => {
-            // Si el producto ya existe en el carrito, no lo agregamos de nuevo
+            
             if (prevCart.some((item) => item.id === product.id)) {
                 return prevCart;
             }
