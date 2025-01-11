@@ -17,6 +17,7 @@ import { StripeModule } from './stripe/stripe.module';
 import { EmailModule } from './email/email.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { AppointmentsModule } from './appointments/appointments.module';
 @Module({
   imports: [
     CategoriesModule,
@@ -43,7 +44,8 @@ import { ScheduleModule } from '@nestjs/schedule';
   ClassesModule,
   StripeModule,
   EmailModule,
-  NotificationsModule
+  NotificationsModule,
+ AppointmentsModule
   ]
 })
 export class AppModule {}

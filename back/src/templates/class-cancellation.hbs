@@ -47,31 +47,30 @@
         background-color: #0056b3;
         }
     </style>
-    </head>
-    <body>
+</head>
+<body>
     <div class="container">
         <div class="header">
-        <h1>Class Enrollment Confirmation</h1>
+            <h1>Appointment Cancellation</h1>
         </div>
         <div class="content">
-        <p>Hello {{name}},</p>
-        <p>Your enrollment for the class at <strong>Active365</strong> has been successfully confirmed!</p>
-        <p><strong>Class Details:</strong></p>
-        <ul>
-            <li><strong>Class:</strong> {{className}}</li>
-            <li><strong>Gym:</strong> {{gymName}}</li>
-            <li><strong>Date:</strong> {{classDate}}</li>
-            <li><strong>Time:</strong> {{classTime}}</li>
-        </ul>
-        <p>If you wish to cancel or modify your enrollment, you can do so up to <strong>1 hour before</strong> the class starts. After this period, cancellations will not be allowed.</p>
-        <p>To manage your enrollment, click the button below:</p>
-        <a href="{{manageEnrollmentLink}}" class="btn">Manage Enrollment</a>
-        <p>Thank you for choosing Active365!</p>
-        <p>Best regards,</p>
-        <p>The Active365 Team</p>
+            <p>Hello {{name}},</p>
+            <p>We regret to inform you that your appointment for the class at <strong>Active365</strong> has been cancelled.</p>
+            <p><strong>Class Details:</strong></p>
+            <ul>
+                <li><strong>Class:</strong> {{className}}</li>
+                <li><strong>Gym:</strong> {{gymName}}</li>
+                <li><strong>Date:</strong> {{classDate}}</li>
+                <li><strong>Time:</strong> {{classTime}}</li>
+            </ul>
+            <p>If you wish to schedule another, you can do so by visiting our website:</p>
+            <a href="{{rebookLink}}" class="btn">Rebook Now</a>
+            <p>We hope to see you soon!</p>
+            <p>Best regards,</p>
+            <p>The Active365 Team</p>
         </div>
         <div class="footer">
-        <p>© 2024 Active365. All rights reserved.</p>
+            <p>© 2024 Active365. All rights reserved.</p>
         </div>
     </div>
 </body>
