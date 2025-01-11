@@ -5,36 +5,16 @@ import * as bcrypt from 'bcrypt';
 import { Gyms } from 'src/entities/gyms.entity';
 import { JwtService } from '@nestjs/jwt';
 import { EmailService } from 'src/email/email.service';
+import { Users } from 'src/entities/users.entity';
 
 @Injectable()
 export class AuthGymsService {
   constructor(
     @InjectRepository(Gyms) private readonly gymsRepository: Repository<Gyms>,
+    @InjectRepository(Users) private readonly userRepository: Repository<Users>,
     private readonly jwtService: JwtService,
     private readonly emailService: EmailService,
   ){}
-    
-    async loginGym(email: string, passwordLogin: string, isGoogleLogin: boolean = false) {
-      const gym = await this.gymsRepository.findOne({ where: { email: email } });
-      if (!gym) throw new NotFoundException(`Credenciales incorrectas`);
-  
-      const hashToCompare = isGoogleLogin ? gym.googlePassword : gym.password;
-      if (!hashToCompare) throw new NotFoundException(`Credenciales incorrectas`);
-  
-      const isMatch = await bcrypt.compare(passwordLogin, hashToCompare);
-      if (!isMatch) throw new NotFoundException(`Credenciales incorrectas`);
-      
-      const gymPayload = {
-        id: gym.id,
-        email: gym.email,
-        rol: gym.rol 
-      }
-      const token = this.jwtService.sign(gymPayload);
-      return {
-        message: 'Login successful',
-        token
-      }
-  }
   
   async createGym(gym: Partial<Gyms>, isGoogleCreate: boolean = false) {
     const gymFound = await this.gymsRepository.findOne({ where: { email: gym.email } });
@@ -65,8 +45,11 @@ export class AuthGymsService {
 }
 
   async validateGoogleGym(googleGym: Partial<Gyms>) {
-    const gymFound = await this.gymsRepository.findOne({ where: { email: googleGym.email } });
-    if (gymFound) return gymFound;
+    let userOrGym: Users | Gyms = await this.userRepository.findOne({ where: { email: googleGym.email } });
+    if(userOrGym) throw new BadRequestException(`The email ${googleGym.email} is currently registered as a user`);
+
+    userOrGym = await this.gymsRepository.findOne({ where: { email: googleGym.email } });
+    if(userOrGym) return userOrGym;
     return await this.createGym(googleGym, true);
   }
 }

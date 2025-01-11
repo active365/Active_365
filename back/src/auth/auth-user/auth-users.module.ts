@@ -7,11 +7,15 @@ import { Users } from 'src/entities/users.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { GoogleStrategyForUsers } from 'src/strategies/googleUser.strategy';
 import { EmailModule } from 'src/email/email.module';
+import { Gyms } from 'src/entities/gyms.entity';
 
 @Module({
   imports: [ConfigModule.forFeature(googleOauthConfig),
-            TypeOrmModule.forFeature([Users]), EmailModule],
+            TypeOrmModule.forFeature([Users]),
+            TypeOrmModule.forFeature([Gyms]),
+            EmailModule],
   controllers: [AuthUsersController],
   providers: [AuthUsersService, GoogleStrategyForUsers],
+  exports: [AuthUsersService],
 })
 export class AuthUsersModule {}
