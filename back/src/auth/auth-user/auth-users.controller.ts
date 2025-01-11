@@ -12,7 +12,7 @@ export class AuthUsersController {
   login(@Body() userCredentials: LoginUserDto) {
     if( userCredentials.email && userCredentials.password ){
       const {email, password} = userCredentials;
-      return this.authUsersService.loginUser(email, password);
+      return this.authUsersService.login(email, password);
     }
     return {message: 'Faltan datos'}
   }
@@ -31,7 +31,7 @@ export class AuthUsersController {
     if(req.user.email){
       const email = req.user.email;
       const password = reverseAndMixEmail(req.user.email);
-      return this.authUsersService.loginUser(email, password, true);
+      return this.authUsersService.login(email, password, true);
     }
     return {message: 'Faltan datos'}
   }
