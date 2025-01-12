@@ -1,21 +1,16 @@
 import { Controller, Get, Post, Body, UseGuards, Req } from '@nestjs/common';
-import { GoogleGymAuthGuard } from 'src/auth/guards/google-auth/googleGymAuth.guard';
-import { CreateGymDto, LoginGymDto } from 'src/dto/create-gym.dto';
+import { GoogleGymAuthGuard } from '../guards/googleGymAuth.guard';
+import { CreateGymDto } from 'src/dto/create-gym.dto';
 import { reverseAndMixEmail } from 'src/utils/generateGooglePassword.util';
 import { AuthGymsService } from './auth-gyms.service';
+import { AuthUsersService } from '../auth-user/auth-users.service';
 
 @Controller('auth-gyms')
 export class AuthGymsController {
-  constructor(private readonly authGymsService: AuthGymsService ) {}
+  constructor(private readonly authGymsService: AuthGymsService,
+              private readonly authUsersService: AuthUsersService
+   ) {}
 
-  @Post('signin')
-  login(@Body() gymCredentials: LoginGymDto) {
-    if( gymCredentials.email && gymCredentials.password ){
-      const {email, password} = gymCredentials;
-      return this.authGymsService.loginGym(email, password);
-    }
-    return {message: 'Faltan datos'}
-  }
   @Post('signup')
   createUser(@Body() gym: CreateGymDto) {
     return this.authGymsService.createGym(gym);
@@ -31,7 +26,7 @@ export class AuthGymsController {
     if(req.user.email){
       const email = req.user.email;
       const password = reverseAndMixEmail(req.user.email);
-      return this.authGymsService.loginGym(email, password, true);
+      return this.authUsersService.login(email, password, true);
     }
     return {message: 'Faltan datos'}
   }

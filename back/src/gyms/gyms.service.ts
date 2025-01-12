@@ -15,7 +15,7 @@ export class GymsService {
   ) {}
 
   async addGyms() {
-    data.gyms.map(async (gym) => {
+    for (const gym of data.gyms) {
       
       const saltRounds = 10;
       const hashedPassword = await bcrypt.hash(gym.password, saltRounds);
@@ -27,22 +27,24 @@ export class GymsService {
       newGym.phone = gym.phone;
       newGym.address = gym.address;
       newGym.city = gym.city;
+      newGym.latitude = gym.latitude;
+      newGym.longitude = gym.longitude;
 
       await this.gymsRepository
       .createQueryBuilder()
       .insert()
       .into(Gyms)
       .values(newGym)
-      .orUpdate(['password', 'phone', 'address', 'city', 'name'], ['email'])
+      .orUpdate(['password', 'phone', 'address', 'city', 'name', 'latitude', 'longitude'], ['email'])
       .execute()
-    });
+    };
     return `The Gyms have been added`
   }
   
   async getGyms() {
     const gyms = await this.gymsRepository.find({
-      relations: ['users'],
-      select: ['id', 'name', 'email', 'phone' ,'address', 'city', 'rol', 'createdAt', 'users'],
+      relations: ['users', 'classes'],
+      select: ['id', 'name', 'email', 'phone' ,'address', 'city', 'latitude', 'longitude', 'rol', 'createdAt', 'users'],
     });
     if(gyms.length === 0) {
       throw new NotFoundException('No gyms registered in the database were found');
@@ -53,19 +55,13 @@ export class GymsService {
   async getById(id: string) {
     const gymFound = await this.gymsRepository.findOne({
       where: { id: id },
-      relations: ['users'],
-      select: ['id', 'name', 'email', 'phone' ,'address', 'city', 'rol', 'createdAt'],
+      relations: ['users', 'classes'],
+      select: ['id', 'name', 'email', 'phone' ,'address', 'city', 'latitude', 'longitude', 'rol', 'createdAt'],
   });
   if (!gymFound) {
       throw new NotFoundException(`Gym with ID ${id} not found.`);
   }
-  return {
-      ...gymFound,
-      // classes: gymFound.classes.map(classes => ({
-      //     id: classes.id,
-      //     name: classes.name
-      // })),
-  };
+  return gymFound;
   }
   
   async getByClass(classId: string) {

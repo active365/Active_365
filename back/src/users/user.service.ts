@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import * as usersSeed from '../seeders/users.seeder.json';
 import * as bcrypt from 'bcrypt';
 import { Gyms } from 'src/entities/gyms.entity';
+import { GymsService } from 'src/gyms/gyms.service';
 @Injectable()
 export class UserService {
     constructor(@InjectRepository(Users) private readonly userRepository: Repository<Users>,
@@ -48,6 +49,12 @@ export class UserService {
         throw new Error('Timeout: Gyms were not initialized in time.');
     }
       async onModuleInit() {
+        const gymsCount = await this.gymsRepository.count();
+        if (gymsCount === 0) {
+        console.log('No gyms found, initializing gyms...');
+        const gymsService = new GymsService(this.gymsRepository);
+        await gymsService.addGyms();
+        }
         await this.waitForGyms();
         const usersMock = await Promise.all(usersSeed.map(async (user) => {
           const gyms = await this.gymsRepository.find();

@@ -1,0 +1,114 @@
+{
+  "classes": [
+    {
+      "name": "Yoga Flow",
+      "description": "A calming yoga class to improve flexibility and strength.",
+      "capacity": 20,
+      "duration": 60,
+      "imgUrl": "https://example.com/yoga-flow.jpg",
+      "date": "2025-02-10T00:00:00Z",
+      "time": "09:00:00",
+      "gym": "Equinox Hudson Yards"
+    },
+    {
+      "name": "HIIT Blast",
+      "description": "Una clase de entrenamiento en intervalos de alta intensidad para quemar calorías rápidamente.",
+      "capacity": 25,
+      "duration": 45,
+      "imgUrl": "https://example.com/hiit-blast.jpg",
+      "date": "2025-02-10T00:00:00Z",
+      "time": "12:00:00",
+      "gym": "Windy City Strength & Conditioning"
+    },    
+    {
+      "name": "HIIT Blast",
+      "description": "A high-intensity interval training class to burn calories fast.",
+      "capacity": 25,
+      "duration": 45,
+      "imgUrl": "https://example.com/hiit-blast.jpg",
+      "date": "2025-02-10T00:00:00Z",
+      "time": "12:00:00",
+      "gym": "Equinox Hudson Yards"
+    },
+    {
+      "name": "Spin Class",
+      "description": "An energetic spin class with upbeat music.",
+      "capacity": 30,
+      "duration": 45,
+      "imgUrl": "https://example.com/spin-class.jpg",
+      "date": "2025-01-11T00:00:00Z",
+      "time": "07:30:00",
+      "gym": "Chelsea Piers Fitness"
+    },
+    {
+      "name": "Boxing Basics",
+      "description": "A beginner's boxing class to learn fundamental techniques.",
+      "capacity": 15,
+      "duration": 60,
+      "imgUrl": "https://example.com/boxing-basics.jpg",
+      "date": "2025-01-11T00:00:00Z",
+      "time": "18:00:00",
+      "gym": "Gold's Gym Hollywood"
+    },
+    {
+      "name": "Pilates Core",
+      "description": "A Pilates class focused on core strength and stability.",
+      "capacity": 20,
+      "duration": 55,
+      "imgUrl": "https://example.com/pilates-core.jpg",
+      "date": "2025-01-12T00:00:00Z",
+      "time": "10:00:00",
+      "gym": "24 Hour Fitness Downtown LA"
+    },
+    {
+      "name": "Zumba Party",
+      "description": "A fun and energetic Zumba class with Latin music.",
+      "capacity": 25,
+      "duration": 50,
+      "imgUrl": "https://example.com/zumba-party.jpg",
+      "date": "2025-01-12T00:00:00Z",
+      "time": "11:00:00",
+      "gym": "Denver Athletic Club"
+    },
+    {
+      "name": "CrossFit Challenge",
+      "description": "A challenging CrossFit class for experienced athletes.",
+      "capacity": 20,
+      "duration": 60,
+      "imgUrl": "https://example.com/crossfit-challenge.jpg",
+      "date": "2025-01-13T00:00:00Z",
+      "time": "16:30:00",
+      "gym": "Greenwood Athletic Club"
+    },
+    {
+      "name": "Aqua Aerobics",
+      "description": "A low-impact water aerobics class for all fitness levels.",
+      "capacity": 18,
+      "duration": 45,
+      "imgUrl": "https://example.com/aqua-aerobics.jpg",
+      "date": "2025-01-13T00:00:00Z",
+      "time": "17:00:00",
+      "gym": "Anatomy Midtown Miami"
+    },
+    {
+      "name": "Powerlifting Basics",
+      "description": "An introductory class to powerlifting techniques and safety.",
+      "capacity": 10,
+      "duration": 70,
+      "imgUrl": "https://example.com/powerlifting-basics.jpg",
+      "date": "2025-01-14T00:00:00Z",
+      "time": "14:00:00",
+      "gym": "South Beach Boxing"
+    },
+    {
+      "name": "Bootcamp Outdoors",
+      "description": "An intense outdoor bootcamp class for fitness enthusiasts.",
+      "capacity": 25,
+      "duration": 60,
+      "imgUrl": "https://example.com/bootcamp-outdoors.jpg",
+      "date": "2025-01-14T00:00:00Z",
+      "time": "06:00:00",
+      "gym": "Midtown Athletic Club"
+    }
+  ]
+}

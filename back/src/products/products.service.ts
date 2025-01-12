@@ -5,6 +5,7 @@ import { Categories } from 'src/entities/categories.entity';
 import { Products } from 'src/entities/products.entity';
 import { Repository } from 'typeorm';
 import { FilesUploadService } from 'src/files-upload/files-upload.service';
+import { FilterProductsDto } from 'src/dto/createProduct.dto';
 
 
 @Injectable()
@@ -32,27 +33,52 @@ export class ProductsService {
         product.price = element.price;
         product.stock = element.stock;
         product.category = category;
+        product.subcategory = element.subcategory;
 
         await this.productsRepository
         .createQueryBuilder()
         .insert()
         .into(Products)
         .values(product)
-        .orUpdate(['description', 'price', 'stock'], ['name'])
+        .orUpdate(['description', 'price', 'stock', 'subcategory'], ['name'])
         .execute()
     });
     return "Products added"
   }
   
-  async getProducts() {
-    const products = await this.productsRepository.find({
-      relations: ['category'],
-      select: ['id', 'name', 'description', 'price', 'stock', 'imgUrl', 'category']
-    });
+  async getProducts(filterDto?: FilterProductsDto) {
+    const { category, subcategory } = filterDto || {};
+  
+    const query = this.productsRepository.createQueryBuilder('product');
+  
+    query.leftJoinAndSelect('product.category', 'category');
+  
+    if (category) {
+      query.andWhere('category.name = :category', { category });
+    }
+  
+    if (subcategory) {
+      query.andWhere('product.subcategory = :subcategory', { subcategory });
+    }
+  
+    query.select([
+      'product.id', 
+      'product.name', 
+      'product.description', 
+      'product.price', 
+      'product.stock', 
+      'product.imgUrl',
+      'product.subcategory',
+      'category.name',
+      
+    ]);
+  
+    const products = await query.getMany();
+  
+    if (products.length === 0) {
+      throw new NotFoundException('No products were found matching the criteria.');
+    }
 
-        if(products.length === 0) {
-            throw new NotFoundException('No products were found in the database.');
-        }
         return products;
   }
 
@@ -61,7 +87,7 @@ export class ProductsService {
     const product = await this.productsRepository.findOne({
         where: { id: id },
         relations: ['category'],
-        select: ['id', 'name', 'description', 'price', 'stock', 'imgUrl', 'category']
+        select: ['id', 'name', 'description', 'price', 'stock', 'imgUrl', 'category', 'subcategory']
     });
     if (!product) {
         throw new NotFoundException(`Product with ID ${id} not found..`);
@@ -119,4 +145,24 @@ export class ProductsService {
     return await this.productsRepository.save(productUpdate);
   }
 
+  async getProductsByCategory(categoryId: string) {
+    const products = await this.productsRepository.find({
+      where: { category: { id: categoryId } },
+      relations: ['category'],
+      select: ['id', 'name', 'description', 'price', 'stock', 'imgUrl', 'category', 'subcategory']
+    });
+  
+    if (products.length === 0) {
+      throw new NotFoundException(`No products found for category with ID ${categoryId}.`);
+    }
+    return products;
+  }
+
+  async getRandomProducts(limit: number): Promise<Products[]> {
+    return this.productsRepository
+      .createQueryBuilder('product')
+      .orderBy('RANDOM()') 
+      .limit(limit)
+      .getMany();
+  }
 }

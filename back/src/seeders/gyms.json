@@ -1,84 +1,104 @@
 {"gyms":
 [
     {
-        "name": "Elite Fitness Center",
-        "email": "elitefitness@gmail.com",
+        "name": "Equinox Hudson Yards",
+        "email": "equinoxhudsonyards0@gmail.com",
         "password": "securePass123",
-        "phone":5551234567,
-        "address": "123 Main St",
-        "city": "New York"
+        "phone": 5551234567,
+        "address": "32 Hudson Yards, New York, NY 10001, USA",
+        "city": "New York",
+        "latitude": 40.75463,
+        "longitude": -74.00220
     },
     {
-        "name": "Peak Performance Gym",
-        "email": "peakperformance@gmail.com",
-        "password": "peakPass789",
-        "phone":5559876543,
-        "address": "456 Elm St",
-        "city": "New York"
+        "name": "Chelsea Piers Fitness",
+        "email": "chelseapiersfitness0@gmail.com",
+        "password": "peakPass789!",
+        "phone": 5559876543,
+        "address": "60 Chelsea Piers, New York, NY 10011, USA",
+        "city": "New York",
+        "latitude": 40.74665,
+        "longitude": -74.01005
     },
     {
-        "name": "Ocean View Gym",
-        "email": "oceanviewgym@gmail.com",
+        "name": "Gold's Gym Hollywood",
+        "email": "goldsgymhollywood0@gmail.com",
         "password": "oceanSecure456",
         "phone": 5553217654,
-        "address": "789 Beach Rd",
-        "city": "Los Angeles"
+        "address": "1016 Cole Ave, Los Angeles, CA 90038, USA",
+        "city": "Los Angeles",
+        "latitude": 34.08957,
+        "longitude": -118.32958
     },
     {
-        "name": "Downtown Strength",
-        "email": "downtownstrength@gmail.com",
+        "name": "24 Hour Fitness Downtown LA",
+        "email": "24hourfitnessdtla0@gmail.com",
         "password": "downtownPower123",
         "phone": 5556543210,
-        "address": "321 Pine St",
-        "city": "Los Angeles"
+        "address": "Concourse B, Flower St, Los Angeles, CA 90071, USA",
+        "city": "Los Angeles",
+        "latitude": 34.05155,
+        "longitude": -118.25694
     },
     {
-        "name": "Mountain Climbers Gym",
-        "email": "mountainclimbers@gmail.com",
+        "name": "Denver Athletic Club",
+        "email": "denverathleticclub0@gmail.com",
         "password": "mountainFit2024",
         "phone": 5557654321,
-        "address": "456 Maple Ave",
-        "city": "Denver"
+        "address": "1325 Glenarm Pl, Denver, CO 80204, USA",
+        "city": "Denver",
+        "latitude": 39.74170,
+        "longitude": -104.99368
     },
     {
-        "name": "High Altitude Fitness",
-        "email": "highaltitudefitness@gmail.com",
+        "name": "Greenwood Athletic Club",
+        "email": "greenwoodathleticclub0@gmail.com",
         "password": "altitudePro789",
         "phone": 5558765432,
-        "address": "789 Aspen Rd",
-        "city": "Denver"
+        "address": "5801 S Quebec St, Greenwood Village, CO 80111, USA",
+        "city": "Denver",
+        "latitude": 39.61058,
+        "longitude": -104.90563
     },
     {
-        "name": "Sunny Side Gym",
-        "email": "sunnysidegym@gmail.com",
-        "password": "sunnyFit123",
+        "name": "Anatomy Midtown Miami",
+        "email": "anatomymidtownmiami0@gmail.com",
+        "password": "sunnyFit123!",
         "phone": 5552345678,
-        "address": "123 Sunshine Blvd",
-        "city": "Miami"
+        "address": "3415 NE 2nd Ave, Miami, FL 33137, USA",
+        "city": "Miami",
+        "latitude": 25.80871,
+        "longitude": -80.191407
     },
     {
-        "name": "Tropical Fitness",
-        "email": "tropicalfitness@gmail.com",
+        "name": "South Beach Boxing",
+        "email": "southbeachboxing0@gmail.com",
         "password": "tropicalGym456",
         "phone": 5559871234,
-        "address": "456 Coconut Ave",
-        "city": "Miami"
+        "address": "715 Washington Ave, Miami Beach, FL 33139, USA",
+        "city": "Miami",
+        "latitude": 25.77750,
+        "longitude": -80.13335
     },
     {
-        "name": "Urban Fitness Hub",
-        "email": "urbanfitness@gmail.com",
+        "name": "Midtown Athletic Club",
+        "email": "midtownathleticclub0@gmail.com",
         "password": "urbanSecure321",
         "phone": 5555436789,
-        "address": "123 City Center Rd",
-        "city": "Chicago"
+        "address": "2444 N Elston Ave, Chicago, IL 60647, USA",
+        "city": "Chicago",
+        "latitude": 41.92555,
+        "longitude": -87.67888
     },
     {
-        "name": "Windy City Gym",
-        "email": "windycitygym@gmail.com",
+        "name": "Windy City Strength & Conditioning",
+        "email": "windycitystrength0@gmail.com",
         "password": "windyStrong987",
         "phone": 5556785432,
-        "address": "456 Lake Shore Dr",
-        "city": "Chicago"
+        "address": "4043 N Ravenswood Ave #106, Chicago, IL 60613, USA",
+        "city": "Chicago",
+        "latitude": 41.95581,
+        "longitude": -87.67353
     }
-]
+    ]
 }

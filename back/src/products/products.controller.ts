@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, ParseUUIDPipe, Put, UseInterceptors, UploadedFile } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, ParseUUIDPipe, Put, UseInterceptors, UploadedFile, Query } from '@nestjs/common';
 import { ProductsService } from './products.service';
 import { Products } from 'src/entities/products.entity';
 import { CreateProductDto } from 'src/dto/createProduct.dto';
@@ -12,8 +12,13 @@ export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
   @Get()
-  getProducts() {
-    return this.productsService.getProducts();
+  getProducts(
+    @Query('category') category?: string,
+    @Query('subcategory') subcategory?: string,
+    @Query('search') search?: string,
+  ) {
+    const filterDto = { category, subcategory, search };
+    return this.productsService.getProducts(filterDto);
   }
 
   @Get(':id')
@@ -39,4 +44,9 @@ export class ProductsController {
   ){
     return this.productsService.updateProduct(id, product, file)
   }
+
+  @Get('category/:categoryId')
+  getProductsByCategory(@Param('categoryId') categoryId: string) {
+  return this.productsService.getProductsByCategory(categoryId);
+}
 }

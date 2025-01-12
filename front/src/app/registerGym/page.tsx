@@ -1,12 +1,16 @@
 "use client";
 import validateRegister from "@/helpers/validateRegister";
 import { useState } from "react";
+import fetchRegisterGym from "../api/RegisterGymAPI"
+import { useRouter } from "next/navigation";
 
 const RegisterGym: React.FC = () => {
+  const router = useRouter()
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
     address: "",
+    city: "",
     email: "",
     password: "",
   });
@@ -25,7 +29,6 @@ const RegisterGym: React.FC = () => {
       [name]: value,
     });
 
-    // Validación individual
     const error = validateRegister(name, value);
     setErrors((prevErrors) => ({
       ...prevErrors,
@@ -42,7 +45,7 @@ const RegisterGym: React.FC = () => {
     }
   };
 
-  const handleSubmit = (event: React.FormEvent) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
     const validationErrors: Record<string, string | null> = {};
@@ -58,10 +61,18 @@ const RegisterGym: React.FC = () => {
 
     setErrors(validationErrors);
 
-    if (!hasErrors) {
-      console.log("Form submitted successfully:", formData);
-      // Lógica de solicitud al backend
-    }
+       if (!hasErrors) {
+          const response = await fetchRegisterGym ({
+            ...formData,
+            phone: Number(formData.phone),
+          });
+        
+          if (response) {
+            setTimeout(() => {
+              router.push("/login");
+            }, 1500); // Espera 1.5 segundos antes de redirigir
+          }
+        }
   };
 
   return (
@@ -71,7 +82,7 @@ const RegisterGym: React.FC = () => {
           Register Gym
         </h1>
         <form onSubmit={handleSubmit} className="space-y-4">
-          {["name", "phone", "address", "email", "password"].map((field) => (
+          {["name", "email", "phone", "address", "city", "password" ].map((field) => (
             <div key={field}>
               <label
                 htmlFor={field}

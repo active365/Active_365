@@ -1,34 +1,28 @@
-// components/SearchBar.tsx
-import React, { useState } from 'react';
+'use client'
+
+import React, { useState } from "react";
 
 interface SearchBarProps {
-  onSearch: (query: string) => void; // Callback para manejar la búsqueda
+  onSearch: (query: string) => void;  // Propiedad para enviar la búsqueda al componente padre
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
-  const [query, setQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
 
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    setQuery(value); // Actualiza el estado
-    onSearch(value); // Llama a la función de búsqueda en tiempo real
-  };
-
-  const handleSearchSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
-    onSearch(query); // Opción adicional para búsquedas al presionar "Enter"
+  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    onSearch(searchQuery);  // Llamamos al callback pasado por props
   };
 
   return (
-    <form onSubmit={handleSearchSubmit} className="flex">
+    <form onSubmit={handleSearch}>
       <input
         type="text"
-        value={query}
-        onChange={handleSearchChange}
-        placeholder="Search products..."
-        className="p-2 rounded-md border border-gray-300 focus:outline-none focus:border-yellow-500"
+        placeholder="Search..."
+        className="p-2 rounded bg-gray-300 text-gray-800 placeholder-gray-500"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
       />
-      
     </form>
   );
 };

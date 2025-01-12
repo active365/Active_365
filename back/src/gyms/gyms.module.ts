@@ -10,6 +10,7 @@ import { Gyms } from 'src/entities/gyms.entity';
   ],
   controllers: [GymsController],
   providers: [GymsService],
+  exports: [GymsService]
 })
 export class GymsModule implements OnModuleInit{
   constructor(private readonly gymsService: GymsService) {}

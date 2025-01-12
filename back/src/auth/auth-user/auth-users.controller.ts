@@ -1,9 +1,8 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } from '@nestjs/common';
 import { AuthUsersService } from './auth-users.service';
 import { CreateUserDto, LoginUserDto } from 'src/dto/users.dto';
-import {GoogleUserAuthGuard } from 'src/auth/guards/google-auth/googleUserAuth.guard';
+import {GoogleUserAuthGuard } from 'src/auth/guards/googleUserAuth.guard';
 import { reverseAndMixEmail } from 'src/utils/generateGooglePassword.util';
-
 
 @Controller('auth-users')
 export class AuthUsersController {
@@ -13,7 +12,7 @@ export class AuthUsersController {
   login(@Body() userCredentials: LoginUserDto) {
     if( userCredentials.email && userCredentials.password ){
       const {email, password} = userCredentials;
-      return this.authUsersService.loginUser(email, password);
+      return this.authUsersService.login(email, password);
     }
     return {message: 'Faltan datos'}
   }
@@ -32,7 +31,7 @@ export class AuthUsersController {
     if(req.user.email){
       const email = req.user.email;
       const password = reverseAndMixEmail(req.user.email);
-      return this.authUsersService.loginUser(email, password, true);
+      return this.authUsersService.login(email, password, true);
     }
     return {message: 'Faltan datos'}
   }
