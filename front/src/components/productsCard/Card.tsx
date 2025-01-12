@@ -3,13 +3,19 @@ import Link from "next/link";
 import { IProducts } from "@/interfaces/IProducts";
 import AddToCart from "../AddToCart";
 import { Toaster } from "react-hot-toast";
-
+import { UserContext } from "@/context/UserContext";
+import { useContext } from "react";
 interface CardProps {
   products: IProducts[];
   onProductSelect: (product: IProducts) => void;
+  isUserLoggedIn: boolean;
 }
 
 const Card: React.FC<CardProps> = ({ products, onProductSelect }) => {
+  const { isLoggedIn } = useContext(UserContext);
+
+  
+
   if (products.length === 0) {
     return <p className="text-white">No products found.</p>;
   }
@@ -42,8 +48,9 @@ const Card: React.FC<CardProps> = ({ products, onProductSelect }) => {
                 </button>
               </Link>
             </div>
-            <div className="px-6 py-1 w-full"> 
-              <AddToCart product={product} />
+            <div className="px-6 py-1 w-full">
+            <AddToCart product={product} isUserLoggedIn={isLoggedIn} />
+
             </div>
           </div>
         ))}

@@ -1,139 +1,91 @@
-"use client"
-import { useState } from "react";
-import { loadStripe } from "@stripe/stripe-js";
-import { Elements, useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
-import Image from "next/image";
-
-const stripePromise = loadStripe("clave");
+"use client";
+import React, { useState, useContext } from "react";
+import { UserContext } from "@/context/UserContext";
 
 const PaymentForm: React.FC = () => {
-    const [paymentMethod, setPaymentMethod] = useState<"creditCard" | "paypal">("creditCard");
-    const stripe = useStripe();
-    const elements = useElements();
+  const { userSession, isLoggedIn } = useContext(UserContext);
+  const [orderId, setOrderId] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const APIURL = process.env.NEXT_PUBLIC_API_URL 
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
+  const handlePayment = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
 
-        if (paymentMethod === "creditCard" && stripe && elements) {
-            const cardElement = elements.getElement(CardElement);
+    if (!isLoggedIn) {
+      setError("You must be logged in to proceed with the payment.");
+      setLoading(false);
+      return;
+    }
 
-            if (cardElement) {
-                const { error, paymentMethod } = await stripe.createPaymentMethod({
-                    type: "card",
-                    card: cardElement,
-                });
+    try {
+      const response = await fetch(`${APIURL}/checkout/${orderId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userSession?.token}`, 
+        },
+      });
 
-                if (error) {
-                    console.error("Error al procesar el pago:", error.message);
-                } else {
-                    console.log("Método de pago creado:", paymentMethod);
-                }
-            }
-        } else {
-            console.log("Redirigiendo a PayPal...");
-        }
-    };
+      if (!response.ok) {
+        throw new Error("Failed to create checkout session.");
+      }
 
-    return (
-        <div className="max-w-lg mx-auto mt-10 p-6 bg-gray-50 rounded-lg shadow-lg">
-            <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="flex items-center space-x-4">
-                    <label className="flex items-center">
-                        <input
-                            type="radio"
-                            name="paymentMethod"
-                            value="creditCard"
-                            checked={paymentMethod === "creditCard"}
-                            onChange={() => setPaymentMethod("creditCard")}
-                            className="mr-2"
-                        />
-                        <span className="text-gray-800 font-medium">Credit card</span>
-                    </label>
-                    <div className="flex items-center space-x-2">
-                        <Image
-                            src="/visa.png"
-                            alt="Visa"
-                            width={40}
-                            height={20}
-                            className="object-contain"
-                        />
-                        <Image
-                            src="/mastercard.png"
-                            alt="MasterCard"
-                            width={40}
-                            height={20}
-                            className="object-contain"
-                        />
-                        <Image
-                            src="/amex.png"
-                            alt="American Express"
-                            width={40}
-                            height={20}
-                            className="object-contain"
-                        />
-                    </div>
-                </div>
+      const { url } = await response.json();
 
-                {paymentMethod === "creditCard" && (
-                    <div className="space-y-4">
-                        <div>
-                            <label className="block mb-2 text-sm font-medium text-gray-700">Card number *</label>
-                            <div className="p-3 border border-gray-300 rounded-lg bg-white">
-                                <CardElement
-                                    options={{
-                                        style: {
-                                            base: {
-                                                fontSize: "16px",
-                                                color: "#424770",
-                                                "::placeholder": { color: "#aab7c4" },
-                                            },
-                                            invalid: { color: "#9e2146" },
-                                        },
-                                    }}
-                                />
-                            </div>
-                        </div>
-                        <div className="flex space-x-4">
-                            <div className="flex-1">
-                                <label className="block mb-2 text-sm font-medium text-gray-700">Expiry (MM/YY) *</label>
-                                <input
-                                    type="text"
-                                    placeholder="MM / AA"
-                                    className="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    required
-                                />
-                            </div>
-                            <div className="flex-1">
-                                <label className="block mb-2 text-sm font-medium text-gray-700">CVV *</label>
-                                <input
-                                    type="text"
-                                    placeholder="CVV"
-                                    className="w-full p-3 border border-gray-300 rounded-lg bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    required
-                                />
-                            </div>
-                        </div>
-                    </div>
-                )}
+      if (url) {
+        window.location.href = url;
+      }
+    } catch (err) {
+      setError("There was an issue processing your payment. Please try again.");
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-                <button
-                    type="submit"
-                    className="w-full py-3 px-4 bg-yellow-400 text-white rounded-lg hover:bg-yellow-600 transition"
-                    disabled={!stripe}
-                >
-                    Place your order
-                </button>
-            </form>
-        </div>
-    );
+  return (
+    <div className="h-screen flex justify-center items-center bg-gray-100">
+      <div className="w-full max-w-md p-6 bg-white shadow-md rounded-md">
+        <h2 className="text-2xl font-bold text-center mb-6">Complete Your Payment</h2>
+        {isLoggedIn ? (
+          <form onSubmit={handlePayment}>
+            <div className="mb-4">
+              <label htmlFor="orderId" className="block text-sm font-medium text-gray-700">
+                Order ID
+              </label>
+              <input
+                type="text"
+                id="orderId"
+                name="orderId"
+                value={orderId}
+                onChange={(e) => setOrderId(e.target.value)}
+                className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-yellow-500 focus:border-yellow-500 sm:text-sm"
+                placeholder="Enter your order ID"
+                required
+              />
+            </div>
+            <button
+              type="submit"
+              className={`w-full px-4 py-2 text-white font-bold bg-yellow-500 rounded-md hover:bg-yellow-600 ${
+                loading ? "cursor-not-allowed opacity-50" : ""
+              }`}
+              disabled={loading}
+            >
+              {loading ? "Processing..." : "Pay Now"}
+            </button>
+          </form>
+        ) : (
+          <p className="text-center text-red-500">
+            You must log in to make a payment. Please log in and try again.
+          </p>
+        )}
+        {error && <p className="mt-4 text-red-500 text-sm text-center">{error}</p>}
+      </div>
+    </div>
+  );
 };
 
-const PaymentPage: React.FC = () => {
-    return (
-        <Elements stripe={stripePromise}>
-            <PaymentForm />
-        </Elements>
-    );
-};
-
-export default PaymentPage;
+export default PaymentForm;

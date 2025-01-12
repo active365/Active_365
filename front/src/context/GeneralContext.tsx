@@ -3,8 +3,7 @@ import React, { createContext, useState, useMemo, useEffect } from "react";
 import { IProducts } from "@/interfaces/IProducts";
 import { IGeneralContext } from "@/interfaces/IGeneralContext";
 
-
-export const GeneralContext = createContext<IGeneralContext>({
+export const GeneralContext = createContext<IGeneralContext>( {
     cart: [],
     addToCart: () => { },
     removeFromCart: () => { },
@@ -31,8 +30,9 @@ export const ContextProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
     const addToCart = (product: IProducts) => {
         setCart((prevCart) => {
+            
             if (prevCart.some((item) => item.id === product.id)) {
-                return prevCart; 
+                return prevCart;
             }
             return [...prevCart, product];
         });

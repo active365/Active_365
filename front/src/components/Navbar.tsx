@@ -1,4 +1,3 @@
-// components/Navbar.tsx
 'use client';
 
 import { UserContext } from "@/context/UserContext";
@@ -45,8 +44,7 @@ const Navbar: React.FC = () => {
         </li>
         <li>
 
-          {/* Enlace a la página de productos con el término de búsqueda */}
-          <Link href='/products/' className="button">
+          <Link href="/products/" className="button">
             <span className="p">Products</span>
           </Link>
           
